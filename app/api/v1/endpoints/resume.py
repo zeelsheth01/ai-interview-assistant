@@ -1,5 +1,6 @@
 from fastapi import APIRouter, UploadFile
-from app.services.resume_service import upload_resume
+from app.services.resume_parser_service import upload_resume
+
 
 router = APIRouter(prefix="/resume", tags=["Resume"])
 

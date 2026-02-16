@@ -1,35 +1,24 @@
-# ...existing code...
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-from langchain.output_parsers import StructuredOutputParser, ResponseSchema
-# ...existing code...
+from dotenv import load_dotenv
+load_dotenv()
+
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+import os
+
 
 # ------------------------------------------------
-# STEP 2 — Initialize Model
+# Create model ONLY when needed
 # ------------------------------------------------
 
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0.3
-)
-
-# ------------------------------------------------
-# STEP 3 — Structured Output
-# ------------------------------------------------
-
-response_schemas = [
-    ResponseSchema(
-        name="questions",
-        description="List of interview questions"
+def get_llm():
+    return ChatOpenAI(
+        model="gpt-4o-mini",
+        temperature=0.3
     )
-]
 
-output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
-
-format_instructions = output_parser.get_format_instructions()
 
 # ------------------------------------------------
-# STEP 4 — Prompt Template
+# Prompt Template
 # ------------------------------------------------
 
 prompt = ChatPromptTemplate.from_template("""
@@ -40,23 +29,21 @@ Based on this resume:
 {resume_text}
 
 Generate interview questions.
-
-{format_instructions}
 """)
 
+
 # ------------------------------------------------
-# STEP 5 — AI Function
+# AI Function
 # ------------------------------------------------
 
 async def generate_interview_questions(resume_text: str):
 
+    llm = get_llm()   # ✅ create AFTER env loaded
+
     messages = prompt.format_messages(
-        resume_text=resume_text,
-        format_instructions=format_instructions
+        resume_text=resume_text
     )
 
     response = await llm.ainvoke(messages)
 
-    parsed_output = output_parser.parse(response.content)
-
-    return parsed_output
+    return response.content
