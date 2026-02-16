@@ -1,12 +1,11 @@
-# app/services/resume_parser_service.py
+async def upload_resume(file):
 
-from fastapi import UploadFile
+    # later:
+    # save file
+    # parse text
+    # store in database
 
-async def extract_text(file: UploadFile):
-
-    content = await file.read()
-
-    # Example simple decoding (PDF parser etc can be added)
-    text = content.decode("utf-8", errors="ignore")
-
-    return text
+    return {
+        "message": "Resume uploaded successfully",
+        "filename": file.filename
+    }
