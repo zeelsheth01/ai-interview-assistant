@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+python-multipart
+openai
+python-dotenv
+sqlalchemy
+asyncpg
+alembic
+pydantic
+pdfplumber
+python-docx
