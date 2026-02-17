@@ -1,29 +1,41 @@
-from openai import AsyncOpenAI
-from app.core.config import settings
+import requests
 
-client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+OLLAMA_URL = "http://localhost:11434/api/generate"
 
 
-async def analyze_resume(text: str):
+def analyze_resume(text):
 
-    prompt = f"""
-    Analyze this resume and do:
+    try:
 
-    1. Extract main skills
-    2. Detect experience level
-    3. Generate 5 interview questions
+        prompt = f"""
+        You are an expert AI Interview Assistant.
 
-    Resume:
-    {text}
-    """
+        Analyze this resume text.
 
-    response = await client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are an interview preparation assistant."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.7
-    )
+        Extract:
+        1. Skills
+        2. Role suggestion
+        3. Experience level
+        4. Generate 5 interview questions.
 
-    return response.choices[0].message.content
+        Resume:
+        {text}
+        """
+
+        response = requests.post(
+            OLLAMA_URL,
+            json={
+                "model": "llama3",
+                "prompt": prompt,
+                "stream": False
+            }
+        )
+
+        result = response.json()
+
+        return {
+            "analysis": result.get("response")
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
