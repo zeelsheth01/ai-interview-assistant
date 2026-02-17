@@ -1,7 +1,12 @@
-from app.services.ai_service import generate_interview_questions
+from app.services.resume_parser import extract_text
+from app.services.ai_service import analyze_resume
 
-async def generate_questions(resume_text: str):
+class InterviewService:
 
-    ai_output = await generate_interview_questions(resume_text)
+    async def process(self, file_path):
 
-    return ai_output
+        text = extract_text(file_path)
+
+        ai_result = analyze_resume(text)
+
+        return ai_result

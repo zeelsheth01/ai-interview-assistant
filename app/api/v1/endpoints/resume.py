@@ -1,13 +1,20 @@
-from fastapi import APIRouter, UploadFile
-from app.services.resume_parser_service import upload_resume
+from fastapi import APIRouter, UploadFile, File
+import shutil
 
+from app.services.interview_service import InterviewService
 
-router = APIRouter(prefix="/resume", tags=["Resume"])
+router = APIRouter()
 
 @router.post("/upload")
-async def upload(file: UploadFile):
-    return await upload_resume(file)
+async def upload_resume(file: UploadFile = File(...)):
 
-@router.get("/{id}")
-async def get_resume(id: int):
-    return {"resume_id": id}
+    file_location = f"uploads/{file.filename}"
+
+    with open(file_location, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    service = InterviewService()
+
+    result = await service.process(file_location)
+
+    return {"analysis": result}

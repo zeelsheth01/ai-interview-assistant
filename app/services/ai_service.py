@@ -1,49 +1,29 @@
-from dotenv import load_dotenv
-load_dotenv()
+from openai import OpenAI
+from app.core.config import settings
 
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-import os
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
+def analyze_resume(text):
 
-# ------------------------------------------------
-# Create model ONLY when needed
-# ------------------------------------------------
+    prompt = f"""
+    Analyze resume and return JSON:
 
-def get_llm():
-    return ChatOpenAI(
-        model="gpt-4o-mini",
-        temperature=0.3
+    Extract:
+    - skills
+    - role
+    - experience_level
+
+    Generate:
+    - technical_questions
+    - hr_questions
+
+    Resume:
+    {text}
+    """
+
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=prompt
     )
 
-
-# ------------------------------------------------
-# Prompt Template
-# ------------------------------------------------
-
-prompt = ChatPromptTemplate.from_template("""
-You are an expert interviewer.
-
-Based on this resume:
-
-{resume_text}
-
-Generate interview questions.
-""")
-
-
-# ------------------------------------------------
-# AI Function
-# ------------------------------------------------
-
-async def generate_interview_questions(resume_text: str):
-
-    llm = get_llm()   # ✅ create AFTER env loaded
-
-    messages = prompt.format_messages(
-        resume_text=resume_text
-    )
-
-    response = await llm.ainvoke(messages)
-
-    return response.content
+    return response.output_text
