@@ -1,28 +1,33 @@
 import { useState } from "react";
-import API from "../api/api";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function Register(){
+export default function Register() {
 
- const [email,setEmail]=useState<string>("");
- const [password,setPassword]=useState<string>("");
+  const navigate = useNavigate();
 
- const register = async () => {
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
 
-   await API.post("/auth/register", null,{
-     params:{email,password}
-   });
+  const registerUser = async () => {
 
-   alert("Registered!");
- };
+    await axios.post(
+      `http://127.0.0.1:8000/auth/register?email=${email}&password=${password}`
+    );
 
- return(
-   <div>
-     <h2>Register</h2>
+    alert("Registered successfully");
 
-     <input onChange={e=>setEmail(e.target.value)} placeholder="email"/>
-     <input type="password" onChange={e=>setPassword(e.target.value)} placeholder="password"/>
+    navigate("/");
+  };
 
-     <button onClick={register}>Register</button>
-   </div>
- );
+  return (
+    <div>
+      <h2>Register</h2>
+
+      <input placeholder="Email" onChange={e=>setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" onChange={e=>setPassword(e.target.value)} />
+
+      <button onClick={registerUser}>Register</button>
+    </div>
+  );
 }

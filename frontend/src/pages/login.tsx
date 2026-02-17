@@ -1,33 +1,42 @@
 import { useState } from "react";
-import API from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
 
-  const [email,setEmail]=useState<string>("");
-  const [password,setPassword]=useState<string>("");
-
   const navigate = useNavigate();
 
-  const login = async () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const res = await API.post("/auth/login", null,{
-      params:{email,password}
-    });
+  const loginUser = async () => {
+    try {
 
-    localStorage.setItem("token",res.data.token);
+      await axios.post(
+        `http://127.0.0.1:8000/auth/login?email=${email}&password=${password}`
+      );
 
-    navigate("/upload");
+      localStorage.setItem("token", "logged");
+
+      navigate("/dashboard");
+
+    } catch {
+      alert("Login failed");
+    }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="container">
+      <h2>AI Interview Assistant</h2>
 
-      <input onChange={e=>setEmail(e.target.value)} placeholder="email"/>
-      <input type="password" onChange={e=>setPassword(e.target.value)} placeholder="password"/>
+      <input placeholder="Email" onChange={e=>setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" onChange={e=>setPassword(e.target.value)} />
 
-      <button onClick={login}>Login</button>
+      <button onClick={loginUser}>Login</button>
+
+      <p>
+        No account? <Link to="/register">Register</Link>
+      </p>
     </div>
   );
 }
