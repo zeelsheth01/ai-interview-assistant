@@ -1,42 +1,31 @@
-from fastapi import APIRouter, UploadFile, File, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, UploadFile, File
 import shutil
+import os
 
 from app.services.interview_service import InterviewService
-from app.db.dependencies import get_db
-from app.models.resume import Resume
 
 router = APIRouter()
 
+UPLOAD_DIR = "uploads"
+
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+
 @router.post("/upload")
-async def upload_resume(
-    file: UploadFile = File(...),
-    db: AsyncSession = Depends(get_db)
-):
+async def upload_resume(file: UploadFile = File(...)):
 
-    # ✅ Save uploaded file
-    file_location = f"uploads/{file.filename}"
+    file_location = f"{UPLOAD_DIR}/{file.filename}"
 
+    # save file
     with open(file_location, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # ✅ Process using AI service
+    # process resume via AI pipeline
     service = InterviewService()
+
     result = await service.process(file_location)
 
-    # ✅ Save result into database
-    new_resume = Resume(
-        file_path=file_location,
-        result_json=result
-    )
-
-    db.add(new_resume)
-    await db.commit()
-
-    # optional:
-    await db.refresh(new_resume)
-
     return {
-        "message": "Upload successful",
+        "message": "Resume processed",
         "analysis": result
     }

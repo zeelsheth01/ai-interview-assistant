@@ -1,29 +1,29 @@
-from openai import OpenAI
+from openai import AsyncOpenAI
 from app.core.config import settings
 
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
+client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
 
-def analyze_resume(text):
+
+async def analyze_resume(text: str):
 
     prompt = f"""
-    Analyze resume and return JSON:
+    Analyze this resume and do:
 
-    Extract:
-    - skills
-    - role
-    - experience_level
-
-    Generate:
-    - technical_questions
-    - hr_questions
+    1. Extract main skills
+    2. Detect experience level
+    3. Generate 5 interview questions
 
     Resume:
     {text}
     """
 
-    response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=prompt
+    response = await client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are an interview preparation assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7
     )
 
-    return response.output_text
+    return response.choices[0].message.content
