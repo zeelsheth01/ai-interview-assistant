@@ -4,8 +4,18 @@ from app.db.base import Base
 
 from app.api.v1.endpoints import auth, resume
 from app.api.v1.endpoints import ai
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # allow frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")

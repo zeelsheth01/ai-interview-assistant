@@ -2,34 +2,40 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../api/api";
 
-export default function Login() {
+export default function Login(){
 
   const navigate = useNavigate();
 
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  const [loading,setLoading]=useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async ()=>{
 
-    try {
+    try{
 
-      const res = await api.post("/auth/login", null,{
-        params:{ email,password }
+      setLoading(true);
+
+      const res = await api.post("/auth/login",{
+        email,
+        password
       });
 
-      // store auth
+      localStorage.setItem("token",res.data.token);
       localStorage.setItem("loggedIn","true");
 
       navigate("/dashboard");
 
-    } catch(err){
+    }catch(err){
 
       alert("Login failed");
 
+    }finally{
+      setLoading(false);
     }
   }
 
-  return (
+  return(
 
     <div className="flex items-center justify-center min-h-screen">
 
@@ -38,7 +44,6 @@ export default function Login() {
         <div className="p-10 flex flex-col justify-center bg-gradient-to-br from-blue-600 to-purple-700">
 
           <h1 className="text-4xl font-bold mb-4">AI Interview Assistant</h1>
-
           <p>Prepare smarter. Practice faster. Crack interviews.</p>
 
         </div>
@@ -64,7 +69,7 @@ export default function Login() {
             onClick={handleLogin}
             className="w-full bg-blue-500 hover:bg-blue-600 p-3 rounded-lg font-bold"
           >
-            Login
+            {loading ? "Logging..." : "Login"}
           </button>
 
           <p className="mt-4 text-sm">

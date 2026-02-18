@@ -8,23 +8,29 @@ export default function Register(){
 
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
+  const [loading,setLoading]=useState(false);
 
   const handleRegister = async ()=>{
 
     try{
 
-      await api.post("/auth/register",null,{
-        params:{email,password}
-      });
+      setLoading(true);
 
-      alert("Account Created");
+      await api.post("/auth/register",{
+        email,
+        password
+      });
 
       navigate("/");
 
-    }catch(err){
+    }catch(err:any){
 
-      alert("Register failed");
+      console.log("REGISTER ERROR:",err.response?.data);
 
+      alert(err.response?.data?.detail || "Register failed");
+
+    }finally{
+      setLoading(false);
     }
   }
 
@@ -37,7 +43,6 @@ export default function Register(){
         <div className="p-10 flex flex-col justify-center bg-gradient-to-br from-purple-600 to-indigo-700">
 
           <h1 className="text-4xl font-bold mb-4">Create Account</h1>
-
           <p>Start AI interview preparation today.</p>
 
         </div>
@@ -63,7 +68,7 @@ export default function Register(){
             onClick={handleRegister}
             className="w-full bg-purple-500 hover:bg-purple-600 p-3 rounded-lg font-bold"
           >
-            Register
+            {loading ? "Creating..." : "Register"}
           </button>
 
           <p className="mt-4 text-sm">

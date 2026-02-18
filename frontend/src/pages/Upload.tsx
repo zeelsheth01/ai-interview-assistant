@@ -1,36 +1,47 @@
 import { useState } from "react";
 import api from "../api/api";
-import UploadDropzone from "../components/UploadDropzone";
 
 export default function Upload(){
 
-  const [file,setFile]=useState<any>();
+  const [file,setFile]=useState<File|null>(null);
   const [loading,setLoading]=useState(false);
   const [result,setResult]=useState<any>(null);
 
-  const upload=async()=>{
+  const upload = async ()=>{
 
-    if(!file) return alert("Select file first");
-
-    const formData=new FormData();
-    formData.append("file",file);
-
-    setLoading(true);
+    if(!file){
+      alert("Select file first");
+      return;
+    }
 
     try{
 
-      const res=await api.post("/resume/upload",formData);
+      setLoading(true);
 
-      setResult(res.data);
+      const formData = new FormData();
+      formData.append("file",file);
+
+      const res = await api.post(
+        "/resume/resume/upload",
+        formData
+      );
+
+      console.log("AI RESULT:",res.data);
+
+      // ⭐ SAVE RESULT INTO STATE
+      setResult(res.data.analysis);
 
     }catch(err){
 
+      console.log(err);
       alert("Upload failed");
 
-    }
+    }finally{
 
-    setLoading(false);
-  }
+      // ⭐ STOP LOADING
+      setLoading(false);
+    }
+  };
 
   return(
 
@@ -38,30 +49,35 @@ export default function Upload(){
 
       <h1 className="text-2xl mb-6">Upload Resume</h1>
 
-      <UploadDropzone onFile={setFile}/>
+      <input
+        type="file"
+        accept=".pdf,.docx"
+        onChange={(e)=>{
+          if(e.target.files){
+            setFile(e.target.files[0]);
+          }
+        }}
+      />
 
       <button
         className="mt-6 bg-blue-500 p-2 rounded"
         onClick={upload}
       >
-        {loading ? "Processing..." : "Upload"}
+        {loading ? "Processing AI..." : "Upload"}
       </button>
 
+      {/* ⭐ SHOW AI RESULT */}
       {result && (
+        <div className="mt-8 bg-white/10 p-6 rounded-xl">
+          <h2 className="text-xl mb-4">AI Interview Questions</h2>
 
-        <div className="mt-8 p-6 bg-white/10 backdrop-blur-xl rounded-xl">
-
-          <h2 className="text-xl mb-3">AI Analysis</h2>
-
-          <pre className="text-sm whitespace-pre-wrap">
-            {JSON.stringify(result,null,2)}
+          <pre className="whitespace-pre-wrap">
+            {result.analysis}
           </pre>
 
         </div>
-
       )}
 
     </div>
-
   );
 }
