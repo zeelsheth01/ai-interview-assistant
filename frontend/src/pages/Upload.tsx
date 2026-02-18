@@ -1,35 +1,67 @@
 import { useState } from "react";
-import API from "../api/api";
+import api from "../api/api";
+import UploadDropzone from "../components/UploadDropzone";
 
 export default function Upload(){
 
- const [file,setFile]=useState<File | null>(null);
- const [result,setResult]=useState<any>(null);
+  const [file,setFile]=useState<any>();
+  const [loading,setLoading]=useState(false);
+  const [result,setResult]=useState<any>(null);
 
- const upload = async () => {
+  const upload=async()=>{
 
-   if(!file) return;
+    if(!file) return alert("Select file first");
 
-   const formData = new FormData();
+    const formData=new FormData();
+    formData.append("file",file);
 
-   formData.append("file",file);
+    setLoading(true);
 
-   const res = await API.post("/resume/upload",formData);
+    try{
 
-   setResult(res.data.analysis);
- };
+      const res=await api.post("/resume/upload",formData);
 
- return(
-   <div>
+      setResult(res.data);
 
-     <h2>Upload Resume</h2>
+    }catch(err){
 
-     <input type="file" onChange={e=>setFile(e.target.files?.[0] || null)}/>
+      alert("Upload failed");
 
-     <button onClick={upload}>Upload</button>
+    }
 
-     {result && <pre>{JSON.stringify(result,null,2)}</pre>}
+    setLoading(false);
+  }
 
-   </div>
- );
+  return(
+
+    <div>
+
+      <h1 className="text-2xl mb-6">Upload Resume</h1>
+
+      <UploadDropzone onFile={setFile}/>
+
+      <button
+        className="mt-6 bg-blue-500 p-2 rounded"
+        onClick={upload}
+      >
+        {loading ? "Processing..." : "Upload"}
+      </button>
+
+      {result && (
+
+        <div className="mt-8 p-6 bg-white/10 backdrop-blur-xl rounded-xl">
+
+          <h2 className="text-xl mb-3">AI Analysis</h2>
+
+          <pre className="text-sm whitespace-pre-wrap">
+            {JSON.stringify(result,null,2)}
+          </pre>
+
+        </div>
+
+      )}
+
+    </div>
+
+  );
 }
