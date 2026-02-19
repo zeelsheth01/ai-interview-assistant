@@ -1,12 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.api.v1.endpoints.auth import router as auth_router
-from app.api.v1.endpoints.ai import router as ai_router
 from app.api.v1.endpoints.resume import router as resume_router
 
 app = FastAPI()
 
+# ⭐ CORS FIX
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,6 +13,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth_router, prefix="/auth")
-app.include_router(ai_router, prefix="/ai")
-app.include_router(resume_router, prefix="/resume")
+# ⭐ include router
+app.include_router(resume_router)

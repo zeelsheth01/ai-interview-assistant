@@ -1,50 +1,38 @@
 import pdfplumber
-from PyPDF2 import PdfReader
-
 from pdf2image import convert_from_path
 import pytesseract
 
-# Windows Tesseract path
+# Windows paths
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+POPPLER_PATH = r"C:\poppler\Library\bin"
 
 
-def extract_text(file_path: str):
+def extract_resume_text(file_path: str):
 
     text = ""
 
-    # ---------- METHOD 1: pdfplumber ----------
+    # ----- Try normal extraction -----
     try:
         with pdfplumber.open(file_path) as pdf:
             for page in pdf.pages:
                 page_text = page.extract_text()
                 if page_text:
-                    text += page_text + "\n"
-    except Exception as e:
-        print("pdfplumber failed:", e)
+                    text += page_text
+    except:
+        pass
 
-    # ---------- METHOD 2: PyPDF2 fallback ----------
-    if not text:
-        try:
-            reader = PdfReader(file_path)
-            for page in reader.pages:
-                text += page.extract_text() or ""
-        except Exception as e:
-            print("PyPDF2 failed:", e)
+    # ----- OCR fallback -----
+    if len(text.strip()) == 0:
 
-    # ---------- METHOD 3: OCR fallback ----------
-    if not text:
+        print("🔥 Using OCR extraction...")
 
-        print("🔥 USING OCR FALLBACK")
+        images = convert_from_path(
+            file_path,
+            dpi=300,
+            poppler_path=POPPLER_PATH
+        )
 
-        try:
-            images = convert_from_path(file_path)
-
-            for img in images:
-                text += pytesseract.image_to_string(img)
-
-        except Exception as e:
-            print("OCR failed:", e)
-
-    print("FINAL TEXT:", text)
+        for img in images:
+            text += pytesseract.image_to_string(img)
 
     return text.strip()

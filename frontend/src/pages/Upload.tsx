@@ -1,82 +1,66 @@
 import { useState } from "react";
 import api from "../api/api";
 
-export default function Upload(){
+export default function Upload() {
 
-  const [file,setFile]=useState<File|null>(null);
-  const [loading,setLoading]=useState(false);
-  const [result,setResult]=useState<any>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const upload = async ()=>{
+  const upload = async () => {
 
-    if(!file){
+    console.log("FILE =", file);
+
+    if (!file) {
       alert("Select file first");
       return;
     }
 
-    try{
+    const formData = new FormData();
+
+    // ⭐ must match FastAPI parameter name
+    formData.append("file", file);
+
+    try {
 
       setLoading(true);
 
-      const formData = new FormData();
-      formData.append("file",file);
+      // ✅ DO NOT set Content-Type manually
+      await api.post("/resume/upload", formData);
 
-      const res = await api.post(
-        "/resume/resume/upload",
-        formData
-      );
+      alert("Resume uploaded successfully");
 
-      console.log("AI RESULT:",res.data);
-
-      // ⭐ SAVE RESULT INTO STATE
-      setResult(res.data.analysis);
-
-    }catch(err){
-
-      console.log(err);
+    } catch (err) {
+      console.log("UPLOAD ERROR:", err);
       alert("Upload failed");
-
-    }finally{
-
-      // ⭐ STOP LOADING
+    } finally {
       setLoading(false);
     }
   };
 
-  return(
-
+  return (
     <div>
 
-      <h1 className="text-2xl mb-6">Upload Resume</h1>
+      <h3>Upload Resume</h3>
 
       <input
         type="file"
-        accept=".pdf,.docx"
-        onChange={(e)=>{
-          if(e.target.files){
-            setFile(e.target.files[0]);
-          }
+        accept=".pdf"
+        onChange={(e) => {
+          const selected = e.target.files?.[0] || null;
+          console.log("SELECTED FILE =", selected);
+          setFile(selected);
         }}
       />
 
+      <br /><br />
+
       <button
-        className="mt-6 bg-blue-500 p-2 rounded"
+        type="button"
         onClick={upload}
+        disabled={loading}
       >
-        {loading ? "Processing AI..." : "Upload"}
+        {loading ? "Uploading..." : "Upload"}
       </button>
-
-      {/* ⭐ SHOW AI RESULT */}
-      {result && (
-        <div className="mt-8 bg-white/10 p-6 rounded-xl">
-          <h2 className="text-xl mb-4">AI Interview Questions</h2>
-
-          <pre className="whitespace-pre-wrap">
-            {result.analysis}
-          </pre>
-
-        </div>
-      )}
 
     </div>
   );

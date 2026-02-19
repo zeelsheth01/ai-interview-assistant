@@ -1,11 +1,20 @@
-class AIService:
+import requests
 
-    def generate_questions(self, message: str):
+def generate_questions(resume_text):
 
-        # Simulated AI output
-        return [
-            f"What is {message}?",
-            f"Explain core concepts of {message}",
-            f"Real-world use cases of {message}",
-            f"Common interview questions about {message}"
-        ]
+    prompt = f"""
+    Read this resume and generate technical interview questions:
+
+    {resume_text}
+    """
+
+    response = requests.post(
+        "http://localhost:11434/api/generate",
+        json={
+            "model": "llama3",
+            "prompt": prompt,
+            "stream": False
+        }
+    )
+
+    return response.json()["response"]
