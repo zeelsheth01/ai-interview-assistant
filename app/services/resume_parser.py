@@ -1,38 +1,34 @@
-import pdfplumber
-from pdf2image import convert_from_path
+import fitz  # PyMuPDF
 import pytesseract
+from PIL import Image
+import io
+from app.services.ocr_parser import extract_text_from_image_pdf
 
-# Windows paths
+# Windows path
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-POPPLER_PATH = r"C:\poppler\Library\bin"
 
 
-def extract_resume_text(file_path: str):
+def extract_text_from_image_pdf(file_path):
 
     text = ""
 
-    # ----- Try normal extraction -----
-    try:
-        with pdfplumber.open(file_path) as pdf:
-            for page in pdf.pages:
-                page_text = page.extract_text()
-                if page_text:
-                    text += page_text
-    except:
-        pass
+    # open PDF
+    pdf = fitz.open(file_path)
 
-    # ----- OCR fallback -----
-    if len(text.strip()) == 0:
+    for page_num in range(len(pdf)):
 
-        print("🔥 Using OCR extraction...")
+        page = pdf.load_page(page_num)
 
-        images = convert_from_path(
-            file_path,
-            dpi=300,
-            poppler_path=POPPLER_PATH
-        )
+        # convert page to image
+        pix = page.get_pixmap(dpi=300)
 
-        for img in images:
-            text += pytesseract.image_to_string(img)
+        img_data = pix.tobytes("png")
+
+        image = Image.open(io.BytesIO(img_data))
+
+        # OCR
+        page_text = pytesseract.image_to_string(image)
+
+        text += page_text
 
     return text.strip()

@@ -2,6 +2,8 @@ from fastapi import APIRouter, UploadFile, File
 import os
 import pdfplumber
 import requests
+from app.services.ocr_parser import extract_text_from_image_pdf
+
 
 router = APIRouter()
 
@@ -25,12 +27,20 @@ def extract_resume_text(file_path: str):
 # ===== Generate questions using OLLAMA =====
 
 
-def generate_questions(file_path):
+def generate_questions(resume_text):
 
-    prompt = """
-    Analyze this resume and generate technical interview questions
-    based ONLY on skills mentioned.
-    """
+    prompt = f"""
+You are an expert technical interviewer.
+
+Read this resume content:
+
+{resume_text}
+
+Generate ONLY technical interview questions based on skills mentioned.
+If Java is present -> ask Java questions.
+If React present -> React questions.
+DO NOT say "resume not provided".
+"""
 
     response = requests.post(
         "http://localhost:11434/api/generate",
@@ -41,26 +51,25 @@ def generate_questions(file_path):
         }
     )
 
-    return response.json()["response"]
+    data = response.json()
+
+    return data["response"]
 
 # ===== Upload API =====
 @router.post("/resume/upload")
 async def upload_resume(file: UploadFile = File(...)):
-
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
 
     file_path = os.path.join(UPLOAD_DIR, file.filename)
 
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
-    resume_text = extract_resume_text(file_path)
-    
+    # ⭐ OCR extraction
+    resume_text = extract_text_from_image_pdf(file_path)
 
-    questions = generate_questions(file_path)
+    print("OCR TEXT LENGTH:", len(resume_text))
 
-
-
+    # ⭐ AI question generation
     questions = generate_questions(resume_text)
 
     return {

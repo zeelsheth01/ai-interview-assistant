@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.endpoints.resume import router as resume_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
