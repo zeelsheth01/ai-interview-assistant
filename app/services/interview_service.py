@@ -1,16 +1,14 @@
-from app.services.resume_parser import extract_text
-from app.services.ai_service import analyze_resume
-
+from app.services.ai_service import AIService
 
 class InterviewService:
 
-    async def process(self, file_path):
+    def __init__(self):
+        self.ai = AIService()
 
-        text = extract_text(file_path)
+    def process_chat(self, message: str):
 
-        if not text:
-            return {"error": "No text extracted from resume"}
+        questions = self.ai.generate_questions(message)
 
-        ai_result = analyze_resume(text)
-
-        return ai_result
+        return {
+            "questions": questions
+        }

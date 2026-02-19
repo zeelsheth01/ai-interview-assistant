@@ -1,24 +1,13 @@
 from fastapi import APIRouter, UploadFile, File
-import shutil
 
-from app.services.interview_service import InterviewService
+router = APIRouter()
 
-router = APIRouter(prefix="/resume", tags=["Resume"])
-
-
-@router.post("/upload")
+@router.post("/resume/upload")
 async def upload_resume(file: UploadFile = File(...)):
 
-    file_location = f"uploads/{file.filename}"
+    content = await file.read()
 
-    with open(file_location, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    print("Uploaded file:", file.filename)
 
-    service = InterviewService()
-
-    result = await service.process(file_location)
-
-    return {
-        "message": "Resume processed",
-        "analysis": result
-    }
+    # simulate parsing
+    return {"msg": "Resume uploaded successfully"}

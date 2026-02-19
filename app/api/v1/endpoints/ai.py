@@ -1,12 +1,14 @@
 from fastapi import APIRouter
+from app.models.schemas import ChatRequest
+from app.services.interview_service import InterviewService
 
 router = APIRouter()
 
 @router.post("/chat")
-async def chat(data: dict):
+def chat(data: ChatRequest):
 
-    message = data.get("message")
+    service = InterviewService()
 
-    return {
-        "reply": f"AI response for: {message}"
-    }
+    result = service.process_chat(data.message)
+
+    return result

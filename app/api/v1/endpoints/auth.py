@@ -1,70 +1,25 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
-from pydantic import BaseModel
-
-from app.db.dependencies import get_db
-from app.models.user import User
-from app.core.security import hash_password, create_token
+from fastapi import APIRouter, HTTPException
+from app.models.schemas import RegisterRequest, LoginRequest
 
 router = APIRouter()
 
-
-# =========================
-# Request Models (JSON BODY)
-# =========================
-
-class RegisterRequest(BaseModel):
-    email: str
-    password: str
-
-
-class LoginRequest(BaseModel):
-    email: str
-    password: str
-
-
-# =========================
-# REGISTER
-# =========================
+fake_users_db = {}
 
 @router.post("/register")
-async def register(
-    data: RegisterRequest,
-    db: AsyncSession = Depends(get_db)
-):
+def register(data: RegisterRequest):
 
-    user = User(
-        email=data.email,
-        password=hash_password(data.password)
-    )
+    if data.email in fake_users_db:
+        raise HTTPException(status_code=400, detail="User exists")
 
-    db.add(user)
-
-    try:
-        await db.commit()
-
-    except IntegrityError:
-
-        await db.rollback()
-
-        raise HTTPException(
-            status_code=400,
-            detail="Email already exists"
-        )
+    fake_users_db[data.email] = data.password
 
     return {"msg": "registered"}
 
 
-# =========================
-# LOGIN
-# =========================
-
 @router.post("/login")
-async def login(data: LoginRequest):
+def login(data: LoginRequest):
 
-    token = create_token({
-        "email": data.email
-    })
+    if fake_users_db.get(data.email) != data.password:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    return {"token": token}
+    return {"token": "dummy-jwt-token"}
