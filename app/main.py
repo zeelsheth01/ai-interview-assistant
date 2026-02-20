@@ -1,11 +1,17 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+
+# IMPORT ROUTERS
 from app.api.v1.endpoints.resume import router as resume_router
+from app.api.v1.endpoints.auth import router as auth_router
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# ⭐ CORS FIX
+
+
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,5 +20,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ⭐ include router
+# REGISTER ROUTERS
 app.include_router(resume_router)
+app.include_router(auth_router)

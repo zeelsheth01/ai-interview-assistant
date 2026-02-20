@@ -3,7 +3,17 @@ import os
 import pdfplumber
 import requests
 from app.services.ocr_parser import extract_text_from_image_pdf
+import psycopg2
 
+conn = psycopg2.connect(
+    database="ai_interview_db",
+    user="postgres",
+    password="test123",   # <-- PUT CORRECT PASSWORD
+    host="localhost",
+    port="5432"
+)
+
+cursor = conn.cursor()
 
 router = APIRouter()
 
@@ -64,15 +74,36 @@ async def upload_resume(file: UploadFile = File(...)):
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
-    # ⭐ OCR extraction
+    # OCR extraction
     resume_text = extract_text_from_image_pdf(file_path)
 
     print("OCR TEXT LENGTH:", len(resume_text))
 
-    # ⭐ AI question generation
-    questions = generate_questions(resume_text)
+    # 🔥 INSERT RESUME INTO DATABASE
+    cursor.execute("""
+        INSERT INTO resumes (user_id, file_name, file_path, extracted_text)
+        VALUES (%s, %s, %s, %s)
+        RETURNING id;
+    """, (1, file.filename, file_path, resume_text))  # user_id=1 temporary
+
+    resume_id = cursor.fetchone()[0]
+
+    # AI question generation
+    questions_text = generate_questions(resume_text)
+
+    # Split questions into lines
+    questions_list = questions_text.split("\n")
+
+    for q in questions_list:
+        if q.strip() != "":
+            cursor.execute("""
+                INSERT INTO interview_questions (resume_id, question)
+                VALUES (%s, %s);
+            """, (resume_id, q.strip()))
+
+    conn.commit()
 
     return {
-        "msg": "Resume uploaded successfully",
-        "questions": questions
+        "msg": "Resume uploaded & saved successfully",
+        "resume_id": resume_id
     }

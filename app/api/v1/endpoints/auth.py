@@ -1,25 +1,45 @@
 from fastapi import APIRouter, HTTPException
 from app.models.schemas import RegisterRequest, LoginRequest
+import psycopg2
 
-router = APIRouter()
+router = APIRouter(prefix="/auth")
 
-fake_users_db = {}
+conn = psycopg2.connect(
+    database="ai_interview_db",
+    user="postgres",
+    password="test123",   # your real password
+    host="localhost",
+    port="5432"
+)
 
+cursor = conn.cursor()
+
+# REGISTER
 @router.post("/register")
 def register(data: RegisterRequest):
 
-    if data.email in fake_users_db:
-        raise HTTPException(status_code=400, detail="User exists")
+    cursor.execute("SELECT * FROM users WHERE email=%s", (data.email,))
+    if cursor.fetchone():
+        raise HTTPException(status_code=400, detail="User already exists")
 
-    fake_users_db[data.email] = data.password
+    cursor.execute(
+        "INSERT INTO users (email, password) VALUES (%s, %s)",
+        (data.email, data.password)
+    )
 
-    return {"msg": "registered"}
+    conn.commit()
+
+    return {"msg": "registered successfully"}
 
 
+# LOGIN
 @router.post("/login")
 def login(data: LoginRequest):
 
-    if fake_users_db.get(data.email) != data.password:
+    cursor.execute("SELECT password FROM users WHERE email=%s", (data.email,))
+    user = cursor.fetchone()
+
+    if not user or user[0] != data.password:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     return {"token": "dummy-jwt-token"}

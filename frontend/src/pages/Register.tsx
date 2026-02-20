@@ -10,29 +10,31 @@ export default function Register(){
   const [password,setPassword]=useState("");
   const [loading,setLoading]=useState(false);
 
-  const handleRegister = async ()=>{
+ const handleRegister = async ()=>{
 
-    try{
+  try{
 
-      setLoading(true);
+    setLoading(true);
 
-      await api.post("/auth/register",{
-        email,
-        password
-      });
+    const res = await api.post("/auth/register",{
+      email,
+      password
+    });
 
-      navigate("/");
+    console.log("REGISTER SUCCESS:", res.data);
 
-    }catch(err:any){
+    navigate("/");
 
-      console.log("REGISTER ERROR:",err.response?.data);
+  }catch(err:any){
 
-      alert(err.response?.data?.detail || "Register failed");
+    console.log("FULL ERROR:", err);
 
-    }finally{
-      setLoading(false);
-    }
+    alert("Register failed");
+
+  }finally{
+    setLoading(false);
   }
+}
 
   return(
 
