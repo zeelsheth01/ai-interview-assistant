@@ -1,15 +1,22 @@
 import requests
 
-def generate_questions(resume_text):
+OLLAMA_URL = "http://localhost:11434/api/generate"
+
+def generate_interview_questions(resume_text):
 
     prompt = f"""
-    Read this resume and generate technical interview questions:
+    You are an interview assistant.
 
+    Based on this resume generate 10 technical interview questions.
+
+    Resume:
     {resume_text}
+
+    Return only list of questions.
     """
 
     response = requests.post(
-        "http://localhost:11434/api/generate",
+        OLLAMA_URL,
         json={
             "model": "llama3",
             "prompt": prompt,
@@ -17,4 +24,6 @@ def generate_questions(resume_text):
         }
     )
 
-    return response.json()["response"]
+    data = response.json()
+
+    return data["response"]

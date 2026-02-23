@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 
 export default function Upload() {
@@ -6,9 +7,9 @@ export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const upload = async () => {
+  const navigate = useNavigate();
 
-    console.log("FILE =", file);
+  const upload = async () => {
 
     if (!file) {
       alert("Select file first");
@@ -16,18 +17,20 @@ export default function Upload() {
     }
 
     const formData = new FormData();
-
-    // ⭐ must match FastAPI parameter name
     formData.append("file", file);
 
     try {
 
       setLoading(true);
 
-      // ✅ DO NOT set Content-Type manually
-      await api.post("/resume/upload", formData);
+      const res = await api.post("/resume/upload", formData);
 
-      alert("Resume uploaded successfully");
+      alert(res.data.msg);
+
+      // ✅ Redirect to dashboard and send resumeId
+      navigate("/dashboard", {
+        state: { resumeId: res.data.resume_id }
+      });
 
     } catch (err) {
       console.log("UPLOAD ERROR:", err);
@@ -45,20 +48,12 @@ export default function Upload() {
       <input
         type="file"
         accept=".pdf"
-        onChange={(e) => {
-          const selected = e.target.files?.[0] || null;
-          console.log("SELECTED FILE =", selected);
-          setFile(selected);
-        }}
+        onChange={(e) => setFile(e.target.files?.[0] || null)}
       />
 
       <br /><br />
 
-      <button
-        type="button"
-        onClick={upload}
-        disabled={loading}
-      >
+      <button onClick={upload} disabled={loading}>
         {loading ? "Uploading..." : "Upload"}
       </button>
 
