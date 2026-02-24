@@ -7,7 +7,7 @@ router = APIRouter(prefix="/auth")
 conn = psycopg2.connect(
     database="ai_interview_db",
     user="postgres",
-    password="Diya971",   # your real password
+    password="test123",   # your real password
     host="localhost",
     port="5432"
 )
