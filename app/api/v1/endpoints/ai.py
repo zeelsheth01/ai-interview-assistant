@@ -12,3 +12,22 @@ def chat(data: ChatRequest):
     result = service.process_chat(data.message)
 
     return result
+
+
+
+@router.get("/resume/{resume_id}")
+def get_resume(resume_id: int):
+
+    cursor.execute(
+        "SELECT result_json FROM resumes WHERE id=%s",
+        (resume_id,)
+    )
+
+    data = cursor.fetchone()
+
+    if not data:
+        return {"questions": []}
+
+    return {
+        "questions": data[0]["questions"]
+    }

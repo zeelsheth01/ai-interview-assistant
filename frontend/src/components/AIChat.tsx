@@ -1,7 +1,10 @@
 import { useState } from "react";
 import api from "../api/api";
+interface AIChatProps {
+  questions?: string[];
+}
 
-export default function AIChat() {
+export default function AIChat({ questions }: AIChatProps) {
 
   const [messages,setMessages]=useState<any[]>([]);
   const [input,setInput]=useState("");
