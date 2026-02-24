@@ -9,7 +9,7 @@ from app.services.ai_service import generate_interview_questions
 conn = psycopg2.connect(
     database="ai_interview_db",
     user="postgres",
-    password="test123",   # <-- PUT CORRECT PASSWORD
+    password="Diya971",   # <-- PUT CORRECT PASSWORD
     host="localhost",
     port="5432"
 )
