@@ -8,7 +8,7 @@ import psycopg2
 conn = psycopg2.connect(
     database="ai_interview_db",
     user="postgres",
-    password="test123",   # <-- PUT CORRECT PASSWORD
+    password="Diya971",   # <-- PUT CORRECT PASSWORD
     host="localhost",
     port="5432"
 )
