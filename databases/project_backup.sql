@@ -365,4 +365,5 @@ REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 --
 
 \unrestrict vYSzyMaCoY2KuvkQR3ixRjIcdamZZvP3d6tXzdjSpLl6DhimceAJLEDzsLiN4Rq
+ALTER TABLE resumes ADD COLUMN file_name TEXT;
 
