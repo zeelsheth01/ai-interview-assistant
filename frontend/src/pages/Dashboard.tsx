@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Copy, Check, HelpCircle, ArrowUpRight, Sparkles, BookOpen } from "lucide-react";
+import { Copy, Check, HelpCircle, ArrowUpRight, BookOpen } from "lucide-react";
 import AIChat from "../components/AIChat";
 import api from "../api/api";
 

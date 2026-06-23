@@ -9,6 +9,7 @@ export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
+
   const navigate = useNavigate();
 
   const loadingSteps = [
@@ -18,9 +19,9 @@ export default function Upload() {
     "Generating tailor-made technical questions...",
   ];
 
-  // Rotate loading step messages for better UX
   useEffect(() => {
     let interval: any;
+
     if (loading) {
       interval = setInterval(() => {
         setActiveStep((prev) => {
@@ -33,34 +34,61 @@ export default function Upload() {
     } else {
       setActiveStep(0);
     }
+
     return () => clearInterval(interval);
   }, [loading]);
 
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select or drop a PDF file first");
+      alert("Please select a PDF first");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("file", file);
 
     try {
       setLoading(true);
       setActiveStep(0);
 
-      const res = await api.post("/resume/upload", formData);
+      const formData = new FormData();
 
-      // Transition to last step right before navigating
+      formData.append(
+        "file",
+        file,
+        file.name
+      );
+
+      console.log("FILE:", file);
+      console.log("FORMDATA FILE:", formData.get("file"));
+
+      const res = await api.post(
+        "/resume/upload",
+        formData
+      );
+
+      console.log("UPLOAD SUCCESS:", res.data);
+
       setActiveStep(3);
-      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1000)
+      );
 
       navigate("/dashboard", {
-        state: { resumeId: res.data.resume_id },
+        state: {
+          resumeId: res.data.resume_id,
+          questions: res.data.questions,
+          skills: res.data.skills,
+        },
       });
-    } catch (err) {
+
+    } catch (err: any) {
       console.log("UPLOAD ERROR:", err);
-      alert("Resume analysis failed. Please verify the backend database is connected and try again.");
+
+      if (err.response) {
+        console.log("STATUS:", err.response.status);
+        console.log("DATA:", err.response.data);
+      }
+
+      alert("Resume upload failed");
     } finally {
       setLoading(false);
     }
@@ -81,15 +109,19 @@ export default function Upload() {
               <h1 className="text-3xl font-extrabold font-outfit text-white tracking-tight">
                 Analyze your Resume
               </h1>
+
               <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto">
-                Upload your engineering resume to instantly generate custom, difficulty-tagged technical interview questions.
+                Upload your engineering resume to instantly generate custom technical interview questions.
               </p>
             </div>
 
-            {/* Dropzone component */}
-            <UploadDropzone onFile={(f) => setFile(f)} />
+            <UploadDropzone
+              onFile={(selectedFile) => {
+                console.log("SELECTED FILE:", selectedFile);
+                setFile(selectedFile);
+              }}
+            />
 
-            {/* Action button */}
             {file && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -97,7 +129,7 @@ export default function Upload() {
               >
                 <button
                   onClick={handleUpload}
-                  className="px-8 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/10 flex items-center gap-2 mx-auto cursor-pointer transition duration-300"
+                  className="px-8 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-semibold shadow-lg flex items-center gap-2 mx-auto"
                 >
                   <span>Start Interview Assessment</span>
                   <ArrowRight className="w-4 h-4" />
@@ -108,56 +140,51 @@ export default function Upload() {
         ) : (
           <motion.div
             key="loading-screen"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             className="flex flex-col items-center justify-center p-12 text-center"
           >
-            {/* Spinning glowing loader */}
             <div className="relative mb-8 w-24 h-24">
               <div className="absolute inset-0 rounded-full border-4 border-indigo-500/10" />
+
               <div className="absolute inset-0 rounded-full border-4 border-t-indigo-500 border-r-purple-500 animate-spin" />
-              <div className="absolute inset-4 rounded-full bg-slate-900 flex items-center justify-center border border-white/5 shadow-inner">
+
+              <div className="absolute inset-4 rounded-full bg-slate-900 flex items-center justify-center">
                 {activeStep < 2 ? (
-                  <FileText className="w-6 h-6 text-indigo-400 animate-pulse" />
+                  <FileText className="w-6 h-6 text-indigo-400" />
                 ) : (
-                  <Cpu className="w-6 h-6 text-purple-400 animate-pulse" />
+                  <Cpu className="w-6 h-6 text-purple-400" />
                 )}
               </div>
             </div>
 
-            {/* Loading text */}
-            <h3 className="text-xl font-bold font-outfit text-white mb-2">
+            <h3 className="text-xl font-bold text-white mb-2">
               Analyzing Candidate Profile
             </h3>
-            
-            {/* Steps list */}
-            <div className="w-full max-w-sm space-y-3 mt-6 bg-white/[0.01] border border-white/5 rounded-2xl p-5 text-left font-sans">
+
+            <div className="w-full max-w-sm space-y-3 mt-6 bg-white/[0.01] border border-white/5 rounded-2xl p-5 text-left">
               {loadingSteps.map((step, index) => (
                 <div
                   key={index}
-                  className={`flex items-center gap-3 transition duration-300 ${
+                  className={`flex items-center gap-3 ${
                     index === activeStep
-                      ? "text-indigo-400 font-semibold"
+                      ? "text-indigo-400"
                       : index < activeStep
                       ? "text-emerald-500"
                       : "text-slate-600"
                   }`}
                 >
                   {index < activeStep ? (
-                    <CheckCircle2 className="w-4.5 h-4.5 shrink-0" />
+                    <CheckCircle2 className="w-4 h-4" />
                   ) : (
-                    <div
-                      className={`w-4.5 h-4.5 rounded-full border shrink-0 flex items-center justify-center text-[10px] ${
-                        index === activeStep
-                          ? "border-indigo-500 bg-indigo-500/10 animate-pulse"
-                          : "border-slate-800"
-                      }`}
-                    >
+                    <div className="w-4 h-4 rounded-full border flex items-center justify-center text-[10px]">
                       {index + 1}
                     </div>
                   )}
-                  <span className="text-sm">{step}</span>
+
+                  <span className="text-sm">
+                    {step}
+                  </span>
                 </div>
               ))}
             </div>
