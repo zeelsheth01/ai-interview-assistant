@@ -12,6 +12,12 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+@app.get("/")
+def home():
+    return {
+        "message": "AI Interview Assistant API Running Successfully"
+    }
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
