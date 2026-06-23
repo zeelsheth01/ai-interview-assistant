@@ -9,3 +9,17 @@ alembic
 pydantic
 pdfplumber
 python-docx
+fastapi
+uvicorn
+python-multipart
+python-dotenv
+pydantic
+sqlalchemy
+asyncpg
+alembic
+pdfplumber
+python-docx
+PyMuPDF
+prisma
+requests
+openai
