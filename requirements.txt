@@ -11,5 +11,5 @@ alembic
 pdfplumber
 python-docx
 PyMuPDF
-prisma
+prisma==0.15.0
 requests
