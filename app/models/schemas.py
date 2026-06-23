@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 # ---------- AUTH ----------
 
 class RegisterRequest(BaseModel):
@@ -16,3 +17,14 @@ class LoginRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+
+
+# ---------- RESPONSES ----------
+
+class ResumeResponse(BaseModel):
+    questions: list[str]
+    skills: list[str]
+
+
+class TokenResponse(BaseModel):
+    token: str

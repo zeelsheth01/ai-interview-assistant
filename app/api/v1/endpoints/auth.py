@@ -1,32 +1,57 @@
 from fastapi import APIRouter, HTTPException
+from sqlalchemy.orm import Session
+
 from app.models.schemas import RegisterRequest, LoginRequest
-from app.db.session import db
+from app.models.user import User
+from app.db.session import SessionLocal
 
 router = APIRouter(prefix="/auth")
 
-# REGISTER
+
 @router.post("/register")
 async def register(data: RegisterRequest):
-    user = await db.user.find_unique(where={"email": data.email})
-    if user:
-        raise HTTPException(status_code=400, detail="User already exists")
 
-    await db.user.create(
-        data={
-            "email": data.email,
-            "password": data.password
-        }
+    db: Session = SessionLocal()
+
+    existing_user = db.query(User).filter(
+        User.email == data.email
+    ).first()
+
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="User already exists"
+        )
+
+    user = User(
+        email=data.email,
+        password=data.password
     )
+
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    db.close()
 
     return {"msg": "registered successfully"}
 
 
-# LOGIN
 @router.post("/login")
 async def login(data: LoginRequest):
-    user = await db.user.find_unique(where={"email": data.email})
+
+    db: Session = SessionLocal()
+
+    user = db.query(User).filter(
+        User.email == data.email
+    ).first()
 
     if not user or user.password != data.password:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid credentials"
+        )
+
+    db.close()
 
     return {"token": "dummy-jwt-token"}
