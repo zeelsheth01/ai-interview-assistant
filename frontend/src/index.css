@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  background: radial-gradient(circle at top,#020617,#020617,#000);
+  font-family: Inter, sans-serif;
+  color:white;
+}
+
+/* Glass panel */
+
+.glass{
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+/* Premium hover */
+
+.premium-hover{
+  transition: all .3s ease;
+}
+
+.premium-hover:hover{
+  transform: translateY(-3px);
+  box-shadow:0 0 30px rgba(59,130,246,.3);
+}

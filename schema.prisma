@@ -1,0 +1,55 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  resumes   Resume[]
+
+  @@map("users")
+}
+
+model Resume {
+  id            Int                 @id @default(autoincrement())
+  userId        Int?                @map("user_id")
+  user          User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filePath      String              @map("file_path")
+  fileName      String?             @map("file_name")
+  extractedText String?             @map("extracted_text")
+  resultJson    String?             @map("result_json")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  questions  InterviewQuestion[]
+  skills     Skill[]
+
+  @@map("resumes")
+}
+
+model InterviewQuestion {
+  id         Int      @id @default(autoincrement())
+  resumeId   Int?     @map("resume_id")
+  resume     Resume?  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  question   String
+  difficulty String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("interview_questions")
+}
+
+model Skill {
+  id              Int     @id @default(autoincrement())
+  resumeId        Int?    @map("resume_id")
+  resume          Resume? @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  skillName       String  @map("skill_name")
+  confidenceScore Float?  @map("confidence_score")
+
+  @@map("skills")
+}
