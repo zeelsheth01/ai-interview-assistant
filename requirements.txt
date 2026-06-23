@@ -4,6 +4,7 @@ uvicorn
 python-multipart
 python-dotenv
 pydantic
+pydantic-settings
 requests
 PyMuPDF
 pdfplumber
