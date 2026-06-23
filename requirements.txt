@@ -3,17 +3,8 @@ uvicorn
 python-multipart
 openai
 python-dotenv
-sqlalchemy
-asyncpg
-alembic
 pydantic
-pdfplumber
-python-docx
-fastapi
-uvicorn
-python-multipart
-python-dotenv
-pydantic
+pydantic-settings
 sqlalchemy
 asyncpg
 alembic
@@ -22,4 +13,3 @@ python-docx
 PyMuPDF
 prisma
 requests
-openai
