@@ -73,7 +73,7 @@ export default function Login() {
           </div>
 
           <div className="relative z-10 text-xs text-slate-500 font-mono">
-            v1.0.0 // Powered by Gemini 1.5
+            v1.0.0 // Powered by Ai Agent
           </div>
         </div>
 
