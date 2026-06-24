@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -68,22 +67,23 @@ export default function Register() {
       setLoading(false);
     }
   };
+
   const handleGoogleSuccess = async (credentialResponse: any) => {
-  try {
-    const res = await api.post("/auth/google", {
-      credential: credentialResponse.credential,
-    });
+    try {
+      const res = await api.post("/auth/google", {
+        credential: credentialResponse.credential,
+      });
 
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("loggedIn", "true");
-    localStorage.setItem("userEmail", res.data.email);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("userEmail", res.data.email);
 
-    navigate("/dashboard");
-  } catch (error) {
-    console.error(error);
-    setError("Google Sign-In failed.");
-  }
-};
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      setError("Google Sign-In failed.");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-950 font-sans relative overflow-hidden px-4">
@@ -238,40 +238,50 @@ export default function Register() {
                 </button>
               </div>
             </div>
+
             <div className="flex justify-center mb-4">
-  <motion.button
-  whileHover={{ scale: 1.01 }}
-  whileTap={{ scale: 0.99 }}
-  onClick={() => {
-    const googleButton = document.querySelector(
-      '[role="button"]'
-    ) as HTMLElement;
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                onClick={() => {
+                  const googleButton = document.querySelector(
+                    '[role="button"]'
+                  ) as HTMLElement;
 
-    googleButton?.click();
-  }}
-  className="w-full bg-gradient-to-r
-             from-slate-800
-             to-slate-700
-             hover:from-slate-700
-             hover:to-slate-600
-             text-white py-3 rounded-xl
-             font-semibold shadow-lg
-             border border-white/10
-             flex items-center justify-center
-             gap-3"
->
-  <FcGoogle className="text-xl" />
-  Continue with Google
-</motion.button>
-</div>
+                  googleButton?.click();
+                }}
+                className="w-full bg-gradient-to-r
+                           from-slate-800
+                           to-slate-700
+                           hover:from-slate-700
+                           hover:to-slate-600
+                           text-white py-3 rounded-xl
+                           font-semibold shadow-lg
+                           border border-white/10
+                           flex items-center justify-center
+                           gap-3"
+              >
+                <FcGoogle className="text-xl" />
+                Continue with Google
+              </motion.button>
+            </div>
 
-<div className="flex items-center gap-3 my-4">
-  <div className="flex-1 h-px bg-white/10"></div>
-  <span className="text-slate-500 text-xs uppercase">
-    OR
-  </span>
-  <div className="flex-1 h-px bg-white/10"></div>
-</div>
+            <div style={{ display: "none" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => {
+                  setError("Google Sign-In failed.");
+                }}
+              />
+            </div>
+
+            <div className="flex items-center gap-3 my-4">
+              <div className="flex-1 h-px bg-white/10"></div>
+              <span className="text-slate-500 text-xs uppercase">
+                OR
+              </span>
+              <div className="flex-1 h-px bg-white/10"></div>
+            </div>
 
             <motion.button
               whileHover={{ scale: 1.01 }}
@@ -304,4 +314,3 @@ export default function Register() {
     </div>
   );
 }
-
