@@ -28,3 +28,6 @@ class ResumeResponse(BaseModel):
 
 class TokenResponse(BaseModel):
     token: str
+
+class GoogleAuthRequest(BaseModel):
+    credential: str
