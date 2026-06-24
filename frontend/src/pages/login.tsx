@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  ArrowRight,
+  Sparkles,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import api from "../api/api";
 
 export default function Login() {
@@ -11,13 +18,16 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
       setError("Please fill in all fields.");
       return;
     }
+
     setError("");
+
     try {
       setLoading(true);
 
@@ -54,7 +64,7 @@ export default function Login() {
         {/* Left Promo Area */}
         <div className="md:col-span-2 p-8 md:p-12 flex flex-col justify-between bg-gradient-to-br from-indigo-900/60 to-slate-900 border-r border-white/5 relative">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_50%)]" />
-          
+
           <div className="relative z-10 flex items-center gap-2 text-indigo-400 font-semibold font-outfit tracking-wide">
             <Sparkles className="w-5 h-5 animate-pulse" />
             <span>ELEVATE AI</span>
@@ -67,20 +77,28 @@ export default function Login() {
                 Dream Career
               </span>
             </h1>
+
             <p className="text-slate-400 text-sm leading-relaxed">
-              Generate custom, production-grade technical interview questions based directly on your resume. Practice interactively with our smart AI assistant.
+              Generate custom, production-grade technical interview questions
+              based directly on your resume. Practice interactively with our
+              smart AI assistant.
             </p>
           </div>
 
           <div className="relative z-10 text-xs text-slate-500 font-mono">
-            v1.0.0 // Powered by Ai Agent
+            v1.0.0 // Powered by AI Agent
           </div>
         </div>
 
         {/* Right Form Area */}
         <div className="md:col-span-3 p-8 md:p-12 flex flex-col justify-center">
-          <h2 className="text-2xl font-bold font-outfit text-white mb-2">Welcome back</h2>
-          <p className="text-slate-400 text-sm mb-8">Enter your details to access your dashboard</p>
+          <h2 className="text-2xl font-bold font-outfit text-white mb-2">
+            Welcome back
+          </h2>
+
+          <p className="text-slate-400 text-sm mb-8">
+            Enter your details to access your dashboard
+          </p>
 
           {error && (
             <motion.div
@@ -93,12 +111,15 @@ export default function Login() {
           )}
 
           <div className="space-y-4">
+            {/* Email */}
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
                 Email Address
               </label>
+
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+
                 <input
                   type="email"
                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
@@ -109,22 +130,47 @@ export default function Login() {
               </div>
             </div>
 
+            {/* Password */}
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
                 Password
               </label>
+
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+
                 <input
-                  type="password"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
+                  type={showPassword ? "text" : "password"}
+                  className="w-full pl-11 pr-12 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+
+              <div className="flex justify-end mt-2">
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-indigo-400 hover:text-indigo-300 transition"
+                >
+                  Forgot Password?
+                </Link>
               </div>
             </div>
 
+            {/* Login Button */}
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
@@ -133,13 +179,17 @@ export default function Login() {
               className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition duration-300 disabled:opacity-50"
             >
               {loading ? "Authenticating..." : "Sign In"}
+
               {!loading && <ArrowRight className="w-4 h-4" />}
             </motion.button>
           </div>
 
           <p className="mt-8 text-center text-sm text-slate-400">
             Don't have an account?{" "}
-            <Link to="/register" className="text-indigo-400 hover:text-indigo-300 font-semibold transition">
+            <Link
+              to="/register"
+              className="text-indigo-400 hover:text-indigo-300 font-semibold transition"
+            >
               Create one free
             </Link>
           </p>
