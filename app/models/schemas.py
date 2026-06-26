@@ -31,3 +31,8 @@ class TokenResponse(BaseModel):
 
 class GoogleAuthRequest(BaseModel):
     credential: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+    new_password: str

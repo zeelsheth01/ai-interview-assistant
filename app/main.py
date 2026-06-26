@@ -7,6 +7,10 @@ from app.api.v1.endpoints.ai import router as ai_router
 
 from app.db.base import Base
 from app.db.session import engine
+from app.models.user import User
+from app.models.resume import Resume
+from app.models.skill import Skill
+from app.models.interview_question import InterviewQuestion
 
 Base.metadata.create_all(bind=engine)
 

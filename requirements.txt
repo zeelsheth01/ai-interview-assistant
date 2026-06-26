@@ -168,3 +168,6 @@ wcwidth==0.2.14
 websockets==16.0
 xxhash==3.6.0
 zstandard==0.25.0
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart

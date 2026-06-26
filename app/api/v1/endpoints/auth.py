@@ -1,13 +1,11 @@
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session
 
-from app.models.schemas import RegisterRequest, LoginRequest
+from app.models.schemas import RegisterRequest, LoginRequest, GoogleAuthRequest, ForgotPasswordRequest
 from app.models.user import User
 from app.db.session import SessionLocal
 from google.oauth2 import id_token
 from google.auth.transport import requests
-
-from app.models.schemas import GoogleAuthRequest
 
 router = APIRouter(prefix="/auth")
 
@@ -110,5 +108,29 @@ async def google_login(data: GoogleAuthRequest):
             status_code=401,
             detail="Google authentication failed"
         )
+
+
+@router.post("/forgot-password")
+async def forgot_password(data: ForgotPasswordRequest):
+
+    db: Session = SessionLocal()
+
+    user = db.query(User).filter(
+        User.email == data.email
+    ).first()
+
+    if not user:
+        db.close()
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    user.password = data.new_password
+    db.commit()
+    db.refresh(user)
+    db.close()
+
+    return {"msg": "Password updated successfully"}
 
     
