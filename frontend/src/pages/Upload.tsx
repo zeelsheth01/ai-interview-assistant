@@ -9,6 +9,7 @@ export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
+  const [numQuestions, setNumQuestions] = useState(10);
 
   const navigate = useNavigate();
 
@@ -60,7 +61,7 @@ export default function Upload() {
       console.log("FORMDATA FILE:", formData.get("file"));
 
       const res = await api.post(
-        "/resume/upload",
+        `/resume/upload?num_questions=${numQuestions}`,
         formData
       );
 
@@ -122,10 +123,28 @@ export default function Upload() {
               }}
             />
 
+            <div className="max-w-xs mx-auto text-left">
+              <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
+                Questions to Generate
+              </label>
+              <select
+                value={numQuestions}
+                onChange={(e) => setNumQuestions(Number(e.target.value))}
+                className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300 cursor-pointer"
+              >
+                <option value={10} className="bg-slate-950 text-white">10 Questions (Default)</option>
+                <option value={15} className="bg-slate-950 text-white">15 Questions</option>
+                <option value={20} className="bg-slate-950 text-white">20 Questions</option>
+                <option value={30} className="bg-slate-950 text-white">30 Questions</option>
+                <option value={40} className="bg-slate-950 text-white">40 Questions</option>
+              </select>
+            </div>
+
             {file && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
+                className="pt-2"
               >
                 <button
                   onClick={handleUpload}
