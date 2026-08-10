@@ -224,3 +224,6 @@ __pycache__/
 frontend/node_modules
 __pycache__/
 .env
+Redis.zip
+Redis/
+app/uploads/

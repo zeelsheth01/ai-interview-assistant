@@ -407,7 +407,10 @@ Resume:
         db.close()
 
 
+from fastapi_cache.decorator import cache
+
 @router.get("/resume/{resume_id}")
+@cache(expire=300)
 async def get_resume(resume_id: int):
 
     db: Session = SessionLocal()

@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis import asyncio as aioredis
 
 from app.api.v1.endpoints.resume import router as resume_router
 from app.api.v1.endpoints.auth import router as auth_router
@@ -14,7 +18,13 @@ from app.models.interview_question import InterviewQuestion
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    redis = aioredis.from_url("redis://localhost", encoding="utf8", decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def home():

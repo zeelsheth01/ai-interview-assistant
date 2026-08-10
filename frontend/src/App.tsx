@@ -22,8 +22,10 @@ export default function App() {
 
         <Route path="/" element={<LandingPage />} />
 
+        <Route path="/login" element={<Login />} />
         <Route path="/auth/signin" element={<Login />} />
 
+        <Route path="/register" element={<Register />} />
         <Route path="/auth/signup" element={<Register />} />
 
         <Route path="/auth/forgot-password" element={<ForgotPassword />} />

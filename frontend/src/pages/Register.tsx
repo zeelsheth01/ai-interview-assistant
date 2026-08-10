@@ -101,7 +101,7 @@ export default function Register() {
 
           <div className="relative z-10 flex items-center gap-2 text-purple-400 font-semibold font-outfit tracking-wide">
             <Sparkles className="w-5 h-5 animate-pulse" />
-            <span>ELEVATE AI</span>
+            <span>CHIKU AI</span>
           </div>
 
           <div className="relative z-10 my-12">
@@ -303,7 +303,7 @@ export default function Register() {
           <p className="mt-8 text-center text-sm text-slate-400">
             Already have an account?{" "}
             <Link
-              to="/"
+              to="/login"
               className="text-purple-400 hover:text-purple-300 font-semibold transition"
             >
               Sign In

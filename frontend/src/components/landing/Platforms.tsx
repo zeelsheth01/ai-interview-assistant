@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const Platforms = () => {
   const platforms = ['Zoom', 'Google Meet', 'Teams', 'LeetCode', 'Superset'];

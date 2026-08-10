@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const TrustLogos = () => {
   const logos = ['Google', 'Microsoft', 'Meta', 'Netflix', 'LinkedIn', 'PayPal', 'IBM', 'MongoDB', 'X/Twitter'];

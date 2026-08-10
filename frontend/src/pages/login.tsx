@@ -67,7 +67,7 @@ export default function Login() {
 
           <div className="relative z-10 flex items-center gap-2 text-indigo-400 font-semibold font-outfit tracking-wide">
             <Sparkles className="w-5 h-5 animate-pulse" />
-            <span>ELEVATE AI</span>
+            <span>CHIKU AI</span>
           </div>
 
           <div className="relative z-10 my-12">

@@ -1,10 +1,21 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request, Response
 from app.models.schemas import ChatRequest
 from app.services.interview_service import InterviewService
+from fastapi_cache.decorator import cache
+import hashlib
 
 router = APIRouter()
 
+def chat_key_builder(func, namespace: str = "", request: Request = None, response: Response = None, *args, **kwargs):
+    data = kwargs.get('data')
+    if data:
+        message = data.message.lower().strip()
+        key = hashlib.md5(message.encode()).hexdigest()
+        return f"{namespace}:{func.__module__}:{func.__name__}:{key}"
+    return f"{namespace}:{func.__module__}:{func.__name__}"
+
 @router.post("/chat")
+@cache(expire=3600, key_builder=chat_key_builder)
 def chat(data: ChatRequest):
     try:
         service = InterviewService()
