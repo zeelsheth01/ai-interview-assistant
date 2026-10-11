@@ -12,6 +12,11 @@ class Settings(BaseSettings):
 
     GOOGLE_CLIENT_ID: str | None = None
 
+    SECRET_KEY: str = "development-only-change-this-secret"
+    RAZORPAY_KEY_ID: str | None = None
+    RAZORPAY_KEY_SECRET: str | None = None
+    PRICE_PER_MINUTE_INR: int = 10
+
     OLLAMA_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3"
 

@@ -1,4 +1,5 @@
 
+import { APP_NAME } from "../../constants/brand";
 import { Star } from 'lucide-react';
 
 const Testimonials = () => {
@@ -6,7 +7,7 @@ const Testimonials = () => {
     {
       name: "Alex Sharma",
       role: "Software Engineer at MNC",
-      quote: "Chiku AI helped me land a job at a top tech company. The live suggestions were incredibly accurate and kept me on track during intense coding rounds.",
+      quote: `${APP_NAME} helped me land a job at a top tech company. The live suggestions were incredibly accurate and kept me on track during intense coding rounds.`,
       avatar: "AS"
     },
     {

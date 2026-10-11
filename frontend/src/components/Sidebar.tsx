@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, UploadCloud, Sparkles } from "lucide-react";
+import { APP_NAME } from "../constants/brand";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -17,7 +18,7 @@ export default function Sidebar() {
             <Sparkles className="w-4 h-4 text-white animate-pulse" />
           </div>
           <span className="font-extrabold font-outfit text-lg tracking-wide text-white">
-            ELEVATE AI
+            {APP_NAME}
           </span>
         </div>
 
@@ -45,6 +46,13 @@ export default function Sidebar() {
           >
             <UploadCloud className="w-4.5 h-4.5" />
             <span>Upload Resume</span>
+          </Link>
+          <Link
+            to="/pricing"
+            className="flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-slate-400 transition duration-300 hover:bg-white/[0.03] hover:text-white"
+          >
+            <Sparkles className="h-4 w-4" />
+            <span>Get interview minutes</span>
           </Link>
         </nav>
       </div>

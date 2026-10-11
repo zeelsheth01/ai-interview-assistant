@@ -1,136 +1,131 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
+from google.auth.transport import requests
+from google.oauth2 import id_token
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.models.schemas import RegisterRequest, LoginRequest, GoogleAuthRequest, ForgotPasswordRequest
-from app.models.user import User
+from app.core.config import settings
+from app.core.security import create_token, hash_password, verify_password
 from app.db.session import SessionLocal
-from google.oauth2 import id_token
-from google.auth.transport import requests
+from app.models.schemas import (
+    ForgotPasswordRequest,
+    GoogleAuthRequest,
+    LoginRequest,
+    RegisterRequest,
+)
+from app.models.user import User
 
 router = APIRouter(prefix="/auth")
 
 
-@router.post("/register")
-async def register(data: RegisterRequest):
+def authenticated_user_response(user: User) -> dict[str, str]:
+    return {
+        "token": create_token({"sub": str(user.id), "email": user.email}),
+        "email": user.email,
+    }
 
+
+@router.post("/register", status_code=status.HTTP_201_CREATED)
+def register(data: RegisterRequest) -> dict[str, str]:
     db: Session = SessionLocal()
+    try:
+        if db.query(User).filter(User.email == data.email).first():
+            raise HTTPException(status_code=409, detail="An account with this email already exists.")
 
-    existing_user = db.query(User).filter(
-        User.email == data.email
-    ).first()
-
-    if existing_user:
-        raise HTTPException(
-            status_code=400,
-            detail="User already exists"
-        )
-
-    user = User(
-        email=data.email,
-        password=data.password
-    )
-
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-
-    db.close()
-
-    return {"msg": "registered successfully"}
+        user = User(email=data.email, password=hash_password(data.password))
+        db.add(user)
+        db.commit()
+        return {"msg": "registered successfully"}
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="An account with this email already exists.") from None
+    finally:
+        db.close()
 
 
 @router.post("/login")
-async def login(data: LoginRequest):
-
+def login(data: LoginRequest) -> dict[str, str]:
     db: Session = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == data.email).first()
+        if user is None or user.password is None:
+            raise HTTPException(status_code=401, detail="Invalid email or password.")
 
-    user = db.query(User).filter(
-        User.email == data.email
-    ).first()
-
-    if not user or user.password != data.password:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid credentials"
+        stored_password = user.password
+        is_bcrypt_hash = stored_password.startswith(("$2a$", "$2b$", "$2y$"))
+        is_valid = (
+            verify_password(data.password, stored_password)
+            if is_bcrypt_hash
+            else data.password == stored_password
         )
+        if not is_valid:
+            raise HTTPException(status_code=401, detail="Invalid email or password.")
 
-    db.close()
+        if not is_bcrypt_hash:
+            user.password = hash_password(data.password)
+            db.commit()
 
-    return {"token": "dummy-jwt-token"}
+        return authenticated_user_response(user)
+    finally:
+        db.close()
 
-
-# ==========================================
-# PASTE GOOGLE LOGIN CODE BELOW THIS LINE
-# ==========================================
 
 @router.post("/google")
-async def google_login(data: GoogleAuthRequest):
-
-    db: Session = SessionLocal()
+def google_login(data: GoogleAuthRequest) -> dict[str, str]:
+    if not settings.GOOGLE_CLIENT_ID:
+        raise HTTPException(status_code=503, detail="Google sign-in is not configured.")
 
     try:
         user_info = id_token.verify_oauth2_token(
             data.credential,
             requests.Request(),
-            "887184951396-bhmccf8fvinbjdrah03olo8mp7kbmvkn.apps.googleusercontent.com"
+            settings.GOOGLE_CLIENT_ID,
         )
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Google authentication failed.") from None
 
-        email = user_info["email"]
-        google_id = user_info["sub"]
-        full_name = user_info.get("name")
+    if user_info.get("email_verified") is not True:
+        raise HTTPException(status_code=401, detail="A verified Google email is required.")
 
-        user = db.query(User).filter(
-            User.email == email
-        ).first()
+    email = user_info.get("email")
+    google_id = user_info.get("sub")
+    if not isinstance(email, str) or not isinstance(google_id, str):
+        raise HTTPException(status_code=401, detail="Google authentication failed.")
 
-        if not user:
-
+    db: Session = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == email).first()
+        if user is None:
             user = User(
                 email=email,
                 google_id=google_id,
-                full_name=full_name,
-                password=None
+                full_name=user_info.get("name"),
             )
-
             db.add(user)
             db.commit()
             db.refresh(user)
+        elif user.google_id != google_id:
+            user.google_id = google_id
+            db.commit()
 
+        return authenticated_user_response(user)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Unable to create the Google account.") from None
+    finally:
         db.close()
-
-        return {
-            "token": "google-jwt-token",
-            "email": email
-        }
-
-    except Exception:
-        raise HTTPException(
-            status_code=401,
-            detail="Google authentication failed"
-        )
 
 
 @router.post("/forgot-password")
-async def forgot_password(data: ForgotPasswordRequest):
-
+def forgot_password(data: ForgotPasswordRequest) -> dict[str, str]:
     db: Session = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == data.email).first()
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found.")
 
-    user = db.query(User).filter(
-        User.email == data.email
-    ).first()
-
-    if not user:
+        user.password = hash_password(data.new_password)
+        db.commit()
+        return {"msg": "Password updated successfully"}
+    finally:
         db.close()
-        raise HTTPException(
-            status_code=404,
-            detail="User not found"
-        )
-
-    user.password = data.new_password
-    db.commit()
-    db.refresh(user)
-    db.close()
-
-    return {"msg": "Password updated successfully"}
-
-    

@@ -53,7 +53,7 @@ export default function UploadDropzone({ onFile }: UploadDropzoneProps) {
       onDrop={handleDrop}
       className={`relative p-12 md:p-16 rounded-2xl text-center cursor-pointer block border-2 border-dashed transition-all duration-300 ${
         isDragActive
-          ? "border-indigo-500 bg-indigo-500/5 shadow-[0_0_30px_rgba(99,102,241,0.1)]"
+          ? "border-indigo-500 bg-indigo-500/5 shadow-[0_0_30px_rgba(59,130,246,0.1)]"
           : selectedFileName
           ? "border-purple-500/50 bg-purple-500/5"
           : "border-white/10 bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.02]"

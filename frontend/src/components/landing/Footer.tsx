@@ -1,5 +1,6 @@
 
 import { Link } from 'react-router-dom';
+import { APP_NAME } from '../../constants/brand';
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-1">
             <Link to="/" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-white mb-4 block">
-              Chiku AI
+              {APP_NAME}
             </Link>
             <p className="text-gray-400 text-sm">
               Your AI-powered interview assistant for better career outcomes.
@@ -48,7 +49,7 @@ const Footer = () => {
             © 2026 Synikaa. All rights reserved.
           </p>
           <p className="text-gray-500 text-sm">
-            Chiku AI™ is a trademark of Synikaa.
+            {APP_NAME}™ is a trademark of Synikaa.
           </p>
         </div>
       </div>

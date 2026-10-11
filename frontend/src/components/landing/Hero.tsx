@@ -1,22 +1,23 @@
 
 import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { APP_NAME } from '../../constants/brand';
 
 const Hero = () => {
   return (
-    <div className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+    <div className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 mb-8">
           <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
           Your Invisible Realtime
         </div>
         
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
-          AI Interview Assistant
+        <h1 className="mb-6 bg-gradient-to-b from-slate-100 to-slate-300 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-8xl">
+          {APP_NAME}
         </h1>
         
-        <p className="mt-4 max-w-2xl text-xl text-gray-400 mx-auto mb-10">
-          Chiku listens to your interview and shows precise answers on your screen.
+        <p className="mx-auto mt-4 mb-10 max-w-3xl text-xl leading-relaxed text-gray-400 md:text-2xl">
+          Your AI interview coach for clear, confident answers and better delivery.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">

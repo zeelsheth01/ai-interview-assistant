@@ -16,7 +16,7 @@ graph TD
     E -->|Analyze Resume| F[LLM Provider Engine]
     F -->|Option A| G[Gemini 2.0 Flash API]
     F -->|Option B| H[Local Ollama: Llama 3]
-    G & H -->|Generate 10 Questions| I[Prisma DB Session]
+    G & H -->|Generate 10 Questions|     I[SQLAlchemy Database Session]
     I -->|Store User, Resume & Questions| J[(dev.db / SQLite)]
     B -->|Return Questions & Stats| A
     
@@ -35,7 +35,7 @@ graph TD
 | **Frontend UI** | [React](https://react.dev/) + [Vite](https://vite.dev/) | Ultra-fast development server and modern UI architecture. |
 | **Styling** | [Tailwind CSS](https://tailwindcss.com/) | Utility-first CSS framework for clean, custom designs. |
 | **Animations** | [Framer Motion](https://www.framer.com/motion/) | Smooth layout transitions and interactive UI effects. |
-| **Database ORM** | [Prisma Python Client](https://prisma-client-py.readthedocs.io/) | Auto-generated, fully type-safe query builder for Python. |
+| **Database ORM** | [SQLAlchemy](https://www.sqlalchemy.org/) | ORM and database access layer for Python. |
 | **Database** | SQLite (Default) | Embedded database engine (`dev.db`). Compatible with PostgreSQL. |
 | **Text Extraction** | PyMuPDF, pdfplumber, Pytesseract | Hybrid OCR/PDF parser pipeline for structured or scanned documents. |
 | **AI / LLM Orchestration** | Gemini 2.0 Flash API / Ollama | Dual integration support for state-of-the-art API or local LLM processing. |
@@ -123,18 +123,25 @@ The database relies on a clean relational layout defined in [schema.prisma](file
     DATABASE_URL="file:./dev.db"
     LLM_PROVIDER="gemini"
     GEMINI_API_KEY="your-gemini-api-key-here"
+
+    # Authentication and prepaid Razorpay voice-interview minutes
+    SECRET_KEY="replace-with-a-long-random-secret"
+    RAZORPAY_KEY_ID="rzp_test_your_key_id"
+    RAZORPAY_KEY_SECRET="your_razorpay_test_secret"
     
     # Optional local Ollama configurations
     OLLAMA_URL="http://localhost:11434"
     OLLAMA_MODEL="llama3"
     ```
+    Use Razorpay **test-mode** credentials during development. Keep these values
+    in the backend `.env` only; never put the Razorpay secret in frontend
+    variables or commit `.env`. The payment screen sells prepaid voice
+    interview minutes at ₹10 per minute. Payments are verified by the backend
+    before credits are added, and recorded minutes are charged to the signed-in
+    account in one-minute recording increments. Set a unique, high-entropy `SECRET_KEY` before deploying so user
+    tokens cannot be forged.
 
-5.  **Generate and Sync the Prisma Client:**
-    Generate python client classes and create the database schema locally:
-    ```powershell
-    prisma generate
-    prisma db push
-    ```
+5.  **Database initialization:** SQLAlchemy creates the application tables when the backend starts. The configured `DATABASE_URL` must point to a writable database.
 
 6.  **Run the Backend Server:**
     ```powershell
@@ -180,7 +187,8 @@ This utility:
 
 ## 💡 Usage Workflow
 
-1.  **User Onboarding:** Create an account in the `/register` portal and log in to obtain a dummy JWT token.
+1.  **User Onboarding:** Create an account in the `/register` portal and log in to receive a signed session token.
 2.  **Upload Resume:** Drag-and-drop a PDF resume into the Upload portal. The hybrid parser processes the document and feeds it to the LLM.
 3.  **Explore Dashboard:** Review extracted details, statistics, and a listing of the generated 10 specialized technical questions.
-4.  **AI Interview Coach:** Engage in a real-time conversational chat with the AI Coach to answer generated questions and receive feedback.
+4.  **Voice practice:** Purchase prepaid interview minutes from the dashboard, then use **Practice Verbally** to record an answer and review the delivery metrics. Unused purchased minutes remain in your account.
+5.  **AI Interview Coach:** Engage in a real-time conversational chat with the AI Coach to answer generated questions and receive feedback.

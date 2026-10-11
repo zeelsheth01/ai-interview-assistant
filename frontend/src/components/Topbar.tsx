@@ -1,9 +1,10 @@
 import { useLocation } from "react-router-dom";
-import { LogOut, User } from "lucide-react";
+import { Link } from "react-router-dom";
+import { LogOut, User, Wallet } from "lucide-react";
 
 export default function Topbar() {
   const location = useLocation();
-  const userEmail = localStorage.getItem("userEmail") || "candidate@elevate.ai";
+  const userEmail = localStorage.getItem("userEmail") || "candidate@chiku.ai";
 
   const getPageTitle = () => {
     switch (location.pathname) {
@@ -33,6 +34,13 @@ export default function Topbar() {
       </div>
 
       <div className="flex items-center gap-4">
+        <Link
+          to="/pricing"
+          className="flex items-center gap-2 rounded-xl border border-primary-500/20 bg-primary-500/10 px-3 py-2 text-xs font-semibold text-primary-300 transition hover:border-primary-400/40 hover:bg-primary-500/20"
+        >
+          <Wallet className="h-4 w-4" />
+          <span>Buy minutes</span>
+        </Link>
         {/* User Badge */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/5">
           <div className="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center">

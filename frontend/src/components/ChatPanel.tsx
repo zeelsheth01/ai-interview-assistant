@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { APP_NAME } from "../constants/brand";
 
 export default function ChatPanel(){
 
@@ -11,7 +12,7 @@ export default function ChatPanel(){
     >
 
       <h2 className="mb-4 text-lg font-semibold">
-        🤖 AI Interview Assistant
+        🤖 {APP_NAME} Interview Coach
       </h2>
 
       <div className="h-72 overflow-y-auto space-y-4">

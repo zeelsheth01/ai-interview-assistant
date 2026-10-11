@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Copy, Check, HelpCircle, ArrowUpRight, BookOpen } from "lucide-react";
+import { Copy, Check, HelpCircle, ArrowUpRight, BookOpen, Mic } from "lucide-react";
 import AIChat from "../components/AIChat";
+import VoiceInterviewModal, { type SpeechMetrics } from "../components/VoiceInterviewModal";
 import api from "../api/api";
+import { APP_NAME } from "../constants/brand";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -13,6 +15,12 @@ export default function Dashboard() {
   const [activeQuestion, setActiveQuestion] = useState<string>("");
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [voiceQuestion, setVoiceQuestion] = useState<string | null>(null);
+  const [answerDraft, setAnswerDraft] = useState<{
+    question: string;
+    transcript: string;
+    metrics: SpeechMetrics;
+  } | null>(null);
 
   // Fetch questions automatically after redirect
   useEffect(() => {
@@ -101,7 +109,7 @@ export default function Dashboard() {
           <h2 className="text-lg font-bold font-outfit text-white">Generated Syllabus</h2>
         </div>
         <p className="text-xs text-slate-400 mb-6 leading-relaxed">
-          Based on your resume, Gemini has generated the following questions. Click any card to load it in the chat assistant.
+          Based on your resume, {APP_NAME} has generated the following questions. Click any card to load it in your coach.
         </p>
 
         {loading ? (
@@ -124,7 +132,7 @@ export default function Dashboard() {
                     onClick={() => setActiveQuestion(q)}
                     className={`group relative p-4 rounded-xl border cursor-pointer transition duration-300 ${
                       isActive
-                        ? "bg-indigo-500/5 border-indigo-500/40 shadow-[0_0_20px_rgba(99,102,241,0.05)]"
+                        ? "bg-indigo-500/5 border-indigo-500/40 shadow-[0_0_20px_rgba(59,130,246,0.05)]"
                         : "bg-white/[0.01] border-white/5 hover:border-white/10 hover:bg-white/[0.02]"
                     }`}
                   >
@@ -151,6 +159,17 @@ export default function Dashboard() {
                               </span>
                             ))}
                           </div>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setVoiceQuestion(q);
+                            }}
+                            className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-indigo-400/20 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-semibold text-indigo-300 transition hover:border-indigo-400/40 hover:bg-indigo-500/20 hover:text-indigo-200"
+                          >
+                            <Mic className="h-3.5 w-3.5" />
+                            Practice Verbally 🎙️
+                          </button>
                         </div>
                       </div>
 
@@ -193,8 +212,20 @@ export default function Dashboard() {
 
       {/* RIGHT PANEL: Chat Workspace (3/5 columns) */}
       <div className="lg:col-span-3 bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden h-full">
-        <AIChat activeQuestionText={activeQuestion} />
+        <AIChat activeQuestionText={activeQuestion} answerDraft={answerDraft} />
       </div>
+
+      {voiceQuestion && (
+        <VoiceInterviewModal
+          questionText={voiceQuestion}
+          onClose={() => setVoiceQuestion(null)}
+          onComplete={(transcript, metrics) => {
+            setActiveQuestion(voiceQuestion);
+            setAnswerDraft({ question: voiceQuestion, transcript, metrics });
+            setVoiceQuestion(null);
+          }}
+        />
+      )}
     </div>
   );
 }

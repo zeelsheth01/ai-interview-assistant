@@ -1,5 +1,9 @@
+from collections.abc import Generator
+
+from sqlalchemy.orm import Session
+
 from app.db.session import SessionLocal
 
-async def get_db():
-    async with SessionLocal() as session:
+def get_db() -> Generator[Session, None, None]:
+    with SessionLocal() as session:
         yield session

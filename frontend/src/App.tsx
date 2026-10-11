@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/Upload";
+import PricingPage from "./pages/PricingPage";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/auth/signup" element={<Register />} />
 
         <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+        <Route path="/pricing" element={<PricingPage />} />
 
         {/* PROTECTED ROUTES */}
 

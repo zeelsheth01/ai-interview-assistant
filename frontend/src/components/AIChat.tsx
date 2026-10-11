@@ -5,6 +5,18 @@ import api from "../api/api";
 
 interface AIChatProps {
   activeQuestionText?: string;
+  answerDraft?: {
+    question: string;
+    transcript: string;
+    metrics: {
+      wordCount: number;
+      elapsedSeconds: number;
+      wordsPerMinute: number;
+      pace: "slow" | "optimal" | "rushed";
+      totalFillers: number;
+      fillerCounts: Record<string, number>;
+    };
+  } | null;
 }
 
 interface Message {
@@ -13,7 +25,7 @@ interface Message {
   timestamp: string;
 }
 
-export default function AIChat({ activeQuestionText }: AIChatProps) {
+export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -33,6 +45,20 @@ export default function AIChat({ activeQuestionText }: AIChatProps) {
       setInput(`Could you explain the recommended answer and core technical concepts behind this question: "${activeQuestionText}"?`);
     }
   }, [activeQuestionText]);
+
+  useEffect(() => {
+    if (!answerDraft) return;
+    const paceLabel = answerDraft.metrics.pace === "optimal"
+      ? "Optimal & Confident"
+      : answerDraft.metrics.pace === "slow" ? "Slow / Deliberate" : "Fast / Rushed";
+    const fillerSummary = Object.entries(answerDraft.metrics.fillerCounts)
+      .filter(([, count]) => count > 0)
+      .map(([word, count]) => `${word}: ${count}`)
+      .join(", ") || "none detected";
+    setInput(
+      `Please give me feedback on my verbal interview answer.\n\nQuestion: ${answerDraft.question}\n\nMy answer: ${answerDraft.transcript}\n\nDelivery metrics: ${answerDraft.metrics.wordCount} words in ${answerDraft.metrics.elapsedSeconds} seconds; ${answerDraft.metrics.wordsPerMinute} WPM (${paceLabel}); ${answerDraft.metrics.totalFillers} filler words (${fillerSummary}).`,
+    );
+  }, [answerDraft]);
 
   // Scroll to bottom on new messages
   useEffect(() => {

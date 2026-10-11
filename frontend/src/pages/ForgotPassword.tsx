@@ -12,6 +12,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import api from "../api/api";
+import { APP_NAME } from "../constants/brand";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
@@ -76,8 +77,8 @@ export default function ForgotPassword() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-950 font-sans relative overflow-hidden px-4">
       {/* Background gradients */}
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
+      <div className="pointer-events-none absolute left-[-10%] top-[-20%] h-[600px] w-[600px] rounded-full bg-primary-500/10 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-[-20%] right-[-10%] h-[600px] w-[600px] rounded-full bg-primary-500/5 blur-[120px]" />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -86,18 +87,18 @@ export default function ForgotPassword() {
         className="grid md:grid-cols-5 bg-white/[0.02] backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-w-4xl w-full"
       >
         {/* Left Promo Area */}
-        <div className="md:col-span-2 p-8 md:p-12 flex flex-col justify-between bg-gradient-to-br from-indigo-900/60 to-slate-900 border-r border-white/5 relative">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_50%)]" />
+        <div className="relative flex flex-col justify-between border-r border-white/5 bg-gradient-to-br from-primary-900/60 to-slate-900 p-8 md:col-span-2 md:p-12">
+          <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_50%)]" />
 
           <div className="relative z-10 flex items-center gap-2 text-indigo-400 font-semibold font-outfit tracking-wide">
             <Sparkles className="w-5 h-5 animate-pulse" />
-            <span>ELEVATE AI</span>
+            <span>{APP_NAME}</span>
           </div>
 
           <div className="relative z-10 my-12">
             <h1 className="text-3xl md:text-4xl font-extrabold font-outfit text-white leading-tight mb-4">
               Security <br />
-              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary-300 via-primary-400 to-primary-100 bg-clip-text text-transparent">
                 Recovery
               </span>
             </h1>
