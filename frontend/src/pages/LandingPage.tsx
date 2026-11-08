@@ -1,4 +1,3 @@
-
 import AnnouncementBar from '../components/landing/AnnouncementBar';
 import Navbar from '../components/landing/Navbar';
 import Hero from '../components/landing/Hero';
@@ -13,18 +12,18 @@ import Footer from '../components/landing/Footer';
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-dark-900 text-white selection:bg-primary-500 selection:text-white">
+    <div className="min-h-screen bg-canvas text-ink-primary font-sans antialiased selection:bg-primary selection:text-white">
       <AnnouncementBar />
       <Navbar />
       <main>
         <Hero />
-        <MultilingualSection />
-        <DesiMode />
         <DemoSection />
-        <Testimonials />
-        <Platforms />
+        <DesiMode />
         <ResumeBuilder />
+        <MultilingualSection />
         <Comparison />
+        <Platforms />
+        <Testimonials />
       </main>
       <Footer />
     </div>

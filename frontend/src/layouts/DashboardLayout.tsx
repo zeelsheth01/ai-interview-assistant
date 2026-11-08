@@ -1,21 +1,38 @@
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
+import type { ReactNode } from "react";
+import AppHeader from "../components/layout/AppHeader";
 
-export default function DashboardLayout({ children }: any) {
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="flex bg-[#020617] min-h-screen text-slate-100 font-sans antialiased overflow-hidden">
-      {/* Navigation Sidebar */}
-      <Sidebar />
+    <div className="min-h-screen bg-canvas flex flex-col font-sans antialiased text-ink-primary selection:bg-accent selection:text-white">
+      {/* Editorial App Header */}
+      <AppHeader />
 
-      {/* Main Workspace Frame */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden p-6 md:p-8">
-        <Topbar />
-        
-        {/* Inner Card Panel */}
-        <div className="flex-1 bg-white/[0.02] backdrop-blur-2xl rounded-3xl border border-white/5 shadow-2xl p-6 md:p-8 overflow-y-auto">
-          {children}
+      {/* Primary Workspace Frame (Swiss 12-column Grid Container, max ~1280px) */}
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+        {children}
+      </main>
+
+      {/* Editorial Footer Strip */}
+      <footer className="border-t border-border bg-surface py-5 px-4 sm:px-8 mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-ink-secondary">
+          <div className="flex items-center gap-3">
+            <span className="font-serif font-bold text-ink-primary">AI Interview Assistant</span>
+            <span className="text-border-strong">/</span>
+            <span className="font-mono text-[11px] text-ink-muted">
+              Editorial Precision &bull; Swiss Minimalist Architecture
+            </span>
+          </div>
+          <div className="flex items-center gap-6 font-mono text-[11px] text-ink-muted">
+            <span>LLM: GEMINI 2.0 FLASH</span>
+            <span>&bull;</span>
+            <span>STATUS: OPERATIONAL</span>
+          </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }

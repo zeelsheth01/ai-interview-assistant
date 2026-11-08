@@ -1,26 +1,21 @@
+import type { ReactNode } from "react";
 import Sidebar from "./Sidebar";
-import { motion } from "framer-motion";
+import Topbar from "./Topbar";
 
-export default function Layout({children}:any){
+interface LayoutProps {
+  children: ReactNode;
+}
 
-  return(
-
-    <div className="flex min-h-screen relative overflow-hidden">
-
-      {/* floating glow */}
-      <div className="absolute w-[600px] h-[600px] bg-purple-500 blur-[200px] opacity-20 -top-40 -left-40"/>
-
-      <Sidebar/>
-
-      <motion.div
-        initial={{opacity:0,y:20}}
-        animate={{opacity:1,y:0}}
-        transition={{duration:.4}}
-        className="flex-1 p-10 relative z-10"
-      >
-        {children}
-      </motion.div>
-
+export default function Layout({ children }: LayoutProps) {
+  return (
+    <div className="flex min-h-screen bg-canvas font-sans text-ink-primary antialiased">
+      <Sidebar />
+      <div className="flex-1 flex flex-col p-6 md:p-8">
+        <Topbar />
+        <main className="flex-1 card-swiss bg-surface p-6 sm:p-8 shadow-card">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

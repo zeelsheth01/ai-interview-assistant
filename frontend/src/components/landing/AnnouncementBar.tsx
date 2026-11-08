@@ -1,14 +1,22 @@
-
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AnnouncementBar = () => {
   return (
-    <Link to="/pricing" className="block w-full bg-primary-600 hover:bg-primary-500 text-white py-2 px-4 text-center text-sm font-medium transition-colors">
-      <span className="flex items-center justify-center gap-2">
-        Interview practice from ₹10/min — buy minutes when you need them <ArrowRight size={16} />
-      </span>
-    </Link>
+    <aside aria-label="Announcement" className="border-b border-border bg-surface-subtle text-ink-primary py-2 px-4 text-center text-xs">
+      <Link
+        to="/pricing"
+        className="inline-flex items-center justify-center gap-2 text-ink-secondary hover:text-ink-primary transition-colors group"
+      >
+        <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-primary-light text-primary border border-primary-border font-semibold">
+          NEW
+        </span>
+        <span className="font-medium">
+          Verbal mock interviews with real-time speech telemetry from ₹10/min
+        </span>
+        <ArrowRight className="w-3.5 h-3.5 text-accent group-hover:translate-x-0.5 transition-transform" />
+      </Link>
+    </aside>
   );
 };
 

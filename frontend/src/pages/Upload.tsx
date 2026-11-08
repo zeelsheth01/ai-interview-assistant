@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Cpu, CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  CheckCircle2,
+  ArrowRight,
+  AlertCircle,
+  LoaderCircle,
+  Cpu,
+} from "lucide-react";
 import UploadDropzone from "../components/UploadDropzone";
 import api from "../api/api";
 
@@ -10,55 +16,66 @@ export default function Upload() {
   const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [numQuestions, setNumQuestions] = useState(10);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
-  const loadingSteps = [
-    "Uploading resume to server...",
-    "Extracting details from document...",
-    "Running Gemini LLM parsing engine...",
-    "Generating tailor-made technical questions...",
+  const processingSteps = [
+    {
+      num: "01",
+      title: "Uploading your document",
+      detail: "Transferring binary payload to FastAPI document service.",
+    },
+    {
+      num: "02",
+      title: "Extracting resume information",
+      detail: "Executing PyMuPDF and OCR to parse text and experience entries.",
+    },
+    {
+      num: "03",
+      title: "Identifying professional skills",
+      detail: "Taxonomy vectorization across 15+ engineering frameworks.",
+    },
+    {
+      num: "04",
+      title: "Generating personalized questions",
+      detail: "Synthesizing production interview questions via Gemini LLM.",
+    },
   ];
 
   useEffect(() => {
-    let interval: any;
+    let interval: ReturnType<typeof setInterval>;
 
     if (loading) {
       interval = setInterval(() => {
         setActiveStep((prev) => {
-          if (prev < loadingSteps.length - 1) {
+          if (prev < processingSteps.length - 1) {
             return prev + 1;
           }
           return prev;
         });
-      }, 2500);
+      }, 2600);
     } else {
       setActiveStep(0);
     }
 
     return () => clearInterval(interval);
-  }, [loading]);
+  }, [loading, processingSteps.length]);
 
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select a PDF first");
+      setErrorMessage("Please select a valid PDF resume to proceed.");
       return;
     }
+
+    setErrorMessage(null);
 
     try {
       setLoading(true);
       setActiveStep(0);
 
       const formData = new FormData();
-
-      formData.append(
-        "file",
-        file,
-        file.name
-      );
-
-      console.log("FILE:", file);
-      console.log("FORMDATA FILE:", formData.get("file"));
+      formData.append("file", file, file.name);
 
       const res = await api.post(
         `/resume/upload?num_questions=${numQuestions}`,
@@ -69,9 +86,7 @@ export default function Upload() {
 
       setActiveStep(3);
 
-      await new Promise((resolve) =>
-        setTimeout(resolve, 1000)
-      );
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       navigate("/dashboard", {
         state: {
@@ -80,136 +95,217 @@ export default function Upload() {
           skills: res.data.skills,
         },
       });
-
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.log("UPLOAD ERROR:", err);
-
-      if (err.response) {
-        console.log("STATUS:", err.response.status);
-        console.log("DATA:", err.response.data);
-      }
-
-      alert("Resume upload failed");
+      const detail =
+        typeof err === "object" && err !== null && "response" in err
+          ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : undefined;
+      setErrorMessage(
+        detail ||
+          "Resume analysis failed. Please verify the PDF format and network connectivity."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-10 relative">
+    <div className="max-w-4xl mx-auto space-y-10">
+      
+      {/* Editorial Page Header */}
+      <div className="space-y-3 text-left border-b border-border pb-6">
+        <span className="editorial-meta text-primary block">
+          DOCUMENT INGESTION &bull; OCR ANALYSIS
+        </span>
+        <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal leading-tight">
+          Understand your experience.
+        </h1>
+        <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-2xl">
+          Upload your resume to build an interview preparation plan based on your actual skills and projects.
+        </p>
+      </div>
+
       <AnimatePresence mode="wait">
         {!loading ? (
+          /* Main Ingestion Form State */
           <motion.div
             key="upload-form"
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            className="space-y-8 text-center"
+            exit={{ opacity: 0, y: -10 }}
+            className="space-y-8"
           >
-            <div>
-              <h1 className="text-3xl font-extrabold font-outfit text-white tracking-tight">
-                Analyze your Resume
-              </h1>
+            {/* Error Notification */}
+            {errorMessage && (
+              <div className="p-4 rounded bg-error-light border border-error/20 flex items-start gap-3 text-xs text-error font-medium">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
 
-              <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto">
-                Upload your engineering resume to instantly generate custom technical interview questions.
-              </p>
-            </div>
+            {/* Swiss Upload Card */}
+            <div className="card-swiss bg-surface p-6 sm:p-10 shadow-card space-y-8">
+              
+              {/* Dropzone interaction */}
+              <UploadDropzone
+                selectedFile={file}
+                onFile={(selected) => {
+                  setFile(selected);
+                  if (selected) setErrorMessage(null);
+                }}
+              />
 
-            <UploadDropzone
-              onFile={(selectedFile) => {
-                console.log("SELECTED FILE:", selectedFile);
-                setFile(selectedFile);
-              }}
-            />
+              {/* Configuration Controls Grid */}
+              <div className="pt-6 border-t border-border grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+                {/* Number of Questions */}
+                <div>
+                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                    Interview Challenge Volume
+                  </label>
+                  <select
+                    value={numQuestions}
+                    onChange={(e) => setNumQuestions(Number(e.target.value))}
+                    className="input-field cursor-pointer font-sans"
+                  >
+                    <option value={10}>10 Questions (Standard Loop)</option>
+                    <option value={15}>15 Questions (Thorough Assessment)</option>
+                    <option value={20}>20 Questions (Senior Panel Readiness)</option>
+                    <option value={30}>30 Questions (Full Day Simulation)</option>
+                    <option value={40}>40 Questions (Comprehensive Bank)</option>
+                  </select>
+                </div>
 
-            <div className="max-w-xs mx-auto text-left">
-              <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                Questions to Generate
-              </label>
-              <select
-                value={numQuestions}
-                onChange={(e) => setNumQuestions(Number(e.target.value))}
-                className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300 cursor-pointer"
-              >
-                <option value={10} className="bg-slate-950 text-white">10 Questions (Default)</option>
-                <option value={15} className="bg-slate-950 text-white">15 Questions</option>
-                <option value={20} className="bg-slate-950 text-white">20 Questions</option>
-                <option value={30} className="bg-slate-950 text-white">30 Questions</option>
-                <option value={40} className="bg-slate-950 text-white">40 Questions</option>
-              </select>
-            </div>
+                {/* Processing Mode Notice */}
+                <div className="p-4 rounded bg-surface-subtle border border-border space-y-1">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-primary">
+                    <Cpu className="w-3.5 h-3.5 text-accent" />
+                    <span>Gemini 2.0 Flash Extraction</span>
+                  </div>
+                  <p className="text-[11px] text-ink-secondary leading-snug">
+                    Resumes are matched against full-stack, distributed systems, and core CS heuristics.
+                  </p>
+                </div>
+              </div>
 
-            {file && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="pt-2"
-              >
+              {/* Submit CTA */}
+              <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-border">
+                <span className="font-mono text-xs text-ink-secondary">
+                  {file ? `Document selected: ${file.name}` : "Awaiting PDF resume attachment"}
+                </span>
+
                 <button
                   onClick={handleUpload}
-                  className="px-8 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-semibold shadow-lg flex items-center gap-2 mx-auto"
+                  disabled={!file || loading}
+                  className="btn-primary w-full sm:w-auto"
                 >
                   <span>Start Interview Assessment</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-              </motion.div>
-            )}
+              </div>
+
+            </div>
+
+            {/* Assessment Expectations Note */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+              <div className="p-4 rounded border border-border bg-surface-subtle space-y-1">
+                <span className="editorial-meta text-primary block">ACCURACY</span>
+                <h4 className="font-sans text-xs font-bold text-ink-primary">100% Resume-Grounded</h4>
+                <p className="text-[11px] text-ink-secondary">
+                  No generic trivia. Questions probe your claimed frameworks and code architectures.
+                </p>
+              </div>
+              <div className="p-4 rounded border border-border bg-surface-subtle space-y-1">
+                <span className="editorial-meta text-primary block">STANDARDS</span>
+                <h4 className="font-sans text-xs font-bold text-ink-primary">STAR Evaluation</h4>
+                <p className="text-[11px] text-ink-secondary">
+                  Situation, Task, Action, Result structured prompts to hone conversational answers.
+                </p>
+              </div>
+              <div className="p-4 rounded border border-border bg-surface-subtle space-y-1">
+                <span className="editorial-meta text-primary block">OFFLINE ENGINE</span>
+                <h4 className="font-sans text-xs font-bold text-ink-primary">Fault Tolerant Fallback</h4>
+                <p className="text-[11px] text-ink-secondary">
+                  High-availability caching and curated domain banks ensure unbroken practice.
+                </p>
+              </div>
+            </div>
+
           </motion.div>
         ) : (
+          /* Processing State (Analysis Progress) */
           <motion.div
             key="loading-screen"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center p-12 text-center"
+            className="card-swiss bg-surface p-8 sm:p-12 shadow-card space-y-8"
           >
-            <div className="relative mb-8 w-24 h-24">
-              <div className="absolute inset-0 rounded-full border-4 border-indigo-500/10" />
-
-              <div className="absolute inset-0 rounded-full border-4 border-t-indigo-500 border-r-purple-500 animate-spin" />
-
-              <div className="absolute inset-4 rounded-full bg-slate-900 flex items-center justify-center">
-                {activeStep < 2 ? (
-                  <FileText className="w-6 h-6 text-indigo-400" />
-                ) : (
-                  <Cpu className="w-6 h-6 text-purple-400" />
-                )}
+            <div className="text-center max-w-md mx-auto space-y-3">
+              <div className="w-12 h-12 rounded bg-primary-light text-primary mx-auto flex items-center justify-center border border-primary-border">
+                <LoaderCircle className="w-6 h-6 animate-spin text-primary" />
               </div>
+              <h2 className="font-serif text-2xl font-bold text-ink-primary">
+                Analyzing Candidate Profile
+              </h2>
+              <p className="text-xs text-ink-secondary">
+                Inspecting document payload: <strong className="text-ink-primary font-mono">{file?.name}</strong>
+              </p>
             </div>
 
-            <h3 className="text-xl font-bold text-white mb-2">
-              Analyzing Candidate Profile
-            </h3>
+            {/* Swiss Step-by-Step Progress Timeline */}
+            <div className="max-w-xl mx-auto space-y-3">
+              {processingSteps.map((step, index) => {
+                const isFinished = index < activeStep;
+                const isCurrent = index === activeStep;
 
-            <div className="w-full max-w-sm space-y-3 mt-6 bg-white/[0.01] border border-white/5 rounded-2xl p-5 text-left">
-              {loadingSteps.map((step, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center gap-3 ${
-                    index === activeStep
-                      ? "text-indigo-400"
-                      : index < activeStep
-                      ? "text-emerald-500"
-                      : "text-slate-600"
-                  }`}
-                >
-                  {index < activeStep ? (
-                    <CheckCircle2 className="w-4 h-4" />
-                  ) : (
-                    <div className="w-4 h-4 rounded-full border flex items-center justify-center text-[10px]">
-                      {index + 1}
+                return (
+                  <div
+                    key={step.num}
+                    className={`p-4 rounded border transition-colors flex items-start gap-4 ${
+                      isCurrent
+                        ? "bg-primary-light/40 border-primary"
+                        : isFinished
+                        ? "bg-surface border-border-subtle text-ink-secondary"
+                        : "bg-surface-subtle border-border opacity-50"
+                    }`}
+                  >
+                    <div className="mt-0.5 shrink-0">
+                      {isFinished ? (
+                        <CheckCircle2 className="w-4 h-4 text-primary" />
+                      ) : isCurrent ? (
+                        <span className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin inline-block" />
+                      ) : (
+                        <span className="font-mono text-xs text-ink-muted">{step.num}</span>
+                      )}
                     </div>
-                  )}
 
-                  <span className="text-sm">
-                    {step}
-                  </span>
-                </div>
-              ))}
+                    <div className="space-y-0.5 text-left">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-ink-primary">
+                          {step.title}
+                        </span>
+                        {isCurrent && (
+                          <span className="font-mono text-[9px] uppercase px-1.5 py-0.2 rounded bg-primary text-white">
+                            RUNNING
+                          </span>
+                        )}
+                      </div>
+                      <p className="font-sans text-[11px] text-ink-secondary">
+                        {step.detail}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="text-center text-[11px] font-mono text-ink-muted">
+              FastAPI Processing Pipeline &bull; Do not refresh the page
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }

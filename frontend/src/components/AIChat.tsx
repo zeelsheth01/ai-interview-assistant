@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, Sparkles, User, Copy, Check, Info } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Send, Terminal, Copy, Check } from "lucide-react";
 import api from "../api/api";
 
 interface AIChatProps {
@@ -29,76 +28,86 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hello! I am your AI Interview Coach. Ask me anything about your resume, or click any question in the list on the left to review its key concepts and suggested answers.",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
+      content:
+        "Welcome to your Interview Coaching Session. Select any generated question from your syllabus, or type your practice response below to receive structured STAR critique and technical evaluation.",
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-  
+
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-populate input when active question changes
+  // Auto-populate when active question changes
   useEffect(() => {
     if (activeQuestionText) {
-      setInput(`Could you explain the recommended answer and core technical concepts behind this question: "${activeQuestionText}"?`);
+      setInput(
+        `Could you walk me through the ideal STAR answer structure and key architectural considerations for: "${activeQuestionText}"?`
+      );
     }
   }, [activeQuestionText]);
 
+  // Auto-populate when verbal voice interview transcript arrives
   useEffect(() => {
     if (!answerDraft) return;
-    const paceLabel = answerDraft.metrics.pace === "optimal"
-      ? "Optimal & Confident"
-      : answerDraft.metrics.pace === "slow" ? "Slow / Deliberate" : "Fast / Rushed";
-    const fillerSummary = Object.entries(answerDraft.metrics.fillerCounts)
-      .filter(([, count]) => count > 0)
-      .map(([word, count]) => `${word}: ${count}`)
-      .join(", ") || "none detected";
+    const paceLabel =
+      answerDraft.metrics.pace === "optimal"
+        ? "Optimal & Confident"
+        : answerDraft.metrics.pace === "slow"
+        ? "Slow / Deliberate"
+        : "Fast / Rushed";
+    const fillerSummary =
+      Object.entries(answerDraft.metrics.fillerCounts)
+        .filter(([, count]) => count > 0)
+        .map(([word, count]) => `${word}: ${count}`)
+        .join(", ") || "none detected";
+
     setInput(
-      `Please give me feedback on my verbal interview answer.\n\nQuestion: ${answerDraft.question}\n\nMy answer: ${answerDraft.transcript}\n\nDelivery metrics: ${answerDraft.metrics.wordCount} words in ${answerDraft.metrics.elapsedSeconds} seconds; ${answerDraft.metrics.wordsPerMinute} WPM (${paceLabel}); ${answerDraft.metrics.totalFillers} filler words (${fillerSummary}).`,
+      `Please provide comprehensive feedback on my verbal interview response.\n\nQuestion: "${answerDraft.question}"\n\nTranscript: "${answerDraft.transcript}"\n\nDelivery Telemetry: ${answerDraft.metrics.wordCount} words in ${answerDraft.metrics.elapsedSeconds}s (${answerDraft.metrics.wordsPerMinute} WPM, ${paceLabel}); ${answerDraft.metrics.totalFillers} fillers (${fillerSummary}).`
     );
   }, [answerDraft]);
 
-  // Scroll to bottom on new messages
+  // Scroll to bottom
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+  const sendMessage = async (overrideMessage?: string) => {
+    const textToSend = overrideMessage || input;
+    if (!textToSend.trim() || loading) return;
 
-    const userMessage: Message = {
+    const userMsg: Message = {
       role: "user",
-      content: input,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      content: textToSend,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
-    const currentInput = input;
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setLoading(true);
 
     try {
       const res = await api.post("/ai/chat", {
-        message: currentInput,
+        message: textToSend,
       });
 
-      const aiMessage: Message = {
+      const assistantMsg: Message = {
         role: "assistant",
-        content: res.data.reply || "No reply received.",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        content: res.data.reply || "No response generated.",
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
 
-      setMessages((prev) => [...prev, aiMessage]);
+      setMessages((prev) => [...prev, assistantMsg]);
     } catch (err) {
       console.log("CHAT ERROR:", err);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "I encountered an error connecting to the AI endpoint. Please verify that your Gemini API Key is configured and your network is active.",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          content:
+            "I could not connect to the AI coaching service. If you are running locally, verify your Gemini API key or internet connection. (Offline fallback: Try framing your answer with Situation, Task, Action, and Quantified Result).",
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         },
       ]);
     } finally {
@@ -106,198 +115,203 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
     }
   };
 
-  const handleCopyMessage = (text: string, index: number) => {
+  const handleCopy = (text: string, index: number) => {
     navigator.clipboard.writeText(text);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 1500);
   };
 
-  // Helper to parse basic text markdown (bold, list items, and multiline code blocks)
-  const renderFormattedContent = (content: string) => {
+  const renderContent = (content: string) => {
     const parts = content.split(/(```[\s\S]*?```)/g);
     return parts.map((part, index) => {
-      // Check if code block
       if (part.startsWith("```") && part.endsWith("```")) {
-        const lines = part.slice(3, -3).trim().split("\n");
-        // Extract language if specified on first line
-        const hasLang = /^[a-zA-Z0-9+#]+$/.test(lines[0] || "");
-        const lang = hasLang ? lines[0] : "";
-        const code = hasLang ? lines.slice(1).join("\n") : lines.join("\n");
+        const codeLines = part.slice(3, -3).trim().split("\n");
+        const firstLine = codeLines[0].trim();
+        const isLang = firstLine && !firstLine.includes(" ");
+        const language = isLang ? firstLine : "code";
+        const code = isLang ? codeLines.slice(1).join("\n") : codeLines.join("\n");
 
         return (
-          <div key={index} className="my-3 rounded-lg overflow-hidden border border-white/10 bg-slate-950 font-mono text-xs">
-            {lang && (
-              <div className="bg-white/5 px-4 py-1.5 text-slate-400 font-sans border-b border-white/5 uppercase tracking-wider text-[10px]">
-                {lang}
-              </div>
-            )}
-            <pre className="p-4 overflow-x-auto text-slate-300">
+          <div key={index} className="my-3 rounded border border-border bg-surface-subtle overflow-hidden">
+            <div className="flex justify-between items-center px-3 py-1.5 bg-surface border-b border-border text-[10px] font-mono text-ink-secondary">
+              <span className="uppercase">{language}</span>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard.writeText(code)}
+                className="hover:text-primary transition-colors"
+              >
+                Copy snippet
+              </button>
+            </div>
+            <pre className="p-3 font-mono text-xs text-ink-primary overflow-x-auto leading-relaxed">
               <code>{code}</code>
             </pre>
           </div>
         );
       }
 
-      // Handle normal paragraphs, bold formatting, and bullet lists
-      const lines = part.split("\n");
+      // Format bold text
       return (
-        <div key={index} className="space-y-2">
-          {lines.map((line, lineIdx) => {
-            let processedLine = line;
-            
-            // Check for list bullet
-            const isBullet = line.trim().startsWith("- ") || line.trim().startsWith("* ");
-            if (isBullet) {
-              processedLine = line.trim().replace(/^[-*]\s+/, "");
-            }
-
-            // Parse bold tags **bold**
-            const boldRegex = /\*\*(.*?)\*\*/g;
-            const boldParts = processedLine.split(boldRegex);
-            const lineContent = boldParts.map((bPart, bIdx) => {
-              if (bIdx % 2 === 1) {
-                return <strong key={bIdx} className="text-white font-semibold">{bPart}</strong>;
-              }
-              return bPart;
-            });
-
-            if (isBullet) {
+        <span key={index} className="whitespace-pre-wrap">
+          {part.split(/(\*\*.*?\*\*)/g).map((chunk, cIdx) => {
+            if (chunk.startsWith("**") && chunk.endsWith("**")) {
               return (
-                <ul key={lineIdx} className="list-disc pl-5 my-1 text-slate-300">
-                  <li>{lineContent}</li>
-                </ul>
+                <strong key={cIdx} className="font-semibold text-ink-primary">
+                  {chunk.slice(2, -2)}
+                </strong>
               );
             }
-
-            return processedLine.trim() === "" ? (
-              <div key={lineIdx} className="h-2" />
-            ) : (
-              <p key={lineIdx} className="text-slate-300 leading-relaxed text-sm">
-                {lineContent}
-              </p>
-            );
+            return chunk;
           })}
-        </div>
+        </span>
       );
     });
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-950/40 relative">
+    <div className="flex flex-col h-full bg-surface border border-border rounded overflow-hidden shadow-subtle">
       {/* Header */}
-      <div className="px-6 py-4 bg-white/[0.02] border-b border-white/5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-sm font-bold font-outfit text-white">AI Coach Workspace</span>
+      <div className="px-5 py-3.5 border-b border-border bg-surface-subtle flex items-center justify-between text-xs">
+        <div className="flex items-center gap-2.5">
+          <div className="w-6 h-6 rounded bg-primary-light text-primary flex items-center justify-center font-mono">
+            <Terminal className="w-3.5 h-3.5" />
+          </div>
+          <div>
+            <span className="font-sans font-bold text-ink-primary">AI Interview Coach</span>
+            <span className="hidden sm:inline font-mono text-[10px] text-ink-muted ml-2">
+              Gemini 2.0 Flash &bull; STAR Evaluation
+            </span>
+          </div>
         </div>
-        <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest flex items-center gap-1">
-          <Info className="w-3 h-3 text-slate-600" />
-          <span>Active Context // Resume questions</span>
+
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-primary inline-block" />
+          <span className="font-mono text-[10px] text-primary font-semibold">ACTIVE</span>
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin">
-        <AnimatePresence initial={false}>
-          {messages.map((m, i) => {
-            const isAI = m.role === "assistant";
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`flex gap-4 ${isAI ? "items-start" : "items-start flex-row-reverse"}`}
+      {/* Messages Stream */}
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 scrollbar-editorial bg-canvas/30">
+        {messages.map((msg, i) => {
+          const isUser = msg.role === "user";
+          return (
+            <div
+              key={i}
+              className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
+            >
+              <div className="flex items-center gap-2 mb-1 text-[10px] font-mono text-ink-muted px-1">
+                <span>{isUser ? "Candidate Response" : "Interview Coach"}</span>
+                <span>&bull;</span>
+                <span className="tabular-nums">{msg.timestamp}</span>
+              </div>
+
+              <div
+                className={`max-w-[85%] rounded p-4 text-xs sm:text-sm leading-relaxed ${
+                  isUser
+                    ? "bg-primary text-white shadow-subtle"
+                    : "bg-surface border border-border text-ink-primary shadow-subtle"
+                }`}
               >
-                {/* Avatar */}
-                <div
-                  className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center border ${
-                    isAI
-                      ? "bg-indigo-500/10 border-indigo-500/20 text-indigo-400"
-                      : "bg-purple-500/10 border-purple-500/20 text-purple-400"
-                  }`}
-                >
-                  {isAI ? <Sparkles className="w-4 h-4" /> : <User className="w-4 h-4" />}
-                </div>
+                {renderContent(msg.content)}
 
-                {/* Bubble Container */}
-                <div className="flex flex-col max-w-[80%] space-y-1">
-                  <div
-                    className={`relative group p-4 rounded-2xl border transition duration-300 ${
-                      isAI
-                        ? "bg-white/[0.02] border-white/5 text-slate-300"
-                        : "bg-indigo-500/10 border-indigo-500/20 text-white ml-auto"
-                    }`}
-                  >
-                    {/* Format content */}
-                    {renderFormattedContent(m.content)}
-
-                    {/* Copy Button */}
-                    {isAI && (
-                      <button
-                        onClick={() => handleCopyMessage(m.content, i)}
-                        className="absolute bottom-2 right-2 p-1.5 bg-slate-950 border border-white/5 text-slate-500 hover:text-white rounded-lg opacity-0 group-hover:opacity-100 transition duration-300"
-                        title="Copy coach response"
-                      >
-                        {copiedIndex === i ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
-                    )}
+                {!isUser && (
+                  <div className="mt-3 pt-2.5 border-t border-border-subtle flex justify-between items-center text-[10px] text-ink-muted">
+                    <span className="font-mono">STAR MODEL FEEDBACK</span>
+                    <button
+                      onClick={() => handleCopy(msg.content, i)}
+                      className="hover:text-primary transition-colors flex items-center gap-1"
+                    >
+                      {copiedIndex === i ? (
+                        <>
+                          <Check className="w-3 h-3 text-primary" />
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3 h-3" />
+                          <span>Copy Answer</span>
+                        </>
+                      )}
+                    </button>
                   </div>
-                  <span className={`text-[10px] font-mono text-slate-500 px-1 ${
-                    isAI ? "" : "text-right"
-                  }`}>
-                    {m.timestamp}
-                  </span>
-                </div>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+                )}
+              </div>
+            </div>
+          );
+        })}
 
         {loading && (
-          <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex gap-4 items-start"
-          >
-            <div className="w-8 h-8 rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 animate-spin" />
+          <div className="flex flex-col items-start">
+            <div className="flex items-center gap-2 mb-1 text-[10px] font-mono text-ink-muted px-1">
+              <span>Interview Coach</span>
+              <span>&bull;</span>
+              <span>Analyzing</span>
             </div>
-            <div className="bg-white/[0.02] border border-white/5 p-4 rounded-2xl max-w-[80%] flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '300ms' }} />
-              </div>
-              <span className="text-xs font-mono text-slate-500">Gemini is formulating response...</span>
+            <div className="p-4 rounded bg-surface border border-border text-xs text-ink-secondary flex items-center gap-2 shadow-subtle">
+              <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+              <span className="font-mono text-xs">Evaluating answer structure & metrics...</span>
             </div>
-          </motion.div>
+          </div>
         )}
+
         <div ref={chatEndRef} />
       </div>
 
-      {/* Input Form */}
-      <div className="p-4 bg-white/[0.01] border-t border-white/5">
-        <div className="flex gap-2 bg-slate-900 border border-white/5 rounded-xl p-1.5 focus-within:border-indigo-500/50 transition duration-300">
+      {/* Quick Prompts Ribbon */}
+      <div className="px-4 py-2 border-t border-border bg-surface-subtle flex items-center gap-2 overflow-x-auto hide-scrollbar">
+        <span className="font-mono text-[10px] uppercase text-ink-muted shrink-0">
+          Suggestions:
+        </span>
+        <button
+          type="button"
+          onClick={() =>
+            sendMessage(
+              "How would an interviewer score this answer on architectural depth and production considerations?"
+            )
+          }
+          className="text-[11px] font-sans px-2.5 py-1 rounded bg-surface border border-border text-ink-secondary hover:text-ink-primary hover:border-primary shrink-0 transition-colors"
+        >
+          Score my answer depth
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            sendMessage(
+              "Provide a concise 90-second model answer using the STAR (Situation, Task, Action, Result) methodology."
+            )
+          }
+          className="text-[11px] font-sans px-2.5 py-1 rounded bg-surface border border-border text-ink-secondary hover:text-ink-primary hover:border-primary shrink-0 transition-colors"
+        >
+          Model STAR Answer
+        </button>
+      </div>
+
+      {/* Input Area */}
+      <div className="p-4 border-t border-border bg-surface">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage();
+          }}
+          className="flex gap-2"
+        >
           <input
+            type="text"
+            className="input-field !min-h-[44px] flex-1 text-xs"
+            placeholder="Ask a question or draft your answer for review..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Type your question or choose a pre-filled prompt..."
-            className="flex-1 px-4 py-2.5 bg-transparent border-none outline-none text-white text-sm placeholder-slate-500"
             disabled={loading}
           />
           <button
-            onClick={sendMessage}
-            disabled={loading || !input.trim()}
-            className="bg-indigo-500 hover:bg-indigo-600 disabled:bg-slate-800 disabled:text-slate-600 text-white p-3 rounded-lg cursor-pointer transition duration-300 shrink-0"
+            type="submit"
+            disabled={!input.trim() || loading}
+            className="btn-primary !min-h-[44px] !px-4 shrink-0"
           >
-            <Send className="w-4 h-4" />
+            <span>Send</span>
+            <Send className="w-3.5 h-3.5" />
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

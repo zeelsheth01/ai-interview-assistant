@@ -5,10 +5,10 @@ import {
   Mail,
   Lock,
   ArrowRight,
-  Sparkles,
   Eye,
   EyeOff,
-  CheckCircle,
+  CheckCircle2,
+  AlertCircle,
   ArrowLeft,
 } from "lucide-react";
 import api from "../api/api";
@@ -21,7 +21,7 @@ export default function ForgotPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [step, setStep] = useState(1); // 1 = Request, 2 = Reset, 3 = Success
+  const [step, setStep] = useState<1 | 2 | 3>(1); // 1 = Email, 2 = New Password, 3 = Complete
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -29,24 +29,31 @@ export default function ForgotPassword() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleVerifyEmail = () => {
+  const handleVerifyEmail = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!email) {
-      setError("Please enter your email address.");
+      setError("Please specify your registered account email.");
       return;
     }
     setError("");
-    // Move to step 2 directly and verify on submit
     setStep(2);
   };
 
-  const handleResetPassword = async () => {
+  const handleResetPassword = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+
     if (!password || !confirmPassword) {
-      setError("Please fill in all fields.");
+      setError("Please fill in both password fields.");
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("New password must be at least 6 characters in length.");
       return;
     }
 
@@ -59,15 +66,19 @@ export default function ForgotPassword() {
         new_password: password,
       });
 
-      setSuccess("Password reset successfully! Redirecting...");
+      setSuccess("Account password successfully updated.");
       setStep(3);
 
       setTimeout(() => {
-        navigate("/");
+        navigate("/login");
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const detail =
+        typeof err === "object" && err !== null && "response" in err
+          ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : undefined;
       setError(
-        err.response?.data?.detail || "Failed to reset password. Verify email is correct."
+        detail || "Password reset failed. Please ensure the email address is registered."
       );
     } finally {
       setLoading(false);
@@ -75,229 +86,209 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-950 font-sans relative overflow-hidden px-4">
-      {/* Background gradients */}
-      <div className="pointer-events-none absolute left-[-10%] top-[-20%] h-[600px] w-[600px] rounded-full bg-primary-500/10 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-[-20%] right-[-10%] h-[600px] w-[600px] rounded-full bg-primary-500/5 blur-[120px]" />
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="grid md:grid-cols-5 bg-white/[0.02] backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-w-4xl w-full"
-      >
-        {/* Left Promo Area */}
-        <div className="relative flex flex-col justify-between border-r border-white/5 bg-gradient-to-br from-primary-900/60 to-slate-900 p-8 md:col-span-2 md:p-12">
-          <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_50%)]" />
-
-          <div className="relative z-10 flex items-center gap-2 text-indigo-400 font-semibold font-outfit tracking-wide">
-            <Sparkles className="w-5 h-5 animate-pulse" />
-            <span>{APP_NAME}</span>
-          </div>
-
-          <div className="relative z-10 my-12">
-            <h1 className="text-3xl md:text-4xl font-extrabold font-outfit text-white leading-tight mb-4">
-              Security <br />
-              <span className="bg-gradient-to-r from-primary-300 via-primary-400 to-primary-100 bg-clip-text text-transparent">
-                Recovery
-              </span>
+    <div className="min-h-screen bg-canvas flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased">
+      <div className="max-w-md w-full mx-auto space-y-8">
+        
+        {/* Brand Lockup */}
+        <div className="text-center space-y-2">
+          <Link to="/" className="inline-flex items-center gap-2 group">
+            <span className="w-8 h-8 rounded bg-primary text-white font-serif font-bold text-lg flex items-center justify-center">
+              A
+            </span>
+            <span className="font-serif text-2xl font-bold text-ink-primary tracking-tight">
+              {APP_NAME}
+            </span>
+          </Link>
+          <div className="pt-2">
+            <span className="editorial-meta text-primary block mb-1">
+              CREDENTIAL RECOVERY
+            </span>
+            <h1 className="font-editorial text-3xl text-ink-primary font-normal tracking-tight">
+              {step === 3 ? "Password Updated" : "Reset Account Password"}
             </h1>
-
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Reset your credentials securely. If your account is registered, you can recover write-access immediately.
+            <p className="text-xs text-ink-secondary mt-1">
+              {step === 1 && "Confirm your email address to initiate verification."}
+              {step === 2 && "Configure a new secure password for your candidate account."}
+              {step === 3 && "Your credentials have been securely refreshed."}
             </p>
-          </div>
-
-          <div className="relative z-10 text-xs text-slate-500 font-mono">
-            v1.0.0 // Account Security
           </div>
         </div>
 
-        {/* Right Form Area */}
-        <div className="md:col-span-3 p-8 md:p-12 flex flex-col justify-center">
-          <AnimatePresence mode="wait">
-            {step === 1 && (
+        {/* Swiss Card */}
+        <div className="card-swiss bg-surface p-8 sm:p-10 shadow-card space-y-6">
+          
+          {/* Step Indicator */}
+          <div className="flex items-center justify-between pb-4 border-b border-border text-[11px] font-mono text-ink-secondary">
+            <span className={step >= 1 ? "text-primary font-bold" : "text-ink-muted"}>01 IDENTIFY</span>
+            <span>&bull;</span>
+            <span className={step >= 2 ? "text-primary font-bold" : "text-ink-muted"}>02 CONFIGURE</span>
+            <span>&bull;</span>
+            <span className={step >= 3 ? "text-primary font-bold" : "text-ink-muted"}>03 CONFIRMED</span>
+          </div>
+
+          {/* Error Banner */}
+          <AnimatePresence>
+            {error && (
               <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="p-3.5 rounded bg-error-light border border-error/20 flex items-start gap-2.5 text-xs text-error font-medium"
               >
-                <h2 className="text-2xl font-bold font-outfit text-white mb-2">
-                  Forgot Password?
-                </h2>
-                <p className="text-slate-400 text-sm mb-8">
-                  Enter your email address to begin the recovery process
-                </p>
-
-                {error && (
-                  <div className="p-3 mb-4 text-xs font-semibold bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl">
-                    {error}
-                  </div>
-                )}
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                      <input
-                        type="email"
-                        className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
-                        placeholder="name@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    onClick={handleVerifyEmail}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition duration-300"
-                  >
-                    <span>Continue</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </motion.button>
-                </div>
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{error}</span>
               </motion.div>
             )}
 
-            {step === 2 && (
+            {success && (
               <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="p-3.5 rounded bg-success-light border border-success/20 flex items-start gap-2.5 text-xs text-success font-medium"
               >
-                <div className="flex items-center gap-2 mb-4">
-                  <button
-                    onClick={() => setStep(1)}
-                    className="text-slate-400 hover:text-white transition p-1 bg-white/5 rounded-lg border border-white/5"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                  </button>
-                  <span className="text-xs text-slate-400 font-mono">{email}</span>
-                </div>
-
-                <h2 className="text-2xl font-bold font-outfit text-white mb-2">
-                  Choose New Password
-                </h2>
-                <p className="text-slate-400 text-sm mb-8">
-                  Enter your new password to complete recovery
-                </p>
-
-                {error && (
-                  <div className="p-3 mb-4 text-xs font-semibold bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl">
-                    {error}
-                  </div>
-                )}
-
-                <div className="space-y-4">
-                  {/* Password */}
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                      New Password
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        className="w-full pl-11 pr-12 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5" />
-                        ) : (
-                          <Eye className="w-5 h-5" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Confirm Password */}
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                      Confirm New Password
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                      <input
-                        type={showConfirmPassword ? "text" : "password"}
-                        className="w-full pl-11 pr-12 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
-                        placeholder="••••••••"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff className="w-5 h-5" />
-                        ) : (
-                          <Eye className="w-5 h-5" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    onClick={handleResetPassword}
-                    disabled={loading}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition duration-300 disabled:opacity-50"
-                  >
-                    {loading ? "Resetting Password..." : "Reset Password"}
-                    {!loading && <ArrowRight className="w-4 h-4" />}
-                  </motion.button>
-                </div>
-              </motion.div>
-            )}
-
-            {step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center justify-center text-center py-6"
-              >
-                <CheckCircle className="w-16 h-16 text-emerald-400 mb-4 animate-bounce" />
-                <h2 className="text-2xl font-bold font-outfit text-white mb-2">
-                  Success!
-                </h2>
-                <p className="text-slate-400 text-sm mb-6 max-w-xs">
-                  {success}
-                </p>
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{success}</span>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <p className="mt-8 text-center text-sm text-slate-400">
-            Remembered password?{" "}
+          {/* STEP 1: Enter Email */}
+          {step === 1 && (
+            <form onSubmit={handleVerifyEmail} className="space-y-4">
+              <div>
+                <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  Registered Account Email
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
+                  <input
+                    type="email"
+                    required
+                    className="input-field pl-10"
+                    placeholder="alex.mercer@engineering.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="btn-primary w-full mt-2"
+              >
+                <span>Continue to Password Reset</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
+          )}
+
+          {/* STEP 2: Enter New Password */}
+          {step === 2 && (
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <div className="p-3 rounded bg-surface-subtle border border-border text-xs text-ink-secondary">
+                Resetting password for: <strong className="text-ink-primary font-mono">{email}</strong>
+              </div>
+
+              {/* New Password */}
+              <div>
+                <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  New Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    className="input-field pl-10 pr-10"
+                    placeholder="Minimum 6 characters"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink-primary transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm New Password */}
+              <div>
+                <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  Confirm New Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    className="input-field pl-10 pr-10"
+                    placeholder="Re-enter password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink-primary transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="btn-secondary flex-1"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Back</span>
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary flex-1"
+                >
+                  <span>{loading ? "Updating..." : "Commit Reset"}</span>
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* STEP 3: Completed */}
+          {step === 3 && (
+            <div className="text-center py-4 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-success-light text-success mx-auto flex items-center justify-center">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <p className="text-xs text-ink-secondary">
+                Your password change was verified. Redirecting you to sign in automatically...
+              </p>
+              <Link to="/login" className="btn-primary inline-flex text-xs">
+                <span>Sign In Immediately</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          )}
+
+          {/* Return link */}
+          <div className="pt-4 border-t border-border text-center text-xs text-ink-secondary">
             <Link
-              to="/"
-              className="text-indigo-400 hover:text-indigo-300 font-semibold transition"
+              to="/login"
+              className="inline-flex items-center gap-1.5 text-ink-secondary hover:text-ink-primary font-medium"
             >
-              Sign In
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Return to Sign In</span>
             </Link>
-          </p>
+          </div>
+
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

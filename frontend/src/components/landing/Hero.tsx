@@ -1,77 +1,157 @@
-
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, CheckCircle2, FileSearch, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { APP_NAME } from '../../constants/brand';
 
 const Hero = () => {
   return (
-    <div className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 mb-8">
-          <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
-          Your Invisible Realtime
-        </div>
-        
-        <h1 className="mb-6 bg-gradient-to-b from-slate-100 to-slate-300 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-8xl">
-          {APP_NAME}
-        </h1>
-        
-        <p className="mx-auto mt-4 mb-10 max-w-3xl text-xl leading-relaxed text-gray-400 md:text-2xl">
-          Your AI interview coach for clear, confident answers and better delivery.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <Link to="/auth/signup" className="w-full sm:w-auto px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white rounded-full font-bold text-lg transition-all flex items-center justify-center gap-2 premium-hover">
-            Try free <ArrowRight size={20} />
-          </Link>
-        </div>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-400">
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-8 h-8 rounded-full bg-gray-700 border-2 border-dark-900 flex items-center justify-center text-xs">
-                   <Star size={12} className="text-gray-400"/>
-                </div>
-              ))}
+    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 border-b border-border bg-canvas">
+      {/* Background architectural grid texture */}
+      <div className="absolute inset-0 bg-editorial-grid pointer-events-none opacity-60" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Asymmetric 12-Column Hero Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Column: 7 Cols on Desktop */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            {/* Editorial Category Tag */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border text-[11px] font-mono uppercase tracking-widest text-ink-secondary">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span>System Protocol &bull; Career Intelligence 2026</span>
             </div>
-            <span>Join thousands of users</span>
+
+            {/* Editorial Heading */}
+            <h1 className="font-editorial text-4xl sm:text-6xl lg:text-[4.25rem] text-ink-primary leading-[1.08] tracking-tight">
+              Prepare with purpose.<br />
+              <span className="italic font-normal text-primary">
+                Interview with confidence.
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p className="font-sans text-base sm:text-lg text-ink-secondary leading-relaxed max-w-2xl">
+              Turn your experience into a personalized interview preparation plan.
+              Analyze your resume, discover relevant technical questions, and practice
+              with an AI interview coach trained on production engineering benchmarks.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+              <Link
+                to="/auth/signup"
+                className="btn-primary text-sm shadow-card group"
+              >
+                <span>Upload Resume &bull; Start Assessment</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <a
+                href="#methodology"
+                className="btn-secondary text-sm"
+              >
+                <span>Explore the STAR Method</span>
+              </a>
+            </div>
+
+            {/* Architectural Trust Points */}
+            <div className="pt-6 border-t border-border grid grid-cols-3 gap-4 max-w-xl">
+              <div className="space-y-1">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-ink-primary tabular-nums">
+                  15+
+                </span>
+                <p className="text-xs text-ink-secondary font-medium">
+                  Verified Engineering Stacks
+                </p>
+              </div>
+              <div className="space-y-1">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-ink-primary tabular-nums">
+                  &lt;1.2s
+                </span>
+                <p className="text-xs text-ink-secondary font-medium">
+                  Sub-second Cache Latency
+                </p>
+              </div>
+              <div className="space-y-1">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-primary tabular-nums">
+                  100%
+                </span>
+                <p className="text-xs text-ink-secondary font-medium">
+                  Grounded in Your Document
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="hidden sm:block w-1 h-1 rounded-full bg-gray-600"></div>
-          <span>No credit card</span>
-          <div className="hidden sm:block w-1 h-1 rounded-full bg-gray-600"></div>
-          <div className="flex items-center gap-1">
-            <Star size={14} className="text-yellow-400 fill-yellow-400" />
-            <span className="text-white font-medium">4.8</span>
-            <span>average rating</span>
-          </div>
-        </div>
-        
-        {/* Mockup visual */}
-        <div className="mt-16 relative max-w-5xl mx-auto rounded-xl border border-white/10 bg-dark-800/50 p-2 glass premium-hover">
-          <div className="rounded-lg overflow-hidden bg-dark-900 aspect-[16/9] flex items-center justify-center relative">
-             {/* Split screen representation */}
-             <div className="absolute inset-0 flex flex-col md:flex-row">
-                <div className="flex-1 border-b md:border-b-0 md:border-r border-white/10 p-6 flex flex-col items-start justify-center relative bg-gradient-to-br from-dark-800 to-dark-900">
-                    <div className="absolute top-4 left-4 bg-white/10 px-2 py-1 rounded text-xs text-gray-400">Live Transcript</div>
-                    <p className="text-lg text-gray-300">"So, tell me about a time when you had to optimize a slow SQL query in production."</p>
+
+          {/* Right Column: 5 Cols on Desktop - Realistic Editorial Assessment Preview */}
+          <div className="lg:col-span-5">
+            <div className="card-swiss bg-surface p-6 shadow-elevated relative overflow-hidden">
+              {/* Document Assessment Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-border text-[11px] font-mono text-ink-secondary">
+                <div className="flex items-center gap-2">
+                  <FileSearch className="w-3.5 h-3.5 text-primary" />
+                  <span className="font-semibold text-ink-primary">CANDIDATE INTELLIGENCE REPORT</span>
                 </div>
-                <div className="flex-1 p-6 flex flex-col items-start justify-center relative bg-gradient-to-bl from-primary-900/20 to-dark-900">
-                    <div className="absolute top-4 left-4 bg-primary-500/20 text-primary-300 px-2 py-1 rounded text-xs flex items-center gap-1">
-                        <Star size={10} className="fill-primary-300" /> AI Suggested Answer
-                    </div>
-                    <ul className="text-left text-gray-300 space-y-3 mt-4 text-sm md:text-base">
-                        <li className="flex gap-2 items-start"><ArrowRight size={16} className="text-primary-400 mt-1 flex-shrink-0" /> Explained identifying the bottleneck using EXPLAIN ANALYZE.</li>
-                        <li className="flex gap-2 items-start"><ArrowRight size={16} className="text-primary-400 mt-1 flex-shrink-0" /> Mentioned adding a composite index on frequently filtered columns.</li>
-                        <li className="flex gap-2 items-start"><ArrowRight size={16} className="text-primary-400 mt-1 flex-shrink-0" /> Resulted in a 40x speedup in read times.</li>
-                    </ul>
+                <span className="px-2 py-0.5 rounded bg-primary-light text-primary font-semibold text-[10px]">
+                  ACTIVE PROFILE
+                </span>
+              </div>
+
+              {/* Candidate Metadata Breakdown */}
+              <div className="py-4 space-y-3">
+                <div className="flex justify-between items-baseline text-xs">
+                  <span className="text-ink-secondary font-mono text-[11px]">IDENTIFIED ROLE</span>
+                  <span className="font-semibold text-ink-primary">Senior Full Stack Architect</span>
                 </div>
-             </div>
+                <div className="flex justify-between items-baseline text-xs">
+                  <span className="text-ink-secondary font-mono text-[11px]">DEMONSTRATED STACK</span>
+                  <span className="font-mono text-[11px] text-ink-primary font-medium">
+                    React &bull; Python &bull; PostgreSQL
+                  </span>
+                </div>
+                <div className="flex justify-between items-baseline text-xs">
+                  <span className="text-ink-secondary font-mono text-[11px]">EXPERIENCE EVALUATION</span>
+                  <span className="text-ink-primary font-semibold">4.5 Years &bull; High Signal</span>
+                </div>
+              </div>
+
+              {/* Sample High-Signal Question Card */}
+              <div className="p-4 rounded border border-border bg-surface-subtle space-y-2.5 mt-2 text-left">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-primary font-bold px-1.5 py-0.5 rounded bg-surface border border-border">
+                    QUESTION 01 &bull; SYSTEM DESIGN
+                  </span>
+                  <span className="text-[10px] font-mono text-accent font-semibold">HIGH PRIORITY</span>
+                </div>
+                <p className="font-serif text-sm font-medium text-ink-primary leading-snug">
+                  "How would you architect a connection-pooled cache invalidation strategy for Neon PostgreSQL when running under serverless FastAPI microservices?"
+                </p>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
+                    FastAPI
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
+                    Redis Cache
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
+                    SQLAlchemy
+                  </span>
+                </div>
+              </div>
+
+              {/* Coach Telemetry Preview */}
+              <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-xs text-ink-secondary">
+                <div className="flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5 text-accent" />
+                  <span className="font-mono text-[11px]">STAR Coaching: Active</span>
+                </div>
+                <span className="text-primary font-semibold text-xs flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Ready for Practice
+                </span>
+              </div>
+            </div>
           </div>
+
         </div>
-        
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,1 +1,1 @@
-export const APP_NAME = "Chiku AI";
+export const APP_NAME = "Interview Assistant";

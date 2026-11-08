@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import {
   Mail,
   Lock,
+  User as UserIcon,
   ArrowRight,
-  Sparkles,
   Eye,
   EyeOff,
+  CheckCircle2,
+  AlertCircle,
+  FileText,
+  ShieldCheck,
 } from "lucide-react";
 import api from "../api/api";
 import { GoogleLogin } from "@react-oauth/google";
@@ -17,6 +21,7 @@ import { APP_NAME } from "../constants/brand";
 export default function Register() {
   const navigate = useNavigate();
 
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,14 +33,21 @@ export default function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleRegister = async () => {
+  const handleRegister = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+
     if (!email || !password || !confirmPassword) {
-      setError("Please fill in all fields.");
+      setError("Please complete all required fields.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError("Password confirmation does not match.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must contain at least 6 characters.");
       return;
     }
 
@@ -52,25 +64,35 @@ export default function Register() {
 
       console.log("REGISTER SUCCESS:", res.data);
 
-      setSuccess("Account created successfully! Redirecting...");
+      if (fullName) {
+        localStorage.setItem("userName", fullName);
+      }
+
+      setSuccess("Account provisioned successfully. Redirecting to sign in...");
 
       setTimeout(() => {
-        navigate("/");
+        navigate("/login");
       }, 1500);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.log("REGISTER ERROR:", err);
-
+      const detail =
+        typeof err === "object" && err !== null && "response" in err
+          ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : undefined;
       setError(
-        err.response?.data?.detail ||
-          "Registration failed. Try again."
+        detail ||
+          "Registration failed. An account with this email may already exist."
       );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse: any) => {
+  const handleGoogleSuccess = async (credentialResponse: { credential?: string }) => {
     try {
+      setLoading(true);
+      setError("");
+
       const res = await api.post("/auth/google", {
         credential: credentialResponse.credential,
       });
@@ -78,240 +100,260 @@ export default function Register() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("userEmail", res.data.email);
+      if (res.data.name) {
+        localStorage.setItem("userName", res.data.name);
+      }
 
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
-      setError("Google Sign-In failed.");
+      setError("Google authentication was unsuccessful. Please verify your credentials.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-950 font-sans relative overflow-hidden px-4">
-      <div className="pointer-events-none absolute left-[-10%] top-[-20%] h-[600px] w-[600px] rounded-full bg-primary-500/10 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-[-20%] right-[-10%] h-[600px] w-[600px] rounded-full bg-primary-500/5 blur-[120px]" />
+    <div className="min-h-screen bg-canvas flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 font-sans antialiased">
+      <div className="max-w-5xl w-full mx-auto card-swiss bg-surface overflow-hidden shadow-elevated">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          
+          {/* Left Editorial Section: 5 Columns */}
+          <div className="lg:col-span-5 bg-surface-subtle p-8 sm:p-10 border-b lg:border-b-0 lg:border-r border-border flex flex-col justify-between space-y-8">
+            <div className="space-y-6">
+              {/* Brand Header */}
+              <Link to="/" className="flex items-center gap-2.5 group">
+                <span className="w-8 h-8 rounded bg-primary text-white font-serif font-bold text-lg flex items-center justify-center">
+                  A
+                </span>
+                <span className="font-serif text-xl font-bold text-ink-primary tracking-tight">
+                  {APP_NAME}
+                </span>
+              </Link>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="grid md:grid-cols-5 bg-white/[0.02] backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-w-4xl w-full"
-      >
-        <div className="relative flex flex-col justify-between border-r border-white/5 bg-gradient-to-br from-primary-900/60 to-slate-900 p-8 md:col-span-2 md:p-12">
-          <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_50%)]" />
+              {/* Editorial Heading */}
+              <div className="space-y-3 pt-4">
+                <span className="editorial-meta text-primary block">
+                  CANDIDATE ONBOARDING
+                </span>
+                <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal leading-tight">
+                  Career intelligence built on your verified experience.
+                </h1>
+                <p className="text-xs sm:text-sm text-ink-secondary leading-relaxed">
+                  Join candidates who transform standard resumes into rigorous technical practice
+                  syllabi and targeted STAR interview simulations.
+                </p>
+              </div>
 
-          <div className="relative z-10 flex items-center gap-2 text-purple-400 font-semibold font-outfit tracking-wide">
-            <Sparkles className="w-5 h-5 animate-pulse" />
-            <span>{APP_NAME}</span>
-          </div>
-
-          <div className="relative z-10 my-12">
-            <h1 className="text-3xl md:text-4xl font-extrabold font-outfit text-white leading-tight mb-4">
-              Join the <br />
-              <span className="bg-gradient-to-r from-primary-300 via-primary-400 to-primary-100 bg-clip-text text-transparent">
-                Next Gen
-              </span>
-            </h1>
-
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Start parsing your experience, generating challenges, and
-              leveling up your technical interview game today.
-            </p>
-          </div>
-
-          <div className="relative z-10 text-xs text-slate-500 font-mono">
-            v1.0.0 // Free Registration
-          </div>
-        </div>
-
-        <div className="md:col-span-3 p-8 md:p-12 flex flex-col justify-center">
-          <h2 className="text-2xl font-bold font-outfit text-white mb-2">
-            Create Account
-          </h2>
-
-          <p className="text-slate-400 text-sm mb-8">
-            Sign up in seconds to start preparing
-          </p>
-
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              className="p-3 mb-4 text-xs font-semibold bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl"
-            >
-              {error}
-            </motion.div>
-          )}
-
-          {success && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              className="p-3 mb-4 text-xs font-semibold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl"
-            >
-              {success}
-            </motion.div>
-          )}
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                Email Address
-              </label>
-
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-
-                <input
-                  type="email"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-300"
-                  placeholder="name@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+              {/* Architectural Highlights */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-start gap-2.5 text-xs text-ink-primary">
+                  <ShieldCheck className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>Resume data parsed privately without third-party training.</span>
+                </div>
+                <div className="flex items-start gap-2.5 text-xs text-ink-primary">
+                  <FileText className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>Curated domain questions matching your declared tech stack.</span>
+                </div>
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                Password
-              </label>
+            {/* Bottom Meta */}
+            <div className="pt-6 border-t border-border flex justify-between items-center text-[10px] font-mono text-ink-muted">
+              <span>PROTOCOL v2.4</span>
+              <span>CONFIDENTIAL</span>
+            </div>
+          </div>
 
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          {/* Right Form Section: 7 Columns */}
+          <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center">
+            <div className="max-w-md w-full mx-auto space-y-6">
+              <div>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink-primary tracking-tight">
+                  Create Candidate Profile
+                </h2>
+                <p className="text-xs sm:text-sm text-ink-secondary mt-1">
+                  Enter your credentials to begin personalized assessment.
+                </p>
+              </div>
 
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="w-full pl-11 pr-12 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-300"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+              {/* Error and Success Banners */}
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="p-3.5 rounded bg-error-light border border-error/20 flex items-start gap-2.5 text-xs text-error font-medium"
+                  >
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{error}</span>
+                  </motion.div>
+                )}
 
+                {success && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="p-3.5 rounded bg-success-light border border-success/20 flex items-start gap-2.5 text-xs text-success font-medium"
+                  >
+                    <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{success}</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Google OAuth Button */}
+              <div className="space-y-4">
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
+                  onClick={() => {
+                    const googleButton = document.querySelector(
+                      '[role="button"]'
+                    ) as HTMLElement;
+                    googleButton?.click();
+                  }}
+                  className="w-full min-h-[46px] rounded border border-border bg-surface hover:bg-surface-subtle text-ink-primary text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-subtle"
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
+                  <FcGoogle className="text-lg" />
+                  <span>Continue with Google</span>
                 </button>
+
+                {/* Hidden Real Google Login component */}
+                <div style={{ display: "none" }}>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => {
+                      setError("Google Sign-In initialization failed.");
+                    }}
+                  />
+                </div>
+
+                <div className="flex items-center gap-3 my-2">
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="font-mono text-[10px] text-ink-muted uppercase tracking-wider">
+                    Or Register with Email
+                  </span>
+                  <div className="flex-1 h-px bg-border" />
+                </div>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                Confirm Password
-              </label>
+              {/* Form Fields */}
+              <form onSubmit={handleRegister} className="space-y-4">
+                {/* Full Name */}
+                <div>
+                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                    Candidate Full Name
+                  </label>
+                  <div className="relative">
+                    <UserIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
+                    <input
+                      type="text"
+                      className="input-field pl-10"
+                      placeholder="e.g. Alex Mercer"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </div>
+                </div>
 
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                {/* Email */}
+                <div>
+                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                    Email Address <span className="text-error">*</span>
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
+                    <input
+                      type="email"
+                      required
+                      className="input-field pl-10"
+                      placeholder="alex.mercer@engineering.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
 
-                <input
-                  type={
-                    showConfirmPassword ? "text" : "password"
-                  }
-                  className="w-full pl-11 pr-12 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-300"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) =>
-                    setConfirmPassword(e.target.value)
-                  }
-                />
+                {/* Password */}
+                <div>
+                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                    Password <span className="text-error">*</span>
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      className="input-field pl-10 pr-10"
+                      placeholder="Minimum 6 characters"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink-primary transition-colors"
+                      aria-label="Toggle password visibility"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
 
+                {/* Confirm Password */}
+                <div>
+                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                    Confirm Password <span className="text-error">*</span>
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      required
+                      className="input-field pl-10 pr-10"
+                      placeholder="Re-enter your password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink-primary transition-colors"
+                      aria-label="Toggle confirm password visibility"
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Submit button */}
                 <button
-                  type="button"
-                  onClick={() =>
-                    setShowConfirmPassword(
-                      !showConfirmPassword
-                    )
-                  }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary w-full mt-2"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
+                  <span>{loading ? "Registering Candidate Profile..." : "Create Account"}</span>
+                  {!loading && <ArrowRight className="w-4 h-4" />}
                 </button>
+              </form>
+
+              {/* Bottom Login Link */}
+              <div className="pt-4 border-t border-border text-center text-xs text-ink-secondary">
+                <span>Already have a candidate profile? </span>
+                <Link
+                  to="/login"
+                  className="font-semibold text-primary hover:underline"
+                >
+                  Sign In
+                </Link>
               </div>
             </div>
-
-            <div className="flex justify-center mb-4">
-              <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={() => {
-                  const googleButton = document.querySelector(
-                    '[role="button"]'
-                  ) as HTMLElement;
-
-                  googleButton?.click();
-                }}
-                className="w-full bg-gradient-to-r
-                           from-slate-800
-                           to-slate-700
-                           hover:from-slate-700
-                           hover:to-slate-600
-                           text-white py-3 rounded-xl
-                           font-semibold shadow-lg
-                           border border-white/10
-                           flex items-center justify-center
-                           gap-3"
-              >
-                <FcGoogle className="text-xl" />
-                Continue with Google
-              </motion.button>
-            </div>
-
-            <div style={{ display: "none" }}>
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => {
-                  setError("Google Sign-In failed.");
-                }}
-              />
-            </div>
-
-            <div className="flex items-center gap-3 my-4">
-              <div className="flex-1 h-px bg-white/10"></div>
-              <span className="text-slate-500 text-xs uppercase">
-                OR
-              </span>
-              <div className="flex-1 h-px bg-white/10"></div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={handleRegister}
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2 transition duration-300 disabled:opacity-50"
-            >
-              {loading
-                ? "Creating account..."
-                : "Register Account"}
-
-              {!loading && (
-                <ArrowRight className="w-4 h-4" />
-              )}
-            </motion.button>
           </div>
 
-          <p className="mt-8 text-center text-sm text-slate-400">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-purple-400 hover:text-purple-300 font-semibold transition"
-            >
-              Sign In
-            </Link>
-          </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

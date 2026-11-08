@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { FcGoogle } from "react-icons/fc";
 import {
   Mail,
   Lock,
   ArrowRight,
-  Sparkles,
   Eye,
   EyeOff,
+  AlertCircle,
+  ShieldCheck,
 } from "lucide-react";
 import api from "../api/api";
+import { GoogleLogin } from "@react-oauth/google";
 import { APP_NAME } from "../constants/brand";
 
 export default function Login() {
@@ -22,9 +25,11 @@ export default function Login() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+
     if (!email || !password) {
-      setError("Please fill in all fields.");
+      setError("Please provide both email and password.");
       return;
     }
 
@@ -41,91 +46,110 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("userEmail", email);
+      if (res.data.name) {
+        localStorage.setItem("userName", res.data.name);
+      }
 
       const returnTo = (location.state as { from?: string } | null)?.from;
       navigate(returnTo ?? "/dashboard");
-    } catch {
-      setError("Invalid email or password.");
+    } catch (err: unknown) {
+      console.log("LOGIN ERROR:", err);
+      const detail =
+        typeof err === "object" && err !== null && "response" in err
+          ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : undefined;
+      setError(
+        detail || "Invalid email or password. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: { credential?: string }) => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const res = await api.post("/auth/google", {
+        credential: credentialResponse.credential,
+      });
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("userEmail", res.data.email);
+      if (res.data.name) {
+        localStorage.setItem("userName", res.data.name);
+      }
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      setError("Google authentication failed. Please retry.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-950 font-sans relative overflow-hidden px-4">
-      {/* Background gradients */}
-      <div className="pointer-events-none absolute left-[-10%] top-[-20%] h-[600px] w-[600px] rounded-full bg-primary-500/10 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-[-20%] right-[-10%] h-[600px] w-[600px] rounded-full bg-primary-500/5 blur-[120px]" />
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="grid md:grid-cols-5 bg-white/[0.02] backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-w-4xl w-full"
-      >
-        {/* Left Promo Area */}
-        <div className="relative flex flex-col justify-between border-r border-white/5 bg-gradient-to-br from-primary-900/60 to-slate-900 p-8 md:col-span-2 md:p-12">
-          <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_50%)]" />
-
-          <div className="relative z-10 flex items-center gap-2 text-indigo-400 font-semibold font-outfit tracking-wide">
-            <Sparkles className="w-5 h-5 animate-pulse" />
-            <span>{APP_NAME}</span>
-          </div>
-
-          <div className="relative z-10 my-12">
-            <h1 className="text-3xl md:text-4xl font-extrabold font-outfit text-white leading-tight mb-4">
-              Unlock Your <br />
-              <span className="bg-gradient-to-r from-primary-300 via-primary-400 to-primary-100 bg-clip-text text-transparent">
-                Dream Career
-              </span>
+    <div className="min-h-screen bg-canvas flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased">
+      <div className="max-w-md w-full mx-auto space-y-8">
+        
+        {/* Brand Header Lockup */}
+        <div className="text-center space-y-3">
+          <Link to="/" className="inline-flex items-center gap-2.5 group">
+            <span className="w-9 h-9 rounded bg-primary text-white font-serif font-bold text-xl flex items-center justify-center group-hover:bg-primary-hover transition-colors">
+              A
+            </span>
+            <span className="font-serif text-2xl font-bold text-ink-primary tracking-tight">
+              {APP_NAME}
+            </span>
+          </Link>
+          <div className="pt-2">
+            <span className="editorial-meta text-primary block mb-1">
+              AUTHENTICATION PORTAL
+            </span>
+            <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal tracking-tight">
+              Welcome back to your preparation.
             </h1>
-
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Generate custom, production-grade technical interview questions
-              based directly on your resume. Practice interactively with our
-              smart AI assistant.
+            <p className="text-xs sm:text-sm text-ink-secondary mt-1">
+              Sign in to continue your personalized interview simulations.
             </p>
-          </div>
-
-          <div className="relative z-10 text-xs text-slate-500 font-mono">
-            v1.0.0 // Powered by AI Agent
           </div>
         </div>
 
-        {/* Right Form Area */}
-        <div className="md:col-span-3 p-8 md:p-12 flex flex-col justify-center">
-          <h2 className="text-2xl font-bold font-outfit text-white mb-2">
-            Welcome back
-          </h2>
+        {/* Swiss Auth Card */}
+        <div className="card-swiss bg-surface p-8 sm:p-10 shadow-card space-y-6">
+          
+          {/* Error Banner */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="p-3.5 rounded bg-error-light border border-error/20 flex items-start gap-2.5 text-xs text-error font-medium"
+              >
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{error}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <p className="text-slate-400 text-sm mb-8">
-            Enter your details to access your dashboard
-          </p>
-
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              className="p-3 mb-4 text-xs font-semibold bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl"
-            >
-              {error}
-            </motion.div>
-          )}
-
-          <div className="space-y-4">
-            {/* Email */}
+          {/* Form */}
+          <form onSubmit={handleLogin} className="space-y-4">
+            {/* Email Address */}
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                Email Address
+              <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                Candidate Email
               </label>
-
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
                 <input
                   type="email"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
-                  placeholder="name@company.com"
+                  required
+                  className="input-field pl-10"
+                  placeholder="alex.mercer@engineering.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -134,69 +158,103 @@ export default function Login() {
 
             {/* Password */}
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
-                Password
-              </label>
-
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary">
+                  Password
+                </label>
+                <Link
+                  to="/auth/forgot-password"
+                  className="text-xs text-primary font-medium hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="w-full pl-11 pr-12 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-300"
+                  required
+                  className="input-field pl-10 pr-10"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink-primary transition-colors"
+                  aria-label="Toggle password visibility"
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
-              </div>
-
-              <div className="flex justify-end mt-2">
-                <Link
-                  to="/forgot-password"
-                  className="text-xs text-indigo-400 hover:text-indigo-300 transition"
-                >
-                  Forgot Password?
-                </Link>
               </div>
             </div>
 
-            {/* Login Button */}
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={handleLogin}
+            {/* Submit Action */}
+            <button
+              type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition duration-300 disabled:opacity-50"
+              className="btn-primary w-full mt-2"
             >
-              {loading ? "Authenticating..." : "Sign In"}
-
+              <span>{loading ? "Verifying Credentials..." : "Access Dashboard"}</span>
               {!loading && <ArrowRight className="w-4 h-4" />}
-            </motion.button>
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 my-2">
+            <div className="flex-1 h-px bg-border" />
+            <span className="font-mono text-[10px] text-ink-muted uppercase tracking-wider">
+              Or Authenticate with Google
+            </span>
+            <div className="flex-1 h-px bg-border" />
           </div>
 
-          <p className="mt-8 text-center text-sm text-slate-400">
-            Don't have an account?{" "}
+          {/* Google Login Trigger */}
+          <div>
+            <button
+              type="button"
+              onClick={() => {
+                const googleButton = document.querySelector(
+                  '[role="button"]'
+                ) as HTMLElement;
+                googleButton?.click();
+              }}
+              className="w-full min-h-[46px] rounded border border-border bg-surface hover:bg-surface-subtle text-ink-primary text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-subtle"
+            >
+              <FcGoogle className="text-lg" />
+              <span>Continue with Google</span>
+            </button>
+
+            <div style={{ display: "none" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => {
+                  setError("Google sign-in attempt was rejected.");
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Registration Link */}
+          <div className="pt-4 border-t border-border text-center text-xs text-ink-secondary">
+            <span>New candidate? </span>
             <Link
               to="/register"
-              className="text-indigo-400 hover:text-indigo-300 font-semibold transition"
+              className="font-semibold text-primary hover:underline"
             >
-              Create one free
+              Create an account
             </Link>
-          </p>
+          </div>
         </div>
-      </motion.div>
+
+        {/* Security Meta Footnote */}
+        <div className="flex items-center justify-center gap-2 text-[11px] font-mono text-ink-muted">
+          <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+          <span>AES-256 Encrypted Session &bull; Token Persistence</span>
+        </div>
+
+      </div>
     </div>
   );
 }

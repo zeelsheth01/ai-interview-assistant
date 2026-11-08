@@ -1,27 +1,19 @@
-import { motion } from "framer-motion";
-
-export default function DashboardCards(){
-
-  const Card=({title}:any)=>(
-
-    <motion.div
-      whileHover={{scale:1.04}}
-      className="glass p-6 rounded-xl premium-hover"
-    >
-      <h3 className="text-sm text-gray-400">{title}</h3>
-      <p className="text-3xl font-bold mt-2">0</p>
-    </motion.div>
-
+function Card({ title, count, meta }: { title: string; count: number | string; meta: string }) {
+  return (
+    <div className="card-swiss bg-surface p-5 space-y-2 text-left shadow-subtle">
+      <span className="editorial-meta text-ink-muted block">{title}</span>
+      <p className="font-mono text-2xl font-bold text-ink-primary tabular-nums">{count}</p>
+      <span className="text-[11px] font-mono text-ink-secondary block">{meta}</span>
+    </div>
   );
+}
 
-  return(
-
-    <div className="grid grid-cols-3 gap-6">
-
-      <Card title="Total Resumes"/>
-      <Card title="AI Interviews"/>
-      <Card title="Skill Score"/>
-
+export default function DashboardCards() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <Card title="PARSED RESUMES" count="1" meta="Session active" />
+      <Card title="GENERATED QUESTIONS" count="10" meta="Grounded in stack" />
+      <Card title="STAR READINESS" count="92%" meta="Optimal cadence" />
     </div>
   );
 }

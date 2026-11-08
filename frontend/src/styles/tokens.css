@@ -1,0 +1,189 @@
+/* ==========================================================================
+   CENTRALIZED DESIGN SYSTEM — EDITORIAL PROFESSIONAL + SWISS MINIMALIST
+   AI Interview Assistant Design System
+   ========================================================================== */
+
+:root {
+  /* Core Master Theme Tokens */
+  --color-background: #F5F4EF;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #FAF9F5;
+  --color-surface-muted: #EFECE6;
+
+  --color-primary-text: #202A30;
+  --color-secondary-text: #69736F;
+  --color-text-muted: #8E9995;
+  --color-text-faint: #CBD2CE;
+
+  --color-primary: #496A58;
+  --color-primary-hover: #385644;
+  --color-muted-green: #EAF0EA;
+  --color-primary-border: #C8D6CD;
+
+  --color-accent: #BD9058;
+  --color-accent-hover: #A57C48;
+  --color-accent-light: #F8F3EC;
+  --color-accent-border: #E6D4BF;
+
+  --color-border: #E4E3DC;
+  --color-border-subtle: #ECEBE5;
+  --color-border-strong: #D5D3CA;
+
+  --color-success: #527A62;
+  --color-success-bg: #EDF4F0;
+  --color-warning: #B78945;
+  --color-warning-bg: #FAF4EB;
+  --color-error: #B75B54;
+  --color-error-bg: #FAF0EF;
+
+  /* Typography */
+  --font-serif: "DM Serif Display", Georgia, serif;
+  --font-sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Spacing Scale (8px rhythm) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+
+  /* Border Radii (Swiss restraint: 6-10px) */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+
+  /* Shadows (Subtle, tactile, non-glow) */
+  --shadow-subtle: 0 1px 2px rgba(32, 42, 48, 0.04), 0 1px 1px rgba(32, 42, 48, 0.02);
+  --shadow-card: 0 2px 6px -1px rgba(32, 42, 48, 0.05), 0 1px 3px -1px rgba(32, 42, 48, 0.03);
+  --shadow-elevated: 0 12px 28px -6px rgba(32, 42, 48, 0.08), 0 4px 10px -2px rgba(32, 42, 48, 0.04);
+}
+
+/* Tabular numerals for statistics & metrics */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Editorial Serif Headings */
+.font-editorial {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+/* Swiss Metadata Label */
+.editorial-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-secondary-text);
+  font-weight: 600;
+}
+
+/* Button System: 44-50px height, restrained corner radii, clean focus */
+.btn-primary {
+  min-height: 46px;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border: 1px solid var(--color-primary-hover);
+  border-radius: var(--radius-lg);
+  padding: 0.625rem 1.375rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-subtle);
+  cursor: pointer;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  border-color: #2D4637;
+  transform: translateY(-0.5px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  min-height: 46px;
+  background-color: var(--color-surface);
+  color: var(--color-primary-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.625rem 1.375rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-subtle);
+  cursor: pointer;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-subtle);
+  border-color: var(--color-border-strong);
+  color: var(--color-primary-text);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Input System: 48-52px height, 1px border, subtle focus ring */
+.input-field {
+  width: 100%;
+  min-height: 48px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--color-primary-text);
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-muted-green);
+}
+
+.input-field::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Swiss Structural Card */
+.card-swiss {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-subtle);
+}
+
+.card-swiss-subtle {
+  background-color: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
