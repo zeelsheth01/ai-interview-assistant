@@ -194,9 +194,9 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full mt-2"
+              className="btn-primary w-full mt-2 text-base font-bold"
             >
-              <span>{loading ? "Verifying Credentials..." : "Access Dashboard"}</span>
+              <span>{loading ? "Verifying Credentials..." : "Log In"}</span>
               {!loading && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
@@ -243,7 +243,7 @@ export default function Login() {
               to="/register"
               className="font-semibold text-primary hover:underline"
             >
-              Create an account
+              Register here
             </Link>
           </div>
         </div>

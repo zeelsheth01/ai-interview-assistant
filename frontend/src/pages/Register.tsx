@@ -332,9 +332,9 @@ export default function Register() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn-primary w-full mt-2"
+                  className="btn-primary w-full mt-2 text-base font-bold"
                 >
-                  <span>{loading ? "Registering Candidate Profile..." : "Create Account"}</span>
+                  <span>{loading ? "Registering Candidate Profile..." : "Register"}</span>
                   {!loading && <ArrowRight className="w-4 h-4" />}
                 </button>
               </form>
@@ -346,7 +346,7 @@ export default function Register() {
                   to="/login"
                   className="font-semibold text-primary hover:underline"
                 >
-                  Sign In
+                  Log In
                 </Link>
               </div>
             </div>
