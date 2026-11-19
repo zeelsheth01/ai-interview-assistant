@@ -246,7 +246,7 @@ export default function PricingPage() {
           <span className="editorial-meta text-primary block">
             TRANSPARENT USAGE &bull; ZERO SUBSCRIPTION LOCK-IN
           </span>
-          <h1 className="font-editorial text-4xl sm:text-5xl text-ink-primary font-normal leading-tight">
+          <h1 className="font-editorial text-4xl sm:text-5xl text-ink-primary font-semibold leading-tight">
             Prepaid voice interview minutes.
           </h1>
           <p className="font-sans text-sm sm:text-base text-ink-secondary leading-relaxed max-w-2xl">

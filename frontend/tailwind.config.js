@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        serif: ['"DM Serif Display"', 'Georgia', 'serif'],
-        sans: ['Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['Figtree', '"Apercu Pro"', 'Apercu', '"TWK Lausanne"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        serif: ['Figtree', '"Apercu Pro"', 'Apercu', '"TWK Lausanne"', 'Georgia', 'serif'],
+        heading: ['Figtree', '"Apercu Pro"', 'Apercu', '"TWK Lausanne"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {

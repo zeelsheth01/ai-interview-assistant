@@ -109,7 +109,7 @@ export default function Login() {
             <span className="editorial-meta text-primary block mb-1">
               AUTHENTICATION PORTAL
             </span>
-            <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal tracking-tight">
+            <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-semibold tracking-tight">
               Welcome back to your preparation.
             </h1>
             <p className="text-xs sm:text-sm text-ink-secondary mt-1">

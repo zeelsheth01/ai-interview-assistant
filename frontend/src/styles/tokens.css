@@ -36,9 +36,10 @@
   --color-error: #B75B54;
   --color-error-bg: #FAF0EF;
 
-  /* Typography */
-  --font-serif: "DM Serif Display", Georgia, serif;
-  --font-sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Typography - Typeform-inspired (Figtree / Aperçu / Lausanne) */
+  --font-sans: "Figtree", "Apercu Pro", "Apercu", "TWK Lausanne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Figtree", "Apercu Pro", "Apercu", "TWK Lausanne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Figtree", "Apercu Pro", "Apercu", "TWK Lausanne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* Spacing Scale (8px rhythm) */
@@ -71,11 +72,11 @@
   font-feature-settings: "tnum" 1;
 }
 
-/* Editorial Serif Headings */
+/* Editorial Headings (Typeform-inspired Figtree) */
 .font-editorial {
-  font-family: var(--font-serif);
-  letter-spacing: -0.015em;
-  font-weight: 400;
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+  font-weight: 600;
   line-height: 1.15;
 }
 

@@ -11,7 +11,7 @@ const Platforms = () => {
     <section className="py-16 border-b border-border bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <span className="editorial-meta text-ink-muted block mb-2">ECOSYSTEM COMPATIBILITY</span>
-        <h2 className="font-editorial text-2xl sm:text-3xl text-ink-primary font-normal tracking-tight mb-2">
+        <h2 className="font-editorial text-2xl sm:text-3xl text-ink-primary font-semibold tracking-tight mb-2">
           Engineered for every major interview format.
         </h2>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary max-w-xl mx-auto mb-8">

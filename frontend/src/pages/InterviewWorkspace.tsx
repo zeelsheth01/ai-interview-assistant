@@ -227,7 +227,7 @@ export default function InterviewWorkspace() {
                 </button>
               </div>
 
-              <h2 className="font-editorial text-2xl sm:text-3xl text-ink-primary font-normal leading-snug">
+              <h2 className="font-editorial text-2xl sm:text-3xl text-ink-primary font-semibold leading-snug">
                 “{currentQuestion}”
               </h2>
 

@@ -32,7 +32,7 @@ export default function Topbar() {
   return (
     <div className="flex justify-between items-center mb-8 pb-4 border-b border-border font-sans">
       <div className="text-left">
-        <h2 className="font-editorial text-2xl sm:text-3xl font-normal text-ink-primary tracking-tight">
+        <h2 className="font-editorial text-2xl sm:text-3xl font-semibold text-ink-primary tracking-tight">
           {getPageTitle()}
         </h2>
         <p className="font-mono text-xs text-ink-secondary mt-0.5">

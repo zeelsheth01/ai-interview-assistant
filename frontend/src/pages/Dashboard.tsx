@@ -209,7 +209,7 @@ export default function Dashboard() {
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             <span>Candidate Preparation Suite &bull; {userName}</span>
           </div>
-          <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal leading-tight">
+          <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-semibold leading-tight">
             Your interview preparation.
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary max-w-xl">

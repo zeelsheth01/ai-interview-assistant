@@ -118,7 +118,7 @@ export default function Upload() {
         <span className="editorial-meta text-primary block">
           DOCUMENT INGESTION &bull; OCR ANALYSIS
         </span>
-        <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal leading-tight">
+        <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-semibold leading-tight">
           Understand your experience.
         </h1>
         <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-2xl">

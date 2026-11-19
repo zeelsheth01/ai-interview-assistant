@@ -103,7 +103,7 @@ export default function ForgotPassword() {
             <span className="editorial-meta text-primary block mb-1">
               CREDENTIAL RECOVERY
             </span>
-            <h1 className="font-editorial text-3xl text-ink-primary font-normal tracking-tight">
+            <h1 className="font-editorial text-3xl text-ink-primary font-semibold tracking-tight">
               {step === 3 ? "Password Updated" : "Reset Account Password"}
             </h1>
             <p className="text-xs text-ink-secondary mt-1">

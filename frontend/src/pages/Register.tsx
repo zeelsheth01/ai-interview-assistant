@@ -136,7 +136,7 @@ export default function Register() {
                 <span className="editorial-meta text-primary block">
                   CANDIDATE ONBOARDING
                 </span>
-                <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal leading-tight">
+                <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-semibold leading-tight">
                   Career intelligence built on your verified experience.
                 </h1>
                 <p className="text-xs sm:text-sm text-ink-secondary leading-relaxed">

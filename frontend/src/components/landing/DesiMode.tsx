@@ -13,7 +13,7 @@ const DesiMode = () => {
             <Sparkles className="w-3.5 h-3.5 text-accent" />
             <span>Humanized Answer Modeling</span>
           </div>
-          <h2 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal tracking-tight">
+          <h2 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-semibold tracking-tight">
             Answers that sound authentic, not memorized.
           </h2>
           <p className="font-sans text-sm sm:text-base text-ink-secondary mt-2">

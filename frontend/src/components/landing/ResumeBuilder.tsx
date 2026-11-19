@@ -13,7 +13,7 @@ const ResumeBuilder = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <span className="editorial-meta text-primary block mb-2">INTELLIGENCE PIPELINE</span>
-          <h2 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-normal tracking-tight">
+          <h2 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-semibold tracking-tight">
             How your resume transforms into an interview syllabus.
           </h2>
           <p className="font-sans text-sm sm:text-base text-ink-secondary mt-2">
