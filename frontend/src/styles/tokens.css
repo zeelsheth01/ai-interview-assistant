@@ -1,6 +1,6 @@
 /* ==========================================================================
-   CENTRALIZED DESIGN SYSTEM — MODERN OBSIDIAN DARK (LINEAR / VERCEL AESTHETIC)
-   Typography: Geist & Geist Mono
+   CENTRALIZED DESIGN SYSTEM — MODERN OBSIDIAN DARK
+   Typography: Figtree & JetBrains Mono (Typeform / Modern SaaS Aesthetic)
    ========================================================================== */
 
 :root {
@@ -42,11 +42,12 @@
   --color-error: #EF4444;
   --color-error-bg: rgba(239, 68, 68, 0.14);
 
-  /* Typography: Geist & Geist Mono */
-  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  /* Typography: Figtree & JetBrains Mono */
+  --font-sans: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "Geist Mono", ui-monospace, monospace;
 
   /* Spacing Scale (8px rhythm) */
   --space-1: 0.25rem;  /* 4px */

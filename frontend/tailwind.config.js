@@ -7,10 +7,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        serif: ['Geist', 'sans-serif'],
-        heading: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['"Geist Mono"', 'ui-monospace', 'monospace'],
+        sans: ['Figtree', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        serif: ['Figtree', 'sans-serif'],
+        heading: ['Figtree', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Figtree', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"Geist Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
         'sm': '4px',

@@ -20,10 +20,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <footer className="border-t border-border bg-surface py-5 px-4 sm:px-8 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-ink-secondary">
           <div className="flex items-center gap-3">
-            <span className="font-sans font-bold text-ink-primary">AI Interview Assistant</span>
+            <span className="font-sans font-bold text-ink-primary">Interview Assistant</span>
             <span className="text-border-strong">/</span>
             <span className="font-mono text-[11px] text-ink-muted">
-              Obsidian Architecture &bull; Linear / Vercel Precision
+              Obsidian Architecture &bull; Figtree Typography
             </span>
           </div>
           <div className="flex items-center gap-6 font-mono text-[11px] text-ink-muted">
