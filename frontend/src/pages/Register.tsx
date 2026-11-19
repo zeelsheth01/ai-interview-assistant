@@ -12,7 +12,6 @@ import {
   AlertCircle,
   FileText,
   ShieldCheck,
-  Globe,
 } from "lucide-react";
 import api from "../api/api";
 import { GoogleLogin } from "@react-oauth/google";
@@ -66,15 +65,28 @@ export default function Register() {
 
       console.log("REGISTER SUCCESS:", res.data);
 
-      if (fullName) {
-        localStorage.setItem("userName", fullName);
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("userEmail", normalizedEmail);
+        if (fullName) {
+          localStorage.setItem("userName", fullName);
+        } else if (res.data.name) {
+          localStorage.setItem("userName", res.data.name);
+        }
+
+        setSuccess("Account provisioned successfully! Entering your workspace...");
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
+      } else {
+        setSuccess("Account provisioned successfully. Redirecting to sign in...");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1200);
       }
-
-      setSuccess("Account provisioned successfully. Redirecting to sign in...");
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
     } catch (err: unknown) {
       console.log("REGISTER ERROR:", err);
       let errorMsg = "Cannot reach backend server. Please verify the backend is running on http://localhost:8000.";
@@ -119,7 +131,11 @@ export default function Register() {
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
-      setError("Google authentication was unsuccessful. Please verify your credentials.");
+      const detail =
+        typeof error === "object" && error !== null && "response" in error
+          ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : undefined;
+      setError(detail || "Google authentication was unsuccessful. Please verify your connection.");
     } finally {
       setLoading(false);
     }
@@ -218,27 +234,17 @@ export default function Register() {
 
               {/* Google OAuth Button */}
               <div className="space-y-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const googleButton = document.querySelector(
-                      '[role="button"]'
-                    ) as HTMLElement;
-                    googleButton?.click();
-                  }}
-                  className="w-full min-h-[46px] rounded border border-border bg-surface hover:bg-surface-subtle text-ink-primary text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-subtle"
-                >
-                  <Globe className="w-4 h-4 text-primary" />
-                  <span>Continue with Google</span>
-                </button>
-
-                {/* Hidden Real Google Login component */}
-                <div style={{ display: "none" }}>
+                <div className="flex justify-center w-full">
                   <GoogleLogin
                     onSuccess={handleGoogleSuccess}
                     onError={() => {
                       setError("Google Sign-In initialization failed.");
                     }}
+                    theme="filled_black"
+                    shape="rectangular"
+                    size="large"
+                    text="continue_with"
+                    width="360"
                   />
                 </div>
 

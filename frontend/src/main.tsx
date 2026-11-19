@@ -6,7 +6,10 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider
-    clientId="887184951396-bhmccf8fvinbjdrah03olo8mp7kbmvkn.apps.googleusercontent.com"
+    clientId={
+      import.meta.env.VITE_GOOGLE_CLIENT_ID ||
+      "887184951396-bhmccf8fvinbjdrah03olo8mp7kbmvkn.apps.googleusercontent.com"
+    }
   >
     <App />
   </GoogleOAuthProvider>

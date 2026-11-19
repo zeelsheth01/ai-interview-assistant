@@ -9,7 +9,6 @@ import {
   EyeOff,
   AlertCircle,
   ShieldCheck,
-  Globe,
 } from "lucide-react";
 import api from "../api/api";
 import { GoogleLogin } from "@react-oauth/google";
@@ -98,7 +97,11 @@ export default function Login() {
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
-      setError("Google authentication failed. Please retry.");
+      const detail =
+        typeof error === "object" && error !== null && "response" in error
+          ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail
+          : undefined;
+      setError(detail || "Google authentication failed. Please verify your connection.");
     } finally {
       setLoading(false);
     }
@@ -224,29 +227,18 @@ export default function Login() {
           </div>
 
           {/* Google Login Trigger */}
-          <div>
-            <button
-              type="button"
-              onClick={() => {
-                const googleButton = document.querySelector(
-                  '[role="button"]'
-                ) as HTMLElement;
-                googleButton?.click();
+          <div className="flex justify-center w-full">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => {
+                setError("Google sign-in attempt was rejected.");
               }}
-              className="w-full min-h-[46px] rounded border border-border bg-surface hover:bg-surface-subtle text-ink-primary text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-subtle"
-            >
-              <Globe className="w-4 h-4 text-primary" />
-              <span>Continue with Google</span>
-            </button>
-
-            <div style={{ display: "none" }}>
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => {
-                  setError("Google sign-in attempt was rejected.");
-                }}
-              />
-            </div>
+              theme="filled_black"
+              shape="rectangular"
+              size="large"
+              text="continue_with"
+              width="360"
+            />
           </div>
 
           {/* Registration Link */}
