@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+﻿import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, FileText, Code2, Coins, Sparkles } from "lucide-react";
 import { APP_NAME } from "../constants/brand";
 
@@ -32,7 +32,7 @@ export default function Sidebar() {
             <span className="font-sans text-base font-bold tracking-tight text-ink-primary leading-none">
               {APP_NAME}
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-widest text-ink-muted mt-0.5">
+            <span className="font-sans text-[9px] uppercase tracking-widest text-ink-muted mt-0.5">
               Candidate Suite
             </span>
           </div>
@@ -61,7 +61,7 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      <div className="pt-4 border-t border-border text-[11px] font-mono text-ink-muted text-center">
+      <div className="pt-4 border-t border-border text-[11px] font-sans text-ink-muted text-center">
         SYSTEM PROTOCOL &bull; v2.4
       </div>
     </aside>

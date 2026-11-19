@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FcGoogle } from "react-icons/fc";
 import {
   Mail,
   Lock,
@@ -13,6 +12,7 @@ import {
   AlertCircle,
   FileText,
   ShieldCheck,
+  Globe,
 } from "lucide-react";
 import api from "../api/api";
 import { GoogleLogin } from "@react-oauth/google";
@@ -54,11 +54,13 @@ export default function Register() {
     setError("");
     setSuccess("");
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
       setLoading(true);
 
       const res = await api.post("/auth/register", {
-        email,
+        email: normalizedEmail,
         password,
       });
 
@@ -75,14 +77,24 @@ export default function Register() {
       }, 1500);
     } catch (err: unknown) {
       console.log("REGISTER ERROR:", err);
-      const detail =
-        typeof err === "object" && err !== null && "response" in err
-          ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
-          : undefined;
-      setError(
-        detail ||
-          "Registration failed. An account with this email may already exist."
-      );
+      let errorMsg = "Cannot reach backend server. Please verify the backend is running on http://localhost:8000.";
+      if (typeof err === "object" && err !== null) {
+        const axErr = err as { response?: { status?: number; data?: { detail?: string } }; message?: string };
+        if (axErr.response) {
+          if (axErr.response.data?.detail) {
+            errorMsg = axErr.response.data.detail;
+          } else if (axErr.response.status === 409) {
+            errorMsg = "An account with this email already exists.";
+          } else {
+            errorMsg = `Registration failed (${axErr.response.status}). Please try again.`;
+          }
+        } else if (axErr.message === "Network Error") {
+          errorMsg = "Cannot connect to backend server. Please ensure the backend is running on http://localhost:8000.";
+        } else if (axErr.message) {
+          errorMsg = axErr.message;
+        }
+      }
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -159,7 +171,7 @@ export default function Register() {
             </div>
 
             {/* Bottom Meta */}
-            <div className="pt-6 border-t border-border flex justify-between items-center text-[10px] font-mono text-ink-muted">
+            <div className="pt-6 border-t border-border flex justify-between items-center text-[10px] font-sans text-ink-muted">
               <span>PROTOCOL v2.4</span>
               <span>CONFIDENTIAL</span>
             </div>
@@ -216,7 +228,7 @@ export default function Register() {
                   }}
                   className="w-full min-h-[46px] rounded border border-border bg-surface hover:bg-surface-subtle text-ink-primary text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-subtle"
                 >
-                  <FcGoogle className="text-lg" />
+                  <Globe className="w-4 h-4 text-primary" />
                   <span>Continue with Google</span>
                 </button>
 
@@ -232,7 +244,7 @@ export default function Register() {
 
                 <div className="flex items-center gap-3 my-2">
                   <div className="flex-1 h-px bg-border" />
-                  <span className="font-mono text-[10px] text-ink-muted uppercase tracking-wider">
+                  <span className="font-sans text-[10px] text-ink-muted uppercase tracking-wider">
                     Or Register with Email
                   </span>
                   <div className="flex-1 h-px bg-border" />
@@ -243,7 +255,7 @@ export default function Register() {
               <form onSubmit={handleRegister} className="space-y-4">
                 {/* Full Name */}
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                     Candidate Full Name
                   </label>
                   <div className="relative">
@@ -260,7 +272,7 @@ export default function Register() {
 
                 {/* Email */}
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                     Email Address <span className="text-error">*</span>
                   </label>
                   <div className="relative">
@@ -278,7 +290,7 @@ export default function Register() {
 
                 {/* Password */}
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                     Password <span className="text-error">*</span>
                   </label>
                   <div className="relative">
@@ -304,7 +316,7 @@ export default function Register() {
 
                 {/* Confirm Password */}
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                     Confirm Password <span className="text-error">*</span>
                   </label>
                   <div className="relative">

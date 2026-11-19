@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Award,
@@ -78,7 +78,7 @@ export default function MockInterviewReportPage() {
     return (
       <div className="py-24 flex flex-col items-center justify-center space-y-4 text-ink-secondary">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        <p className="text-xs font-mono uppercase tracking-widest text-ink-muted">
+        <p className="text-xs font-sans uppercase tracking-widest text-ink-muted">
           Compiling Detailed Performance Report...
         </p>
       </div>
@@ -159,7 +159,7 @@ export default function MockInterviewReportPage() {
             <h1 className="font-editorial text-3xl sm:text-4xl text-ink-primary font-semibold tracking-tight">
               {report.job_role} Interview Report
             </h1>
-            <p className="text-xs text-ink-secondary flex items-center gap-3 font-mono">
+            <p className="text-xs text-ink-secondary flex items-center gap-3 font-sans">
               <span className="flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5" />
                 Duration: {formatDuration(report.duration_seconds)}
@@ -172,7 +172,7 @@ export default function MockInterviewReportPage() {
           {/* Large Tabular Score Box */}
           <div className="flex items-center gap-4 bg-surface-subtle p-4 sm:p-5 rounded border border-border shrink-0">
             <div className="text-right">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-ink-muted block">
+              <span className="text-[10px] font-sans uppercase tracking-wider text-ink-muted block">
                 Overall Index
               </span>
               <div className="font-editorial text-4xl sm:text-5xl font-bold text-ink-primary tabular-nums leading-none mt-1">
@@ -191,7 +191,7 @@ export default function MockInterviewReportPage() {
         {/* Executive Summary */}
         {report.summary && (
           <div className="p-4 sm:p-5 rounded bg-surface-subtle border border-border text-xs leading-relaxed space-y-1.5 text-left">
-            <p className="font-semibold text-ink-primary flex items-center gap-1.5 uppercase font-mono tracking-wider text-[11px]">
+            <p className="font-semibold text-ink-primary flex items-center gap-1.5 uppercase font-sans tracking-wider text-[11px]">
               <Sparkles className="w-3.5 h-3.5 text-accent" /> Executive Assessment Summary
             </p>
             <p className="text-ink-secondary whitespace-pre-line leading-relaxed">
@@ -203,37 +203,37 @@ export default function MockInterviewReportPage() {
         {/* Tabular KPI Ribbon */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
           <div className="p-3.5 rounded border border-border bg-surface text-center">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-muted block">
+            <span className="text-[10px] font-sans uppercase tracking-wider text-ink-muted block">
               Total Questions
             </span>
-            <span className="font-mono text-2xl font-bold text-ink-primary">
+            <span className="font-sans text-2xl font-bold text-ink-primary">
               {report.total_questions}
             </span>
           </div>
 
           <div className="p-3.5 rounded border border-border bg-surface text-center">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-primary block flex items-center justify-center gap-1">
+            <span className="text-[10px] font-sans uppercase tracking-wider text-primary block flex items-center justify-center gap-1">
               <CheckCircle2 className="w-3 h-3" /> Correct (7-10)
             </span>
-            <span className="font-mono text-2xl font-bold text-primary">
+            <span className="font-sans text-2xl font-bold text-primary">
               {report.correct_count}
             </span>
           </div>
 
           <div className="p-3.5 rounded border border-border bg-surface text-center">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-warning block flex items-center justify-center gap-1">
+            <span className="text-[10px] font-sans uppercase tracking-wider text-warning block flex items-center justify-center gap-1">
               <AlertTriangle className="w-3 h-3" /> Partial (4-6)
             </span>
-            <span className="font-mono text-2xl font-bold text-warning">
+            <span className="font-sans text-2xl font-bold text-warning">
               {report.partially_correct_count}
             </span>
           </div>
 
           <div className="p-3.5 rounded border border-border bg-surface text-center">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-error block flex items-center justify-center gap-1">
+            <span className="text-[10px] font-sans uppercase tracking-wider text-error block flex items-center justify-center gap-1">
               <XCircle className="w-3 h-3" /> Needs Work (&lt;4)
             </span>
-            <span className="font-mono text-2xl font-bold text-error">
+            <span className="font-sans text-2xl font-bold text-error">
               {report.incorrect_count}
             </span>
           </div>
@@ -250,7 +250,7 @@ export default function MockInterviewReportPage() {
                 Category-Wise Performance (Assessed Domains Only)
               </h2>
             </div>
-            <span className="font-mono text-[11px] text-ink-muted">
+            <span className="font-sans text-[11px] text-ink-muted">
               {assessedCategories.length} categories tested
             </span>
           </div>
@@ -268,7 +268,7 @@ export default function MockInterviewReportPage() {
                 >
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-semibold text-ink-primary">{category}</span>
-                    <span className="font-mono font-bold text-ink-primary">
+                    <span className="font-sans font-bold text-ink-primary">
                       {numScore} / 100
                     </span>
                   </div>
@@ -354,7 +354,7 @@ export default function MockInterviewReportPage() {
                 key={idx}
                 className="p-3.5 rounded bg-surface-subtle border border-border text-xs text-ink-primary flex items-start gap-2.5 font-medium"
               >
-                <span className="font-mono text-primary font-bold">0{idx + 1}.</span>
+                <span className="font-sans text-primary font-bold">0{idx + 1}.</span>
                 <span className="leading-relaxed">{q}</span>
               </div>
             ))}
@@ -376,7 +376,7 @@ export default function MockInterviewReportPage() {
                 key={idx}
                 className="p-4 rounded border border-border bg-surface-subtle space-y-2 text-left"
               >
-                <span className="text-[10px] font-mono text-primary uppercase font-bold tracking-wider block">
+                <span className="text-[10px] font-sans text-primary uppercase font-bold tracking-wider block">
                   {stage.phase}
                 </span>
                 <h4 className="text-xs font-semibold text-ink-primary">{stage.title}</h4>
@@ -406,7 +406,7 @@ export default function MockInterviewReportPage() {
               Question-by-Question Technical Evaluation
             </h2>
           </div>
-          <span className="font-mono text-[11px] text-ink-muted">
+          <span className="font-sans text-[11px] text-ink-muted">
             {report.turns?.length || 0} evaluated questions
           </span>
         </div>
@@ -445,7 +445,7 @@ export default function MockInterviewReportPage() {
 
                   <div className="flex items-center gap-3 shrink-0">
                     <span
-                      className={`px-2.5 py-0.5 rounded text-xs font-mono font-bold border ${scoreBadgeClass}`}
+                      className={`px-2.5 py-0.5 rounded text-xs font-sans font-bold border ${scoreBadgeClass}`}
                     >
                       {score} / 10
                     </span>
@@ -510,7 +510,7 @@ export default function MockInterviewReportPage() {
 
                     {turn.expected_key_points && turn.expected_key_points.length > 0 && (
                       <div className="space-y-1 pt-1">
-                        <span className="font-mono text-[10px] text-ink-muted uppercase tracking-wider block">
+                        <span className="font-sans text-[10px] text-ink-muted uppercase tracking-wider block">
                           Expected Senior Architecture Points:
                         </span>
                         <ul className="list-disc list-inside text-[11px] text-ink-secondary space-y-0.5">
@@ -532,7 +532,7 @@ export default function MockInterviewReportPage() {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border print:hidden">
         <Link
           to="/dashboard"
-          className="text-xs text-ink-secondary hover:text-ink-primary flex items-center gap-1.5 font-mono"
+          className="text-xs text-ink-secondary hover:text-ink-primary flex items-center gap-1.5 font-sans"
         >
           <LayoutDashboard className="w-3.5 h-3.5" />
           <span>Return to Dashboard</span>

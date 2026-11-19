@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+﻿import { useState, useEffect, useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
 import {
   ChevronLeft,
@@ -143,10 +143,10 @@ export default function InterviewWorkspace() {
           </Link>
           <span className="text-border-strong">/</span>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-primary-light text-primary font-bold border border-primary-border uppercase">
+            <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-primary-light text-primary font-bold border border-primary-border uppercase">
               {currentCategory}
             </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-surface-subtle text-ink-secondary border border-border">
+            <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-surface-subtle text-ink-secondary border border-border">
               Question {cachedQuestions.length > 0 ? currentIndex + 1 : 0} of {cachedQuestions.length}
             </span>
           </div>
@@ -161,7 +161,7 @@ export default function InterviewWorkspace() {
                 setCurrentIndex(Number(e.target.value));
                 setEvaluation(null);
               }}
-              className="text-xs font-mono px-3 py-1.5 rounded border border-border bg-surface text-ink-primary outline-none cursor-pointer"
+              className="text-xs font-sans px-3 py-1.5 rounded border border-border bg-surface text-ink-primary outline-none cursor-pointer"
             >
               {cachedQuestions.map((_, i) => (
                 <option key={i} value={i}>
@@ -220,7 +220,7 @@ export default function InterviewWorkspace() {
                 <button
                   type="button"
                   onClick={handleCopyQuestion}
-                  className="p-1.5 rounded border border-border text-xs text-ink-secondary hover:text-ink-primary hover:bg-surface-subtle transition-colors flex items-center gap-1 font-mono"
+                  className="p-1.5 rounded border border-border text-xs text-ink-secondary hover:text-ink-primary hover:bg-surface-subtle transition-colors flex items-center gap-1 font-sans"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-primary" /> : <Copy className="w-3.5 h-3.5" />}
                   <span className="text-[10px]">{copied ? "Copied" : "Copy"}</span>
@@ -228,7 +228,7 @@ export default function InterviewWorkspace() {
               </div>
 
               <h2 className="font-editorial text-2xl sm:text-3xl text-ink-primary font-semibold leading-snug">
-                “{currentQuestion}”
+                â€œ{currentQuestion}â€
               </h2>
 
               {/* Focus points & Evaluator signals */}
@@ -243,7 +243,7 @@ export default function InterviewWorkspace() {
                   <span className="editorial-meta text-ink-muted block">LINKED RESUME SKILLS</span>
                   <div className="flex flex-wrap gap-1">
                     {(cachedSkills.length > 0 ? cachedSkills.slice(0, 3) : ["System Design", "Databases", "APIs"]).map((s, idx) => (
-                      <span key={idx} className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-surface-subtle border border-border text-ink-secondary">
+                      <span key={idx} className="font-sans text-[9px] px-1.5 py-0.2 rounded bg-surface-subtle border border-border text-ink-secondary">
                         {s}
                       </span>
                     ))}
@@ -281,7 +281,7 @@ export default function InterviewWorkspace() {
                   </button>
                 </div>
 
-                <div className="flex items-center gap-3 font-mono text-[11px] text-ink-secondary">
+                <div className="flex items-center gap-3 font-sans text-[11px] text-ink-secondary">
                   <span>{wordCount} words drafted</span>
                   <button
                     type="button"
@@ -298,7 +298,7 @@ export default function InterviewWorkspace() {
               {activeTab === "star" ? (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-primary mb-1">
+                    <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-primary mb-1">
                       01 &bull; Situation (Context & Environment)
                     </label>
                     <textarea
@@ -311,7 +311,7 @@ export default function InterviewWorkspace() {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-primary mb-1">
+                    <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-primary mb-1">
                       02 &bull; Task (Engineering Objective / Constraint)
                     </label>
                     <textarea
@@ -324,7 +324,7 @@ export default function InterviewWorkspace() {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-primary mb-1">
+                    <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-primary mb-1">
                       03 &bull; Action (Architectural Decision & Execution)
                     </label>
                     <textarea
@@ -337,7 +337,7 @@ export default function InterviewWorkspace() {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-primary mb-1">
+                    <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-primary mb-1">
                       04 &bull; Result (Quantified Impact & Takeaways)
                     </label>
                     <textarea
@@ -364,7 +364,7 @@ export default function InterviewWorkspace() {
 
               {/* Submit Evaluation CTA */}
               <div className="pt-4 border-t border-border flex justify-between items-center">
-                <span className="font-mono text-[11px] text-ink-muted">
+                <span className="font-sans text-[11px] text-ink-muted">
                   Feedback evaluated against production engineering hiring rubrics.
                 </span>
                 <button
@@ -400,7 +400,7 @@ export default function InterviewWorkspace() {
                     AI Coach Evaluation
                   </h3>
                 </div>
-                <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-surface-subtle border border-border text-ink-secondary">
+                <span className="font-sans text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-surface-subtle border border-border text-ink-secondary">
                   {evaluating ? "ANALYZING" : evaluation ? "CRITIQUE COMPLETE" : "AWAITING RESPONSE"}
                 </span>
               </div>
@@ -408,7 +408,7 @@ export default function InterviewWorkspace() {
               {evaluating ? (
                 <div className="py-16 text-center space-y-3">
                   <LoaderCircle className="w-8 h-8 text-primary animate-spin mx-auto" />
-                  <p className="font-mono text-xs text-ink-secondary">
+                  <p className="font-sans text-xs text-ink-secondary">
                     Evaluating answer with Gemini 2.0 Flash...
                   </p>
                 </div>
@@ -444,7 +444,7 @@ export default function InterviewWorkspace() {
               )}
 
               {/* Rubric Points */}
-              <div className="pt-4 border-t border-border space-y-2 text-[11px] text-ink-secondary font-mono">
+              <div className="pt-4 border-t border-border space-y-2 text-[11px] text-ink-secondary font-sans">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                   <span>STAR Structure Check (Situation, Task, Action, Result)</span>

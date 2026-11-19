@@ -1,4 +1,4 @@
-import { APP_NAME } from "../../constants/brand";
+﻿import { APP_NAME } from "../../constants/brand";
 import { Check, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -44,7 +44,7 @@ const Comparison = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border bg-surface-subtle text-[11px] font-mono text-ink-secondary uppercase tracking-wider">
+                <tr className="border-b border-border bg-surface-subtle text-[11px] font-sans text-ink-secondary uppercase tracking-wider">
                   <th className="py-3 px-6">Platform</th>
                   <th className="py-3 px-6">Pricing Model</th>
                   <th className="py-3 px-6">Architectural Advantage</th>
@@ -57,7 +57,7 @@ const Comparison = () => {
                     <td className="py-4 px-6 font-semibold text-ink-primary">
                       {item.name}
                     </td>
-                    <td className="py-4 px-6 text-ink-secondary font-mono">
+                    <td className="py-4 px-6 text-ink-secondary font-sans">
                       {item.pricing}
                     </td>
                     <td className="py-4 px-6 text-ink-primary">
@@ -69,7 +69,7 @@ const Comparison = () => {
                     <td className="py-4 px-6 text-right">
                       <Link
                         to="/pricing"
-                        className="inline-flex items-center gap-1 text-[11px] font-mono text-primary font-bold hover:underline"
+                        className="inline-flex items-center gap-1 text-[11px] font-sans text-primary font-bold hover:underline"
                       >
                         <span>View Rates</span>
                         <ArrowRight className="w-3 h-3" />

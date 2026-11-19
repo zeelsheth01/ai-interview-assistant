@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { APP_NAME } from '../../constants/brand';
 
 const Footer = () => {
@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Brand info */}
           <div className="md:col-span-1 space-y-3">
             <Link to="/" className="flex items-center gap-2 group">
-              <span className="w-7 h-7 rounded-md bg-accent text-canvas font-mono font-bold text-sm flex items-center justify-center">
+              <span className="w-7 h-7 rounded-md bg-accent text-canvas font-sans font-bold text-sm flex items-center justify-center">
                 IA
               </span>
               <span className="font-editorial text-lg font-bold text-ink-primary tracking-tight">
@@ -20,7 +20,7 @@ const Footer = () => {
               An intelligent, resume-grounded interview preparation platform built for technical candidates and engineering leaders.
             </p>
             <div className="pt-2">
-              <span className="font-mono text-[10px] text-ink-muted">
+              <span className="font-sans text-[10px] text-ink-muted">
                 ARCHITECTURAL EDITION 2.4 &bull; 2026
               </span>
             </div>
@@ -28,7 +28,7 @@ const Footer = () => {
           
           {/* Product */}
           <div className="space-y-3">
-            <h4 className="font-mono text-[11px] font-semibold text-ink-primary uppercase tracking-wider">
+            <h4 className="font-sans text-[11px] font-semibold text-ink-primary uppercase tracking-wider">
               Product & Suite
             </h4>
             <ul className="space-y-2">
@@ -57,7 +57,7 @@ const Footer = () => {
 
           {/* Legal */}
           <div className="space-y-3">
-            <h4 className="font-mono text-[11px] font-semibold text-ink-primary uppercase tracking-wider">
+            <h4 className="font-sans text-[11px] font-semibold text-ink-primary uppercase tracking-wider">
               Compliance & Security
             </h4>
             <ul className="space-y-2">
@@ -70,10 +70,10 @@ const Footer = () => {
 
           {/* Infrastructure status */}
           <div className="space-y-3">
-            <h4 className="font-mono text-[11px] font-semibold text-ink-primary uppercase tracking-wider">
+            <h4 className="font-sans text-[11px] font-semibold text-ink-primary uppercase tracking-wider">
               System Telemetry
             </h4>
-            <div className="p-3.5 rounded bg-surface-subtle border border-border space-y-2 font-mono text-[11px]">
+            <div className="p-3.5 rounded bg-surface-subtle border border-border space-y-2 font-sans text-[11px]">
               <div className="flex items-center justify-between">
                 <span>LLM PROVIDER:</span>
                 <span className="text-primary font-bold">GEMINI 2.0 FLASH</span>
@@ -92,8 +92,8 @@ const Footer = () => {
         
         {/* Bottom strip */}
         <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-ink-muted">
-          <p>© 2026 {APP_NAME}. All engineering benchmarks and interview syllabi reserved.</p>
-          <p className="font-mono">SWISS MINIMALIST INTERFACE SPECIFICATION</p>
+          <p>Â© 2026 {APP_NAME}. All engineering benchmarks and interview syllabi reserved.</p>
+          <p className="font-sans">SWISS MINIMALIST INTERFACE SPECIFICATION</p>
         </div>
       </div>
     </footer>

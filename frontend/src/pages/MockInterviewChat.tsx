@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+﻿import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Clock,
@@ -278,7 +278,7 @@ export default function MockInterviewChat() {
     return (
       <div className="py-24 flex flex-col items-center justify-center space-y-4 text-ink-secondary">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        <p className="text-xs font-mono uppercase tracking-widest text-ink-muted">
+        <p className="text-xs font-sans uppercase tracking-widest text-ink-muted">
           Connecting to Mock Interview Chamber...
         </p>
       </div>
@@ -293,7 +293,7 @@ export default function MockInterviewChat() {
       {/* Top Utility Ribbon */}
       <div className="bg-surface border border-border rounded-t-lg p-4 shadow-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-primary text-white font-bold text-xs flex items-center justify-center font-mono">
+          <div className="w-8 h-8 rounded bg-primary text-white font-bold text-xs flex items-center justify-center font-sans">
             AI
           </div>
           <div>
@@ -301,11 +301,11 @@ export default function MockInterviewChat() {
               <span className="font-semibold text-xs text-ink-primary">
                 {session?.job_role || "Technical Candidate"}
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-subtle border border-border text-primary font-medium">
+              <span className="px-2 py-0.5 rounded text-[10px] font-sans bg-surface-subtle border border-border text-primary font-medium">
                 {session?.difficulty || "Adaptive"}
               </span>
             </div>
-            <p className="text-[11px] text-ink-secondary font-mono">
+            <p className="text-[11px] text-ink-secondary font-sans">
               Session #{sessionId?.slice(0, 8)} &bull; {session?.interview_type}
             </p>
           </div>
@@ -315,17 +315,17 @@ export default function MockInterviewChat() {
         <div className="flex items-center gap-4 self-end sm:self-center">
           {/* Turn Tracker */}
           <div className="text-right hidden sm:block">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-muted block">
+            <span className="text-[10px] font-sans uppercase tracking-wider text-ink-muted block">
               Active Turn
             </span>
-            <span className="font-mono text-xs font-semibold text-ink-primary">
+            <span className="font-sans text-xs font-semibold text-ink-primary">
               Question {activeTurn?.turn_number || 1}
             </span>
           </div>
 
           {/* Countdown Clock */}
           <div
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-mono font-semibold transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-sans font-semibold transition-colors ${
               isLowTime
                 ? "bg-error-subtle border-error text-error animate-pulse"
                 : "bg-surface-subtle border-border text-ink-primary"
@@ -374,7 +374,7 @@ export default function MockInterviewChat() {
             <div key={turn.id || turn.turn_number} className="space-y-4 animate-fade-in">
               {/* Interviewer Message Card */}
               <div className="flex items-start gap-3 max-w-3xl">
-                <div className="w-7 h-7 rounded bg-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-1 font-mono">
+                <div className="w-7 h-7 rounded bg-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-1 font-sans">
                   AI
                 </div>
                 <div className="flex-1 space-y-2">
@@ -386,7 +386,7 @@ export default function MockInterviewChat() {
                     <button
                       type="button"
                       onClick={() => handleCopyText(turn.question, turn.turn_number)}
-                      className="text-ink-muted hover:text-ink-primary p-1 rounded transition-colors text-[10px] flex items-center gap-1 font-mono"
+                      className="text-ink-muted hover:text-ink-primary p-1 rounded transition-colors text-[10px] flex items-center gap-1 font-sans"
                     >
                       {copiedTurnId === turn.turn_number ? (
                         <>
@@ -414,7 +414,7 @@ export default function MockInterviewChat() {
               {/* Candidate Response Card if answered */}
               {isAnswered && (
                 <div className="flex items-start gap-3 max-w-3xl ml-auto flex-row-reverse">
-                  <div className="w-7 h-7 rounded bg-ink-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-1 font-mono">
+                  <div className="w-7 h-7 rounded bg-ink-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-1 font-sans">
                     YOU
                   </div>
                   <div className="flex-1 space-y-2 text-right">
@@ -434,7 +434,7 @@ export default function MockInterviewChat() {
                             onClick={() =>
                               setExpandedFeedbackTurn(isExpanded ? null : turn.turn_number)
                             }
-                            className="w-full flex items-center justify-between text-xs text-ink-secondary hover:text-ink-primary font-mono py-1"
+                            className="w-full flex items-center justify-between text-xs text-ink-secondary hover:text-ink-primary font-sans py-1"
                           >
                             <span className="flex items-center gap-1.5">
                               <Award className="w-3.5 h-3.5 text-primary" />
@@ -495,7 +495,7 @@ export default function MockInterviewChat() {
 
                               {turn.expected_key_points && turn.expected_key_points.length > 0 && (
                                 <div>
-                                  <span className="font-mono text-[10px] text-ink-muted uppercase tracking-wider block">
+                                  <span className="font-sans text-[10px] text-ink-muted uppercase tracking-wider block">
                                     Expected Bar-Raiser Points:
                                   </span>
                                   <ul className="list-disc list-inside text-[11px] text-ink-secondary mt-1 space-y-0.5">
@@ -520,7 +520,7 @@ export default function MockInterviewChat() {
         {/* AI Typing / Processing State */}
         {submitting && (
           <div className="flex items-start gap-3 max-w-xl animate-fade-in">
-            <div className="w-7 h-7 rounded bg-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-1 font-mono">
+            <div className="w-7 h-7 rounded bg-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-1 font-sans">
               AI
             </div>
             <div className="card-swiss bg-surface p-4 shadow-subtle border-border flex items-center gap-3">
@@ -595,7 +595,7 @@ export default function MockInterviewChat() {
         </div>
 
         {/* Input Bar Footer */}
-        <div className="flex items-center justify-between text-[11px] text-ink-muted font-mono px-1">
+        <div className="flex items-center justify-between text-[11px] text-ink-muted font-sans px-1">
           <div className="flex items-center gap-2">
             <span>Words: {candidateInput.trim() ? candidateInput.trim().split(/\s+/).length : 0}</span>
             <span>&bull;</span>

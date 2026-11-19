@@ -29,12 +29,14 @@ def authenticated_user_response(user: User) -> dict[str, str]:
 def register(data: RegisterRequest) -> dict[str, str]:
     db: Session = SessionLocal()
     try:
-        if db.query(User).filter(User.email == data.email).first():
+        clean_email = data.email.strip().lower()
+        if db.query(User).filter(User.email == clean_email).first():
             raise HTTPException(status_code=409, detail="An account with this email already exists.")
 
-        user = User(email=data.email, password=hash_password(data.password))
+        user = User(email=clean_email, password=hash_password(data.password))
         db.add(user)
         db.commit()
+        db.refresh(user)
         return {"msg": "registered successfully"}
     except IntegrityError:
         db.rollback()
@@ -47,7 +49,8 @@ def register(data: RegisterRequest) -> dict[str, str]:
 def login(data: LoginRequest) -> dict[str, str]:
     db: Session = SessionLocal()
     try:
-        user = db.query(User).filter(User.email == data.email).first()
+        clean_email = data.email.strip().lower()
+        user = db.query(User).filter(User.email == clean_email).first()
         if user is None or user.password is None:
             raise HTTPException(status_code=401, detail="Invalid email or password.")
 

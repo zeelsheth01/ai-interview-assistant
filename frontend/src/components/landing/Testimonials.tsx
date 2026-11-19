@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+﻿import { Star } from 'lucide-react';
 import { APP_NAME } from '../../constants/brand';
 
 const Testimonials = () => {
@@ -49,12 +49,12 @@ const Testimonials = () => {
                   ))}
                 </div>
                 <p className="font-sans text-base text-ink-primary leading-relaxed">
-                  “{t.quote}”
+                  â€œ{t.quote}â€
                 </p>
               </div>
 
               <div className="pt-6 mt-6 border-t border-border flex items-center gap-3">
-                <div className="w-9 h-9 rounded bg-surface-subtle border border-border text-xs font-mono font-bold text-primary flex items-center justify-center">
+                <div className="w-9 h-9 rounded bg-surface-subtle border border-border text-xs font-sans font-bold text-primary flex items-center justify-center">
                   {t.initials}
                 </div>
                 <div className="text-left">
@@ -62,7 +62,7 @@ const Testimonials = () => {
                     {t.name}
                   </h4>
                   <p
-                    className="text-[11px] text-ink-secondary font-mono"
+                    className="text-[11px] text-ink-secondary font-sans"
                     dangerouslySetInnerHTML={{ __html: t.role }}
                   />
                 </div>

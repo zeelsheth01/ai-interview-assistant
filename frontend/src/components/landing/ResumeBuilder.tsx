@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 
 const ResumeBuilder = () => {
   const steps = [
@@ -29,7 +29,7 @@ const ResumeBuilder = () => {
               className="card-swiss bg-surface p-6 space-y-3 relative overflow-hidden shadow-subtle hover:border-primary-border transition-colors"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-2xl font-bold text-primary/80 tabular-nums">
+                <span className="font-sans text-2xl font-bold text-primary/80 tabular-nums">
                   {step.num}
                 </span>
                 <span className="w-2 h-2 rounded-full bg-border" />

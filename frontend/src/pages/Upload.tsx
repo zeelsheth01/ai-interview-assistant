@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -160,7 +160,7 @@ export default function Upload() {
               <div className="pt-6 border-t border-border grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
                 {/* Number of Questions */}
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                  <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                     Interview Challenge Volume
                   </label>
                   <select
@@ -178,7 +178,7 @@ export default function Upload() {
 
                 {/* Processing Mode Notice */}
                 <div className="p-4 rounded bg-surface-subtle border border-border space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-primary">
+                  <div className="flex items-center gap-2 text-xs font-sans font-bold text-primary">
                     <Cpu className="w-3.5 h-3.5 text-accent" />
                     <span>Gemini 2.0 Flash Extraction</span>
                   </div>
@@ -190,7 +190,7 @@ export default function Upload() {
 
               {/* Submit CTA */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-border">
-                <span className="font-mono text-xs text-ink-secondary">
+                <span className="font-sans text-xs text-ink-secondary">
                   {file ? `Document selected: ${file.name}` : "Awaiting PDF resume attachment"}
                 </span>
 
@@ -248,7 +248,7 @@ export default function Upload() {
                 Analyzing Candidate Profile
               </h2>
               <p className="text-xs text-ink-secondary">
-                Inspecting document payload: <strong className="text-ink-primary font-mono">{file?.name}</strong>
+                Inspecting document payload: <strong className="text-ink-primary font-sans">{file?.name}</strong>
               </p>
             </div>
 
@@ -275,17 +275,17 @@ export default function Upload() {
                       ) : isCurrent ? (
                         <span className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin inline-block" />
                       ) : (
-                        <span className="font-mono text-xs text-ink-muted">{step.num}</span>
+                        <span className="font-sans text-xs text-ink-muted">{step.num}</span>
                       )}
                     </div>
 
                     <div className="space-y-0.5 text-left">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-ink-primary">
+                        <span className="font-sans text-xs font-bold text-ink-primary">
                           {step.title}
                         </span>
                         {isCurrent && (
-                          <span className="font-mono text-[9px] uppercase px-1.5 py-0.2 rounded bg-primary text-white">
+                          <span className="font-sans text-[9px] uppercase px-1.5 py-0.2 rounded bg-primary text-white">
                             RUNNING
                           </span>
                         )}
@@ -299,7 +299,7 @@ export default function Upload() {
               })}
             </div>
 
-            <div className="text-center text-[11px] font-mono text-ink-muted">
+            <div className="text-center text-[11px] font-sans text-ink-muted">
               FastAPI Processing Pipeline &bull; Do not refresh the page
             </div>
           </motion.div>

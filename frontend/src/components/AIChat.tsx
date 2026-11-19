@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { Send, Terminal, Copy, Check } from "lucide-react";
 import api from "../api/api";
 
@@ -133,7 +133,7 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
 
         return (
           <div key={index} className="my-3 rounded border border-border bg-surface-subtle overflow-hidden">
-            <div className="flex justify-between items-center px-3 py-1.5 bg-surface border-b border-border text-[10px] font-mono text-ink-secondary">
+            <div className="flex justify-between items-center px-3 py-1.5 bg-surface border-b border-border text-[10px] font-sans text-ink-secondary">
               <span className="uppercase">{language}</span>
               <button
                 type="button"
@@ -143,7 +143,7 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
                 Copy snippet
               </button>
             </div>
-            <pre className="p-3 font-mono text-xs text-ink-primary overflow-x-auto leading-relaxed">
+            <pre className="p-3 font-sans text-xs text-ink-primary overflow-x-auto leading-relaxed">
               <code>{code}</code>
             </pre>
           </div>
@@ -173,12 +173,12 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
       {/* Header */}
       <div className="px-5 py-3.5 border-b border-border bg-surface-subtle flex items-center justify-between text-xs">
         <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded bg-primary-light text-primary flex items-center justify-center font-mono">
+          <div className="w-6 h-6 rounded bg-primary-light text-primary flex items-center justify-center font-sans">
             <Terminal className="w-3.5 h-3.5" />
           </div>
           <div>
             <span className="font-sans font-bold text-ink-primary">AI Interview Coach</span>
-            <span className="hidden sm:inline font-mono text-[10px] text-ink-muted ml-2">
+            <span className="hidden sm:inline font-sans text-[10px] text-ink-muted ml-2">
               Gemini 2.0 Flash &bull; STAR Evaluation
             </span>
           </div>
@@ -186,7 +186,7 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
 
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-primary inline-block" />
-          <span className="font-mono text-[10px] text-primary font-semibold">ACTIVE</span>
+          <span className="font-sans text-[10px] text-primary font-semibold">ACTIVE</span>
         </div>
       </div>
 
@@ -199,7 +199,7 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
               key={i}
               className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
             >
-              <div className="flex items-center gap-2 mb-1 text-[10px] font-mono text-ink-muted px-1">
+              <div className="flex items-center gap-2 mb-1 text-[10px] font-sans text-ink-muted px-1">
                 <span>{isUser ? "Candidate Response" : "Interview Coach"}</span>
                 <span>&bull;</span>
                 <span className="tabular-nums">{msg.timestamp}</span>
@@ -216,7 +216,7 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
 
                 {!isUser && (
                   <div className="mt-3 pt-2.5 border-t border-border-subtle flex justify-between items-center text-[10px] text-ink-muted">
-                    <span className="font-mono">STAR MODEL FEEDBACK</span>
+                    <span className="font-sans">STAR MODEL FEEDBACK</span>
                     <button
                       onClick={() => handleCopy(msg.content, i)}
                       className="hover:text-primary transition-colors flex items-center gap-1"
@@ -242,14 +242,14 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
 
         {loading && (
           <div className="flex flex-col items-start">
-            <div className="flex items-center gap-2 mb-1 text-[10px] font-mono text-ink-muted px-1">
+            <div className="flex items-center gap-2 mb-1 text-[10px] font-sans text-ink-muted px-1">
               <span>Interview Coach</span>
               <span>&bull;</span>
               <span>Analyzing</span>
             </div>
             <div className="p-4 rounded bg-surface border border-border text-xs text-ink-secondary flex items-center gap-2 shadow-subtle">
               <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-              <span className="font-mono text-xs">Evaluating answer structure & metrics...</span>
+              <span className="font-sans text-xs">Evaluating answer structure & metrics...</span>
             </div>
           </div>
         )}
@@ -259,7 +259,7 @@ export default function AIChat({ activeQuestionText, answerDraft }: AIChatProps)
 
       {/* Quick Prompts Ribbon */}
       <div className="px-4 py-2 border-t border-border bg-surface-subtle flex items-center gap-2 overflow-x-auto hide-scrollbar">
-        <span className="font-mono text-[10px] uppercase text-ink-muted shrink-0">
+        <span className="font-sans text-[10px] uppercase text-ink-muted shrink-0">
           Suggestions:
         </span>
         <button

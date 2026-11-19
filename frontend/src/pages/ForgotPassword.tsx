@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -118,7 +118,7 @@ export default function ForgotPassword() {
         <div className="card-swiss bg-surface p-8 sm:p-10 shadow-card space-y-6">
           
           {/* Step Indicator */}
-          <div className="flex items-center justify-between pb-4 border-b border-border text-[11px] font-mono text-ink-secondary">
+          <div className="flex items-center justify-between pb-4 border-b border-border text-[11px] font-sans text-ink-secondary">
             <span className={step >= 1 ? "text-primary font-bold" : "text-ink-muted"}>01 IDENTIFY</span>
             <span>&bull;</span>
             <span className={step >= 2 ? "text-primary font-bold" : "text-ink-muted"}>02 CONFIGURE</span>
@@ -157,7 +157,7 @@ export default function ForgotPassword() {
           {step === 1 && (
             <form onSubmit={handleVerifyEmail} className="space-y-4">
               <div>
-                <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                   Registered Account Email
                 </label>
                 <div className="relative">
@@ -187,12 +187,12 @@ export default function ForgotPassword() {
           {step === 2 && (
             <form onSubmit={handleResetPassword} className="space-y-4">
               <div className="p-3 rounded bg-surface-subtle border border-border text-xs text-ink-secondary">
-                Resetting password for: <strong className="text-ink-primary font-mono">{email}</strong>
+                Resetting password for: <strong className="text-ink-primary font-sans">{email}</strong>
               </div>
 
               {/* New Password */}
               <div>
-                <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                   New Password
                 </label>
                 <div className="relative">
@@ -217,7 +217,7 @@ export default function ForgotPassword() {
 
               {/* Confirm New Password */}
               <div>
-                <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+                <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                   Confirm New Password
                 </label>
                 <div className="relative">

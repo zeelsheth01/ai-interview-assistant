@@ -2,8 +2,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
 
-    # DATABASE_URL: str = "postgresql://..."
-    DATABASE_URL: str = ""
+    DATABASE_URL: str = "sqlite:///./dev.db"
 
     LLM_PROVIDER: str = "gemini"
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LogOut,
@@ -75,12 +75,12 @@ export default function AppHeader() {
       {/* Top Utility Bar */}
       <div className="border-b border-border-subtle bg-surface-subtle py-1 px-4 sm:px-8 text-[11px] text-ink-secondary flex justify-between items-center tabular-nums">
         <div className="flex items-center gap-3">
-          <span className="font-mono uppercase tracking-wider text-[10px] text-accent font-semibold flex items-center gap-1.5">
+          <span className="font-sans uppercase tracking-wider text-[10px] text-accent font-semibold flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block animate-pulse" />
             Candidate Intelligence Engine
           </span>
           <span className="hidden sm:inline text-border-strong">/</span>
-          <span className="hidden sm:inline font-mono text-[10px] text-ink-muted">
+          <span className="hidden sm:inline font-sans text-[10px] text-ink-muted">
             MODERN OBSIDIAN INTERFACE
           </span>
         </div>
@@ -89,7 +89,7 @@ export default function AppHeader() {
             <ShieldCheck className="w-3 h-3 text-accent" />
             End-to-End Encrypted Session
           </span>
-          <span className="font-mono text-[10px] text-ink-muted">v2.4.0</span>
+          <span className="font-sans text-[10px] text-ink-muted">v2.4.0</span>
         </div>
       </div>
 
@@ -108,7 +108,7 @@ export default function AppHeader() {
               <span className="font-sans text-base font-bold text-ink-primary tracking-tight leading-none">
                 {APP_NAME}
               </span>
-              <span className="font-mono text-[9px] uppercase tracking-widest text-ink-muted mt-0.5">
+              <span className="font-sans text-[9px] uppercase tracking-widest text-ink-muted mt-0.5">
                 Technical Interview Suite
               </span>
             </div>
@@ -132,7 +132,7 @@ export default function AppHeader() {
                   <Icon className={`w-3.5 h-3.5 ${active ? "text-accent" : "text-ink-muted"}`} />
                   <span>{item.label}</span>
                   {item.badge && (
-                    <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-accent-light text-accent border border-accent-border font-medium">
+                    <span className="text-[9px] font-sans px-1.5 py-0.2 rounded bg-accent-light text-accent border border-accent-border font-medium">
                       {item.badge}
                     </span>
                   )}
@@ -149,14 +149,14 @@ export default function AppHeader() {
         <div className="hidden md:flex items-center gap-4">
           {/* User pill */}
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded border border-border bg-surface-subtle">
-            <div className="w-6 h-6 rounded bg-accent-light text-accent flex items-center justify-center text-xs font-bold font-mono">
+            <div className="w-6 h-6 rounded bg-accent-light text-accent flex items-center justify-center text-xs font-bold font-sans">
               <UserIcon className="w-3.5 h-3.5" />
             </div>
             <div className="flex flex-col text-left">
               <span className="text-xs font-semibold text-ink-primary leading-tight max-w-[150px] truncate capitalize">
                 {userName}
               </span>
-              <span className="text-[10px] font-mono text-ink-muted leading-none truncate max-w-[150px]">
+              <span className="text-[10px] font-sans text-ink-muted leading-none truncate max-w-[150px]">
                 {userEmail}
               </span>
             </div>
@@ -194,7 +194,7 @@ export default function AppHeader() {
             </div>
             <div className="flex flex-col text-left">
               <span className="text-xs font-semibold text-ink-primary">{userName}</span>
-              <span className="text-[10px] font-mono text-ink-muted">{userEmail}</span>
+              <span className="text-[10px] font-sans text-ink-muted">{userEmail}</span>
             </div>
           </div>
 
@@ -218,7 +218,7 @@ export default function AppHeader() {
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-surface border border-border text-ink-secondary">
+                    <span className="text-[9px] font-sans px-1.5 py-0.5 rounded bg-surface border border-border text-ink-secondary">
                       {item.badge}
                     </span>
                   )}

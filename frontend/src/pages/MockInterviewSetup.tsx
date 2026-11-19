@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Sparkles,
@@ -185,7 +185,7 @@ export default function MockInterviewSetup() {
     <div className="space-y-10 animate-fade-in text-ink-primary font-sans max-w-5xl mx-auto pb-12">
       {/* Editorial Header */}
       <div className="space-y-3 text-left border-b border-border pb-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border text-[11px] font-mono uppercase tracking-widest text-primary">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border text-[11px] font-sans uppercase tracking-widest text-primary">
           <Sparkles className="w-3.5 h-3.5 text-accent" />
           <span>Real-Time Evaluation Chamber &bull; 18 Knowledge Categories</span>
         </div>
@@ -281,7 +281,7 @@ export default function MockInterviewSetup() {
                   2. Technology Stack & Frameworks
                 </h2>
               </div>
-              <span className="font-mono text-[11px] text-ink-muted">
+              <span className="font-sans text-[11px] text-ink-muted">
                 {selectedTechs.length} selected
               </span>
             </div>
@@ -341,11 +341,11 @@ export default function MockInterviewSetup() {
             {/* Active Selected Tags Display */}
             {selectedTechs.length > 0 && (
               <div className="pt-2 flex flex-wrap gap-1.5 items-center">
-                <span className="text-[11px] font-mono text-ink-muted mr-1">Active:</span>
+                <span className="text-[11px] font-sans text-ink-muted mr-1">Active:</span>
                 {selectedTechs.map((t) => (
                   <span
                     key={t}
-                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-surface border border-border text-[11px] font-mono text-ink-primary"
+                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-surface border border-border text-[11px] font-sans text-ink-primary"
                   >
                     {t}
                     <button
@@ -458,7 +458,7 @@ export default function MockInterviewSetup() {
                         }`}
                       >
                         <Clock className={`w-3.5 h-3.5 ${active ? "text-white" : "text-ink-muted"}`} />
-                        <span className="font-mono">{mins} Min</span>
+                        <span className="font-sans">{mins} Min</span>
                       </button>
                     );
                   })}
@@ -494,11 +494,11 @@ export default function MockInterviewSetup() {
               </div>
               <div className="flex justify-between py-1.5">
                 <span className="text-ink-secondary">Allocated Time:</span>
-                <span className="font-mono font-semibold text-ink-primary">{duration} Minutes</span>
+                <span className="font-sans font-semibold text-ink-primary">{duration} Minutes</span>
               </div>
               <div className="flex justify-between py-1.5">
                 <span className="text-ink-secondary">Stack Depth:</span>
-                <span className="font-mono font-semibold text-ink-primary">
+                <span className="font-sans font-semibold text-ink-primary">
                   {selectedTechs.length} Technologies
                 </span>
               </div>
@@ -542,7 +542,7 @@ export default function MockInterviewSetup() {
               <button
                 type="button"
                 onClick={loadPastSessions}
-                className="text-[10px] text-primary hover:underline font-mono"
+                className="text-[10px] text-primary hover:underline font-sans"
               >
                 Refresh
               </button>
@@ -571,7 +571,7 @@ export default function MockInterviewSetup() {
                           {s.job_role}
                         </span>
                         <span
-                          className={`px-1.5 py-0.5 rounded text-[10px] font-mono uppercase ${
+                          className={`px-1.5 py-0.5 rounded text-[10px] font-sans uppercase ${
                             isCompleted
                               ? "bg-primary-light text-primary font-semibold"
                               : "bg-surface border border-border text-ink-muted"
@@ -582,9 +582,9 @@ export default function MockInterviewSetup() {
                       </div>
 
                       <div className="flex items-center justify-between text-[11px] text-ink-secondary">
-                        <span className="font-mono">{turnCount} Turns</span>
+                        <span className="font-sans">{turnCount} Turns</span>
                         {s.created_at && (
-                          <span className="font-mono text-[10px] text-ink-muted">
+                          <span className="font-sans text-[10px] text-ink-muted">
                             {new Date(s.created_at).toLocaleDateString()}
                           </span>
                         )}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Check,
@@ -264,7 +264,7 @@ export default function PricingPage() {
               </div>
               <div>
                 <span className="editorial-meta text-primary block">ACTIVE CANDIDATE BALANCE</span>
-                <span className="font-mono text-2xl font-bold text-ink-primary tabular-nums">
+                <span className="font-sans text-2xl font-bold text-ink-primary tabular-nums">
                   {minutesAvailable} minutes available
                 </span>
               </div>
@@ -319,18 +319,18 @@ export default function PricingPage() {
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <span className="font-mono text-3xl font-bold text-ink-primary tabular-nums">
+                        <span className="font-sans text-3xl font-bold text-ink-primary tabular-nums">
                           {mins}
                         </span>
-                        <span className="text-xs font-mono text-ink-secondary ml-1">MINUTES</span>
+                        <span className="text-xs font-sans text-ink-secondary ml-1">MINUTES</span>
                       </div>
                       {mins === 10 && (
-                        <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-primary-light text-primary border border-primary-border font-semibold">
+                        <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-primary-light text-primary border border-primary-border font-semibold">
                           RECOMMENDED
                         </span>
                       )}
                       {mins === 30 && (
-                        <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-accent-light text-accent border border-accent-border font-semibold">
+                        <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-accent-light text-accent border border-accent-border font-semibold">
                           FULL LOOP
                         </span>
                       )}
@@ -338,13 +338,13 @@ export default function PricingPage() {
 
                     <div className="pt-2 border-t border-border flex justify-between items-baseline">
                       <span className="text-xs text-ink-secondary">Total Investment:</span>
-                      <span className="font-mono text-lg font-bold text-ink-primary tabular-nums">
-                        ₹{packCost}
+                      <span className="font-sans text-lg font-bold text-ink-primary tabular-nums">
+                        â‚¹{packCost}
                       </span>
                     </div>
 
                     <div className="mt-3 text-[11px] text-ink-muted">
-                      Standard rate ₹{pricePerMinute}/min &bull; Lifetime validity
+                      Standard rate â‚¹{pricePerMinute}/min &bull; Lifetime validity
                     </div>
                   </div>
                 );
@@ -384,7 +384,7 @@ export default function PricingPage() {
                 <h3 className="font-editorial text-lg font-bold text-ink-primary">
                   Order Summary
                 </h3>
-                <span className="font-mono text-[10px] text-primary uppercase font-bold">
+                <span className="font-sans text-[10px] text-primary uppercase font-bold">
                   PREPAID PACK
                 </span>
               </div>
@@ -392,20 +392,20 @@ export default function PricingPage() {
               <div className="space-y-3 text-xs">
                 <div className="flex justify-between items-center">
                   <span className="text-ink-secondary">Allocated Practice Time:</span>
-                  <span className="font-mono font-bold text-ink-primary">{selectedMinutes} Minutes</span>
+                  <span className="font-sans font-bold text-ink-primary">{selectedMinutes} Minutes</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-ink-secondary">Unit Price:</span>
-                  <span className="font-mono text-ink-primary">₹{pricePerMinute} / min</span>
+                  <span className="font-sans text-ink-primary">â‚¹{pricePerMinute} / min</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-ink-secondary">Gateway Taxes & Fees:</span>
-                  <span className="font-mono text-primary font-semibold">Included</span>
+                  <span className="font-sans text-primary font-semibold">Included</span>
                 </div>
                 <div className="pt-3 border-t border-border flex justify-between items-baseline">
                   <span className="font-bold text-ink-primary text-sm">Total Payable:</span>
-                  <span className="font-mono text-2xl font-bold text-ink-primary tabular-nums">
-                    ₹{price}
+                  <span className="font-sans text-2xl font-bold text-ink-primary tabular-nums">
+                    â‚¹{price}
                   </span>
                 </div>
               </div>
@@ -424,7 +424,7 @@ export default function PricingPage() {
                 ) : (
                   <>
                     <CreditCard className="w-4 h-4" />
-                    <span>Pay ₹{price} Securely</span>
+                    <span>Pay â‚¹{price} Securely</span>
                   </>
                 )}
               </button>

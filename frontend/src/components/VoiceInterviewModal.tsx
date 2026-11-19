@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Mic, MicOff, Pause, Play, RotateCcw, Send, Volume2, X } from "lucide-react";
 import { isAxiosError } from "axios";
@@ -442,18 +442,18 @@ export default function VoiceInterviewModal({ questionText, onComplete, onClose 
               className={`btn-primary text-xs !min-h-[42px] ${listening ? "!bg-error !border-error" : ""}`}
             >
               {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4 text-accent" />}
-              <span>{listening ? "Stop recording" : billing ? "Loading prepaid minute…" : "Start recording"}</span>
+              <span>{listening ? "Stop recording" : billing ? "Loading prepaid minuteâ€¦" : "Start recording"}</span>
             </button>
 
-            <div className="flex items-center gap-2 font-mono text-xs text-ink-secondary" aria-live="polite">
+            <div className="flex items-center gap-2 font-sans text-xs text-ink-secondary" aria-live="polite">
               <span className={`w-2.5 h-2.5 rounded-full ${listening ? "bg-error animate-pulse" : "bg-border-strong"}`} />
-              <span>{listening ? "Listening…" : "Microphone stopped"}</span>
+              <span>{listening ? "Listeningâ€¦" : "Microphone stopped"}</span>
             </div>
           </div>
 
           {/* Transcript Area */}
           <div className="space-y-1.5 text-left">
-            <label htmlFor="voice-transcript" className="block text-xs font-mono font-semibold uppercase tracking-wider text-ink-secondary">
+            <label htmlFor="voice-transcript" className="block text-xs font-sans font-semibold uppercase tracking-wider text-ink-secondary">
               Live transcript <span className="font-normal text-ink-muted">(editable)</span>
             </label>
             <textarea
@@ -480,12 +480,12 @@ export default function VoiceInterviewModal({ questionText, onComplete, onClose 
             />
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-ink-secondary text-left">
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-sans text-ink-secondary text-left">
             <span>
               Pace: <strong className={metrics.pace === "optimal" ? "text-primary font-bold" : metrics.pace === "slow" ? "text-accent font-bold" : "text-error font-bold"}>{paceLabel}</strong>
             </span>
             <span>
-              Fillers: {Object.entries(metrics.fillerCounts).filter(([, count]) => count > 0).map(([word, count]) => `${word} ${count}`).join(" · ") || "None detected"}
+              Fillers: {Object.entries(metrics.fillerCounts).filter(([, count]) => count > 0).map(([word, count]) => `${word} ${count}`).join(" Â· ") || "None detected"}
             </span>
           </div>
 
@@ -517,7 +517,7 @@ export default function VoiceInterviewModal({ questionText, onComplete, onClose 
               className="btn-primary text-xs !min-h-[40px] shadow-subtle"
             >
               <Send className="h-3.5 w-3.5" />
-              <span>{submitting ? "Finalizing transcript…" : "Submit verbal answer"}</span>
+              <span>{submitting ? "Finalizing transcriptâ€¦" : "Submit verbal answer"}</span>
             </button>
           </footer>
         </motion.section>
@@ -529,8 +529,8 @@ export default function VoiceInterviewModal({ questionText, onComplete, onClose 
 function MetricCard({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="card-swiss bg-surface p-3 space-y-1">
-      <p className="text-[10px] font-mono uppercase tracking-wider text-ink-muted">{label}</p>
-      <p className="font-mono text-lg font-bold text-ink-primary tabular-nums">{value}</p>
+      <p className="text-[10px] font-sans uppercase tracking-wider text-ink-muted">{label}</p>
+      <p className="font-sans text-lg font-bold text-ink-primary tabular-nums">{value}</p>
     </div>
   );
 }

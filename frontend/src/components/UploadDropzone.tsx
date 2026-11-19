@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+﻿import { useState, useRef } from "react";
 import { UploadCloud, FileText, X, CheckCircle2, AlertCircle } from "lucide-react";
 
 interface UploadDropzoneProps {
@@ -109,11 +109,11 @@ export default function UploadDropzone({ onFile, selectedFile: externalFile }: U
                 <span className="font-sans font-bold text-sm text-ink-primary max-w-sm truncate">
                   {currentFile.name}
                 </span>
-                <span className="font-mono text-xs text-ink-secondary tabular-nums">
+                <span className="font-sans text-xs text-ink-secondary tabular-nums">
                   ({formatFileSize(currentFile.size)})
                 </span>
               </div>
-              <p className="font-mono text-[11px] text-primary flex items-center justify-center gap-1">
+              <p className="font-sans text-[11px] text-primary flex items-center justify-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Ready for AI Analysis
               </p>
             </div>
@@ -147,13 +147,13 @@ export default function UploadDropzone({ onFile, selectedFile: externalFile }: U
                 Drag and drop your resume here, or{" "}
                 <span className="text-primary underline underline-offset-2">browse files</span>
               </p>
-              <p className="font-mono text-xs text-ink-secondary">
+              <p className="font-sans text-xs text-ink-secondary">
                 PDF format only &bull; Maximum file size 10MB
               </p>
             </div>
 
             <div className="pt-2">
-              <span className="inline-block font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-surface-subtle border border-border text-ink-muted">
+              <span className="inline-block font-sans text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-surface-subtle border border-border text-ink-muted">
                 FastAPI OCR &bull; PyMuPDF Ingestion
               </span>
             </div>

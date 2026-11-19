@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import AppHeader from "../components/layout/AppHeader";
 
 interface DashboardLayoutProps {
@@ -22,11 +22,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex items-center gap-3">
             <span className="font-sans font-bold text-ink-primary">Interview Assistant</span>
             <span className="text-border-strong">/</span>
-            <span className="font-mono text-[11px] text-ink-muted">
-              Obsidian Architecture &bull; Figtree Typography
+            <span className="font-sans text-[11px] text-ink-muted">
+              Obsidian Architecture &bull; Barlow Typography
             </span>
           </div>
-          <div className="flex items-center gap-6 font-mono text-[11px] text-ink-muted">
+          <div className="flex items-center gap-6 font-sans text-[11px] text-ink-muted">
             <span>LLM: GEMINI 2.5 FLASH</span>
             <span>&bull;</span>
             <span>STATUS: OPERATIONAL</span>

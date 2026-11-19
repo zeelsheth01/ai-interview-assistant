@@ -1,4 +1,4 @@
-const Platforms = () => {
+﻿const Platforms = () => {
   const platforms = [
     { name: 'Google Meet', type: 'Video Rounds' },
     { name: 'Zoom Enterprise', type: 'Virtual Panel' },
@@ -27,7 +27,7 @@ const Platforms = () => {
               <span className="font-sans text-xs font-bold text-ink-primary block">
                 {platform.name}
               </span>
-              <span className="font-mono text-[10px] text-ink-secondary block">
+              <span className="font-sans text-[10px] text-ink-secondary block">
                 {platform.type}
               </span>
             </div>

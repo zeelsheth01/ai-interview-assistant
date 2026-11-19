@@ -6,7 +6,7 @@ from jose import jwt
 from app.core.config import settings
 
 ALGORITHM = "HS256"
-TOKEN_LIFETIME = timedelta(hours=12)
+TOKEN_LIFETIME = timedelta(days=30)
 
 
 def hash_password(password: str) -> str:

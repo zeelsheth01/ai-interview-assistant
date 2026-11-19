@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Mic, Terminal, Volume2 } from 'lucide-react';
 import { APP_NAME } from '../../constants/brand';
 
@@ -35,7 +35,7 @@ const DemoSection = () => {
         {/* Realistic Console Wireframe */}
         <div className="max-w-5xl mx-auto card-swiss bg-canvas border border-border shadow-elevated overflow-hidden">
           {/* Top Bar */}
-          <div className="px-6 py-3.5 border-b border-border bg-surface flex items-center justify-between text-xs font-mono text-ink-secondary">
+          <div className="px-6 py-3.5 border-b border-border bg-surface flex items-center justify-between text-xs font-sans text-ink-secondary">
             <div className="flex items-center gap-3">
               <span className="w-2.5 h-2.5 rounded-full bg-primary" />
               <span className="font-semibold text-ink-primary">INTERVIEW SESSION: PYTHON & DISTRIBUTED SYSTEMS</span>
@@ -55,20 +55,20 @@ const DemoSection = () => {
                   <span className="editorial-meta text-primary">QUESTION 02 OF 10</span>
                   <button
                     onClick={simulateSpeech}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-subtle border border-border text-[11px] font-mono text-ink-primary hover:border-primary transition-colors"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-subtle border border-border text-[11px] font-sans text-ink-primary hover:border-primary transition-colors"
                   >
                     <Volume2 className={`w-3.5 h-3.5 ${isPlayingAudio ? 'text-accent animate-pulse' : 'text-ink-secondary'}`} />
                     <span>{isPlayingAudio ? 'Speaking...' : 'Listen Question'}</span>
                   </button>
                 </div>
                 <h3 className="font-editorial text-xl sm:text-2xl text-ink-primary font-medium leading-snug">
-                  “Explain how the Global Interpreter Lock (GIL) affects multithreaded concurrency in Python, and how you architect CPU-bound tasks around it.”
+                  â€œExplain how the Global Interpreter Lock (GIL) affects multithreaded concurrency in Python, and how you architect CPU-bound tasks around it.â€
                 </h3>
               </div>
 
               {/* Live Answer Transcript Area */}
               <div className="p-4 rounded border border-border bg-surface-subtle space-y-2">
-                <div className="flex items-center justify-between text-[11px] font-mono text-ink-secondary">
+                <div className="flex items-center justify-between text-[11px] font-sans text-ink-secondary">
                   <span className="flex items-center gap-1.5 text-primary font-semibold">
                     <Mic className="w-3.5 h-3.5 text-accent animate-pulse" />
                     LIVE VERBAL TRANSCRIPT
@@ -76,21 +76,21 @@ const DemoSection = () => {
                   <span className="text-ink-muted">00:48s elapsed</span>
                 </div>
                 <p className="font-sans text-xs sm:text-sm text-ink-primary leading-relaxed">
-                  “The GIL prevents multiple native threads from executing Python bytecodes simultaneously. For I/O bound work like database queries and network calls, asyncio or standard threads work great because the GIL is released during I/O. However, for CPU-intensive tasks, we bypass the GIL by utilizing the multiprocessing module or delegating computational workloads to Celery workers...”
+                  â€œThe GIL prevents multiple native threads from executing Python bytecodes simultaneously. For I/O bound work like database queries and network calls, asyncio or standard threads work great because the GIL is released during I/O. However, for CPU-intensive tasks, we bypass the GIL by utilizing the multiprocessing module or delegating computational workloads to Celery workers...â€
                 </p>
               </div>
             </div>
 
             {/* Right Coaching Feedback Column (5 Cols) */}
             <div className="md:col-span-5 p-6 sm:p-8 space-y-5 bg-surface-subtle">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-primary uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-xs font-sans font-semibold text-primary uppercase tracking-wider">
                 <Terminal className="w-4 h-4 text-accent" />
                 <span>AI Coach Telemetry Analysis</span>
               </div>
 
               <div className="space-y-3">
                 <div className="p-3.5 rounded bg-surface border border-border space-y-1">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-primary font-bold">
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-primary font-bold">
                     Key Strengths Mentioned
                   </span>
                   <p className="text-xs text-ink-primary leading-relaxed">
@@ -99,7 +99,7 @@ const DemoSection = () => {
                 </div>
 
                 <div className="p-3.5 rounded bg-surface border border-border space-y-1">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-accent font-bold">
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-accent font-bold">
                     Opportunity for Distinction
                   </span>
                   <p className="text-xs text-ink-primary leading-relaxed">
@@ -109,7 +109,7 @@ const DemoSection = () => {
               </div>
 
               <div className="pt-2">
-                <div className="flex items-center justify-between text-[11px] font-mono text-ink-secondary mb-1">
+                <div className="flex items-center justify-between text-[11px] font-sans text-ink-secondary mb-1">
                   <span>SPEECH PACING CONFIDENCE</span>
                   <span className="text-primary font-bold">94%</span>
                 </div>

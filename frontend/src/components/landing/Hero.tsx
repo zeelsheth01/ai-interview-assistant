@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, FileSearch, Terminal } from 'lucide-react';
+﻿import { ArrowRight, CheckCircle2, FileSearch, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
@@ -14,7 +14,7 @@ const Hero = () => {
           {/* Left Column: 7 Cols on Desktop */}
           <div className="lg:col-span-7 space-y-6 text-left">
             {/* Editorial Category Tag */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border text-[11px] font-mono uppercase tracking-widest text-ink-secondary">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border text-[11px] font-sans uppercase tracking-widest text-ink-secondary">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               <span>System Protocol &bull; Career Intelligence 2026</span>
             </div>
@@ -54,7 +54,7 @@ const Hero = () => {
             {/* Architectural Trust Points */}
             <div className="pt-6 border-t border-border grid grid-cols-3 gap-4 max-w-xl">
               <div className="space-y-1">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-ink-primary tabular-nums">
+                <span className="font-sans text-xl sm:text-2xl font-bold text-ink-primary tabular-nums">
                   15+
                 </span>
                 <p className="text-xs text-ink-secondary font-medium">
@@ -62,7 +62,7 @@ const Hero = () => {
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-ink-primary tabular-nums">
+                <span className="font-sans text-xl sm:text-2xl font-bold text-ink-primary tabular-nums">
                   &lt;1.2s
                 </span>
                 <p className="text-xs text-ink-secondary font-medium">
@@ -70,7 +70,7 @@ const Hero = () => {
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-primary tabular-nums">
+                <span className="font-sans text-xl sm:text-2xl font-bold text-primary tabular-nums">
                   100%
                 </span>
                 <p className="text-xs text-ink-secondary font-medium">
@@ -84,7 +84,7 @@ const Hero = () => {
           <div className="lg:col-span-5">
             <div className="card-swiss bg-surface p-6 shadow-elevated relative overflow-hidden">
               {/* Document Assessment Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-border text-[11px] font-mono text-ink-secondary">
+              <div className="flex items-center justify-between pb-4 border-b border-border text-[11px] font-sans text-ink-secondary">
                 <div className="flex items-center gap-2">
                   <FileSearch className="w-3.5 h-3.5 text-primary" />
                   <span className="font-semibold text-ink-primary">CANDIDATE INTELLIGENCE REPORT</span>
@@ -97,17 +97,17 @@ const Hero = () => {
               {/* Candidate Metadata Breakdown */}
               <div className="py-4 space-y-3">
                 <div className="flex justify-between items-baseline text-xs">
-                  <span className="text-ink-secondary font-mono text-[11px]">IDENTIFIED ROLE</span>
+                  <span className="text-ink-secondary font-sans text-[11px]">IDENTIFIED ROLE</span>
                   <span className="font-semibold text-ink-primary">Senior Full Stack Architect</span>
                 </div>
                 <div className="flex justify-between items-baseline text-xs">
-                  <span className="text-ink-secondary font-mono text-[11px]">DEMONSTRATED STACK</span>
-                  <span className="font-mono text-[11px] text-ink-primary font-medium">
+                  <span className="text-ink-secondary font-sans text-[11px]">DEMONSTRATED STACK</span>
+                  <span className="font-sans text-[11px] text-ink-primary font-medium">
                     React &bull; Python &bull; PostgreSQL
                   </span>
                 </div>
                 <div className="flex justify-between items-baseline text-xs">
-                  <span className="text-ink-secondary font-mono text-[11px]">EXPERIENCE EVALUATION</span>
+                  <span className="text-ink-secondary font-sans text-[11px]">EXPERIENCE EVALUATION</span>
                   <span className="text-ink-primary font-semibold">4.5 Years &bull; High Signal</span>
                 </div>
               </div>
@@ -115,22 +115,22 @@ const Hero = () => {
               {/* Sample High-Signal Question Card */}
               <div className="p-4 rounded border border-border bg-surface-subtle space-y-2.5 mt-2 text-left">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-primary font-bold px-1.5 py-0.5 rounded bg-surface border border-border">
+                  <span className="font-sans text-[10px] text-primary font-bold px-1.5 py-0.5 rounded bg-surface border border-border">
                     QUESTION 01 &bull; SYSTEM DESIGN
                   </span>
-                  <span className="text-[10px] font-mono text-accent font-semibold">HIGH PRIORITY</span>
+                  <span className="text-[10px] font-sans text-accent font-semibold">HIGH PRIORITY</span>
                 </div>
                 <p className="font-sans text-sm font-medium text-ink-primary leading-snug">
                   "How would you architect a connection-pooled cache invalidation strategy for Neon PostgreSQL when running under serverless FastAPI microservices?"
                 </p>
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
+                  <span className="text-[10px] font-sans px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
                     FastAPI
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
+                  <span className="text-[10px] font-sans px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
                     Redis Cache
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
+                  <span className="text-[10px] font-sans px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary">
                     SQLAlchemy
                   </span>
                 </div>
@@ -140,7 +140,7 @@ const Hero = () => {
               <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-xs text-ink-secondary">
                 <div className="flex items-center gap-2">
                   <Terminal className="w-3.5 h-3.5 text-accent" />
-                  <span className="font-mono text-[11px]">STAR Coaching: Active</span>
+                  <span className="font-sans text-[11px]">STAR Coaching: Active</span>
                 </div>
                 <span className="text-primary font-semibold text-xs flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Ready for Practice

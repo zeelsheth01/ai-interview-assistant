@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FcGoogle } from "react-icons/fc";
 import {
   Mail,
   Lock,
@@ -10,6 +9,7 @@ import {
   EyeOff,
   AlertCircle,
   ShieldCheck,
+  Globe,
 } from "lucide-react";
 import api from "../api/api";
 import { GoogleLogin } from "@react-oauth/google";
@@ -35,17 +35,19 @@ export default function Login() {
 
     setError("");
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
       setLoading(true);
 
       const res = await api.post("/auth/login", {
-        email,
+        email: normalizedEmail,
         password,
       });
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("loggedIn", "true");
-      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userEmail", normalizedEmail);
       if (res.data.name) {
         localStorage.setItem("userName", res.data.name);
       }
@@ -54,13 +56,24 @@ export default function Login() {
       navigate(returnTo ?? "/dashboard");
     } catch (err: unknown) {
       console.log("LOGIN ERROR:", err);
-      const detail =
-        typeof err === "object" && err !== null && "response" in err
-          ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
-          : undefined;
-      setError(
-        detail || "Invalid email or password. Please try again."
-      );
+      let errorMsg = "Unable to connect to the backend server. Please verify the API is running on http://localhost:8000.";
+      if (typeof err === "object" && err !== null) {
+        const axErr = err as { response?: { status?: number; data?: { detail?: string } }; message?: string };
+        if (axErr.response) {
+          if (axErr.response.data?.detail) {
+            errorMsg = axErr.response.data.detail;
+          } else if (axErr.response.status === 401) {
+            errorMsg = "Invalid email or password. Please try again.";
+          } else {
+            errorMsg = `Server error (${axErr.response.status}). Please try again.`;
+          }
+        } else if (axErr.message === "Network Error") {
+          errorMsg = "Cannot connect to backend server. Please ensure the backend is running on http://localhost:8000.";
+        } else if (axErr.message) {
+          errorMsg = axErr.message;
+        }
+      }
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -140,7 +153,7 @@ export default function Login() {
           <form onSubmit={handleLogin} className="space-y-4">
             {/* Email Address */}
             <div>
-              <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
+              <label className="block text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary mb-1.5">
                 Candidate Email
               </label>
               <div className="relative">
@@ -159,7 +172,7 @@ export default function Login() {
             {/* Password */}
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="text-[11px] font-mono font-semibold uppercase tracking-wider text-ink-secondary">
+                <label className="text-[11px] font-sans font-semibold uppercase tracking-wider text-ink-secondary">
                   Password
                 </label>
                 <Link
@@ -175,7 +188,7 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   required
                   className="input-field pl-10 pr-10"
-                  placeholder="••••••••"
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -204,7 +217,7 @@ export default function Login() {
           {/* Divider */}
           <div className="flex items-center gap-3 my-2">
             <div className="flex-1 h-px bg-border" />
-            <span className="font-mono text-[10px] text-ink-muted uppercase tracking-wider">
+            <span className="font-sans text-[10px] text-ink-muted uppercase tracking-wider">
               Or Authenticate with Google
             </span>
             <div className="flex-1 h-px bg-border" />
@@ -222,7 +235,7 @@ export default function Login() {
               }}
               className="w-full min-h-[46px] rounded border border-border bg-surface hover:bg-surface-subtle text-ink-primary text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-subtle"
             >
-              <FcGoogle className="text-lg" />
+              <Globe className="w-4 h-4 text-primary" />
               <span>Continue with Google</span>
             </button>
 
@@ -249,7 +262,7 @@ export default function Login() {
         </div>
 
         {/* Security Meta Footnote */}
-        <div className="flex items-center justify-center gap-2 text-[11px] font-mono text-ink-muted">
+        <div className="flex items-center justify-center gap-2 text-[11px] font-sans text-ink-muted">
           <ShieldCheck className="w-3.5 h-3.5 text-primary" />
           <span>AES-256 Encrypted Session &bull; Token Persistence</span>
         </div>

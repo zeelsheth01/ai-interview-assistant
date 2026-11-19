@@ -1,9 +1,9 @@
-function Card({ title, count, meta }: { title: string; count: number | string; meta: string }) {
+﻿function Card({ title, count, meta }: { title: string; count: number | string; meta: string }) {
   return (
     <div className="card-swiss bg-surface p-5 space-y-2 text-left shadow-subtle">
       <span className="editorial-meta text-ink-muted block">{title}</span>
-      <p className="font-mono text-2xl font-bold text-ink-primary tabular-nums">{count}</p>
-      <span className="text-[11px] font-mono text-ink-secondary block">{meta}</span>
+      <p className="font-sans text-2xl font-bold text-ink-primary tabular-nums">{count}</p>
+      <span className="text-[11px] font-sans text-ink-secondary block">{meta}</span>
     </div>
   );
 }

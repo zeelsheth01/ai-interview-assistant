@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { APP_NAME } from '../../constants/brand';
@@ -13,14 +13,14 @@ const Navbar = () => {
           {/* Brand Lockup */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center gap-3 group">
-              <span className="w-8 h-8 rounded-lg bg-accent text-canvas font-mono font-bold text-base flex items-center justify-center group-hover:opacity-90 transition-opacity">
+              <span className="w-8 h-8 rounded-lg bg-accent text-canvas font-sans font-bold text-base flex items-center justify-center group-hover:opacity-90 transition-opacity">
                 IA
               </span>
               <div className="flex flex-col text-left">
                 <span className="font-editorial text-lg font-bold text-ink-primary tracking-tight leading-none">
                   {APP_NAME}
                 </span>
-                <span className="font-mono text-[9px] uppercase tracking-widest text-accent mt-0.5 font-medium">
+                <span className="font-sans text-[9px] uppercase tracking-widest text-accent mt-0.5 font-medium">
                   Obsidian Intelligence
                 </span>
               </div>

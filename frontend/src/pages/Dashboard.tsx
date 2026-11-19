@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+﻿import { useEffect, useState, useMemo } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import {
   Copy,
@@ -206,7 +206,7 @@ export default function Dashboard() {
       {/* Editorial Welcome Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-border">
         <div className="space-y-2 text-left">
-          <div className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-primary">
+          <div className="inline-flex items-center gap-2 text-[11px] font-sans uppercase tracking-widest text-primary">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             <span>Candidate Preparation Suite &bull; {userName}</span>
           </div>
@@ -255,37 +255,37 @@ export default function Dashboard() {
               {questions.length > 0 ? "Profile Synced" : "Pending Ingestion"}
             </span>
           </div>
-          <span className="font-mono text-[10px] text-ink-muted block">
+          <span className="font-sans text-[10px] text-ink-muted block">
             {resumeId ? `Session ID: #${resumeId}` : "No resume on file"}
           </span>
         </div>
 
         <div className="card-swiss bg-surface p-4 sm:p-5 space-y-1">
           <span className="editorial-meta text-ink-muted block">SYLLABUS VOLUME</span>
-          <span className="font-mono text-2xl font-bold text-ink-primary tabular-nums block">
+          <span className="font-sans text-2xl font-bold text-ink-primary tabular-nums block">
             {questions.length}
           </span>
-          <span className="font-mono text-[10px] text-ink-secondary block">
+          <span className="font-sans text-[10px] text-ink-secondary block">
             Tailored challenges
           </span>
         </div>
 
         <div className="card-swiss bg-surface p-4 sm:p-5 space-y-1">
           <span className="editorial-meta text-ink-muted block">PARSED SKILLS</span>
-          <span className="font-mono text-2xl font-bold text-primary tabular-nums block">
+          <span className="font-sans text-2xl font-bold text-primary tabular-nums block">
             {skills.length > 0 ? skills.length : "12"}
           </span>
-          <span className="font-mono text-[10px] text-ink-secondary block truncate">
+          <span className="font-sans text-[10px] text-ink-secondary block truncate">
             {skills.slice(0, 3).join(", ") || "Full-stack focus"}
           </span>
         </div>
 
         <div className="card-swiss bg-surface p-4 sm:p-5 space-y-1">
           <span className="editorial-meta text-ink-muted block">ESTIMATED PREP</span>
-          <span className="font-mono text-2xl font-bold text-accent tabular-nums block">
+          <span className="font-sans text-2xl font-bold text-accent tabular-nums block">
             {Math.max(15, questions.length * 3)}m
           </span>
-          <span className="font-mono text-[10px] text-ink-secondary block">
+          <span className="font-sans text-[10px] text-ink-secondary block">
             Target review duration
           </span>
         </div>
@@ -295,16 +295,16 @@ export default function Dashboard() {
       {questions.length > 0 && (
         <div className="card-swiss bg-surface-subtle p-6 border-l-4 border-l-primary space-y-3 text-left shadow-subtle">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-primary-light text-primary font-bold border border-primary-border">
+            <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-primary-light text-primary font-bold border border-primary-border">
               HIGH PRIORITY &bull; RECOMMENDED FIRST PRACTICE
             </span>
-            <span className="font-mono text-[11px] text-ink-muted">
+            <span className="font-sans text-[11px] text-ink-muted">
               Grounded in Declared Architecture
             </span>
           </div>
 
           <p className="font-sans text-lg sm:text-xl text-ink-primary font-medium leading-snug">
-            “{questions[0]}”
+            â€œ{questions[0]}â€
           </p>
 
           <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
@@ -312,12 +312,12 @@ export default function Dashboard() {
               {getTagsForQuestion(questions[0]).map((t, idx) => (
                 <span
                   key={idx}
-                  className="font-mono text-[10px] px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary"
+                  className="font-sans text-[10px] px-2 py-0.5 rounded bg-surface border border-border text-ink-secondary"
                 >
                   {t.label}
                 </span>
               ))}
-              <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-surface border border-border text-accent font-semibold">
+              <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-surface border border-border text-accent font-semibold">
                 High Signal
               </span>
             </div>
@@ -368,7 +368,7 @@ export default function Dashboard() {
               </div>
 
               <div className="text-right shrink-0">
-                <span className="font-mono text-[11px] text-ink-secondary">
+                <span className="font-sans text-[11px] text-ink-secondary">
                   Showing {filteredQuestions.length} of {questions.length}
                 </span>
               </div>
@@ -380,7 +380,7 @@ export default function Dashboard() {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1 rounded text-[11px] font-mono uppercase tracking-wider shrink-0 transition-colors ${
+                  className={`px-3 py-1 rounded text-[11px] font-sans uppercase tracking-wider shrink-0 transition-colors ${
                     selectedCategory === cat
                       ? "bg-primary text-white font-bold"
                       : "bg-surface border border-border text-ink-secondary hover:text-ink-primary"
@@ -396,7 +396,7 @@ export default function Dashboard() {
           {loading ? (
             <div className="card-swiss bg-surface p-12 text-center space-y-3">
               <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
-              <span className="font-mono text-xs text-ink-secondary">
+              <span className="font-sans text-xs text-ink-secondary">
                 Loading tailored interview syllabus...
               </span>
             </div>
@@ -421,7 +421,7 @@ export default function Dashboard() {
                       <div className="space-y-2 flex-1">
                         <div className="flex items-center gap-2">
                           <span
-                            className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                            className={`font-sans text-[10px] font-bold px-1.5 py-0.5 rounded ${
                               isActive
                                 ? "bg-primary text-white"
                                 : "bg-surface-subtle border border-border text-ink-secondary"
@@ -429,7 +429,7 @@ export default function Dashboard() {
                           >
                             Q{idx + 1}
                           </span>
-                          <span className="font-mono text-[10px] text-ink-muted uppercase">
+                          <span className="font-sans text-[10px] text-ink-muted uppercase">
                             {diff.label}
                           </span>
                         </div>
@@ -446,7 +446,7 @@ export default function Dashboard() {
                           {tags.map((t, tIdx) => (
                             <span
                               key={tIdx}
-                              className="font-mono text-[9px] px-2 py-0.5 rounded bg-surface-subtle border border-border text-ink-secondary"
+                              className="font-sans text-[9px] px-2 py-0.5 rounded bg-surface-subtle border border-border text-ink-secondary"
                             >
                               {t.label}
                             </span>

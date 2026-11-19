@@ -1,4 +1,4 @@
-import { useLocation, Link, useNavigate } from "react-router-dom";
+﻿import { useLocation, Link, useNavigate } from "react-router-dom";
 import { LogOut, User, Wallet } from "lucide-react";
 
 export default function Topbar() {
@@ -43,7 +43,7 @@ export default function Topbar() {
         <h2 className="font-editorial text-2xl sm:text-3xl font-semibold text-ink-primary tracking-tight">
           {getPageTitle()}
         </h2>
-        <p className="font-mono text-xs text-ink-secondary mt-0.5">
+        <p className="font-sans text-xs text-ink-secondary mt-0.5">
           Grounded technical challenges &bull; STAR delivery analysis
         </p>
       </div>
@@ -58,7 +58,7 @@ export default function Topbar() {
         </Link>
 
         {/* User Badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded border border-border bg-surface text-xs font-mono">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded border border-border bg-surface text-xs font-sans">
           <div className="w-5 h-5 rounded bg-primary-light text-primary flex items-center justify-center text-[10px] font-bold">
             <User className="w-3 h-3" />
           </div>

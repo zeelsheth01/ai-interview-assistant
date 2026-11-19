@@ -1,204 +1,204 @@
-/* ==========================================================================
-   CENTRALIZED DESIGN SYSTEM — MODERN OBSIDIAN DARK
-   Typography: Figtree & JetBrains Mono (Typeform / Modern SaaS Aesthetic)
-   ========================================================================== */
-
-:root {
-  /* Core Master Theme Tokens — Modern Obsidian Dark */
-  --color-background: #09090B;
-  --color-canvas: #09090B;
-  --color-surface: #111114;
-  --color-surface-subtle: #18181B;
-  --color-surface-muted: #202025;
-  --color-surface-elevated: #27272E;
-
-  --color-primary-text: #FAFAFA;
-  --color-secondary-text: #A1A1AA;
-  --color-text-muted: #71717A;
-  --color-text-faint: #52525B;
-
-  /* Primary Accent: Precision Emerald (Linear / Vercel Status) */
-  --color-primary: #10B981;
-  --color-primary-hover: #059669;
-  --color-muted-green: rgba(16, 185, 129, 0.14);
-  --color-primary-border: rgba(16, 185, 129, 0.3);
-
-  /* Secondary Accent: Electric Indigo */
-  --color-accent: #6366F1;
-  --color-accent-hover: #4F46E5;
-  --color-accent-light: rgba(99, 102, 241, 0.14);
-  --color-accent-border: rgba(99, 102, 241, 0.35);
-
-  /* Crisp 1px Precision Dark Borders */
-  --color-border: #27272A;
-  --color-border-subtle: #1F1F23;
-  --color-border-strong: #3F3F46;
-
-  /* Semantic Feedback Colors */
-  --color-success: #10B981;
-  --color-success-bg: rgba(16, 185, 129, 0.12);
-  --color-warning: #F59E0B;
-  --color-warning-bg: rgba(245, 158, 11, 0.12);
-  --color-error: #EF4444;
-  --color-error-bg: rgba(239, 68, 68, 0.14);
-
-  /* Typography: Figtree & JetBrains Mono */
-  --font-sans: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", "Geist Mono", ui-monospace, monospace;
-
-  /* Spacing Scale (8px rhythm) */
-  --space-1: 0.25rem;  /* 4px */
-  --space-2: 0.5rem;   /* 8px */
-  --space-3: 0.75rem;  /* 12px */
-  --space-4: 1rem;     /* 16px */
-  --space-5: 1.25rem;  /* 20px */
-  --space-6: 1.5rem;   /* 24px */
-  --space-8: 2rem;     /* 32px */
-  --space-10: 2.5rem;  /* 40px */
-  --space-12: 3rem;    /* 48px */
-  --space-16: 4rem;    /* 64px */
-
-  /* Border Radii (Swiss restraint: 6-10px) */
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 10px;
-
-  /* Shadows (Dark tactile depth) */
-  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-card: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-elevated: 0 20px 40px -8px rgba(0, 0, 0, 0.7), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
-}
-
-/* Tabular numerals for statistics & metrics */
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
-}
-
-/* Editorial / Hero Headings */
-.font-editorial {
-  font-family: var(--font-heading);
-  letter-spacing: -0.03em;
-  font-weight: 600;
-  line-height: 1.15;
-}
-
-/* Metadata Label */
-.editorial-meta {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-secondary-text);
-  font-weight: 600;
-}
-
-/* Button System — High-Visibility Obsidian Action */
-.btn-primary {
-  min-height: 48px;
-  background-color: #10B981;
-  color: #09090B;
-  border: 1px solid #10B981;
-  border-radius: var(--radius-lg);
-  padding: 0.75rem 1.5rem;
-  font-family: var(--font-sans);
-  font-size: 0.9375rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.28);
-  cursor: pointer;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: #059669;
-  border-color: #059669;
-  color: #FFFFFF;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.42);
-}
-
-.btn-primary:disabled {
-  opacity: 0.55;
-  background-color: #27272A;
-  color: #71717A;
-  border-color: #27272A;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.btn-secondary {
-  min-height: 44px;
-  background-color: var(--color-surface-subtle);
-  color: var(--color-primary-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 0.625rem 1.25rem;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--shadow-subtle);
-  cursor: pointer;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background-color: var(--color-surface-muted);
-  border-color: var(--color-border-strong);
-  color: #FFFFFF;
-}
-
-.btn-secondary:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-/* Input System: 48px height, dark surface, precision border, emerald focus */
-.input-field {
-  width: 100%;
-  min-height: 46px;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 0.75rem 1rem;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  color: var(--color-primary-text);
-  transition: all 0.18s ease;
-  outline: none;
-}
-
-.input-field:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-muted-green);
-}
-
-.input-field::placeholder {
-  color: var(--color-text-muted);
-}
-
-/* Swiss / Obsidian Structural Card */
-.card-swiss {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-subtle);
-}
-
-.card-swiss-subtle {
-  background-color: var(--color-surface-subtle);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-}
+/* ==========================================================================
+   CENTRALIZED DESIGN SYSTEM - MODERN OBSIDIAN DARK
+   Typography: Barlow Pure Typeface
+   ========================================================================== */
+
+:root {
+  /* Core Master Theme Tokens - Modern Obsidian Dark */
+  --color-background: #09090B;
+  --color-canvas: #09090B;
+  --color-surface: #111114;
+  --color-surface-subtle: #18181B;
+  --color-surface-muted: #202025;
+  --color-surface-elevated: #27272E;
+
+  --color-primary-text: #FAFAFA;
+  --color-secondary-text: #A1A1AA;
+  --color-text-muted: #71717A;
+  --color-text-faint: #52525B;
+
+  /* Primary Accent: Precision Emerald (Linear / Vercel Status) */
+  --color-primary: #10B981;
+  --color-primary-hover: #059669;
+  --color-muted-green: rgba(16, 185, 129, 0.14);
+  --color-primary-border: rgba(16, 185, 129, 0.3);
+
+  /* Secondary Accent: Electric Indigo */
+  --color-accent: #6366F1;
+  --color-accent-hover: #4F46E5;
+  --color-accent-light: rgba(99, 102, 241, 0.14);
+  --color-accent-border: rgba(99, 102, 241, 0.35);
+
+  /* Crisp 1px Precision Dark Borders */
+  --color-border: #27272A;
+  --color-border-subtle: #1F1F23;
+  --color-border-strong: #3F3F46;
+
+  /* Semantic Feedback Colors */
+  --color-success: #10B981;
+  --color-success-bg: rgba(16, 185, 129, 0.12);
+  --color-warning: #F59E0B;
+  --color-warning-bg: rgba(245, 158, 11, 0.12);
+  --color-error: #EF4444;
+  --color-error-bg: rgba(239, 68, 68, 0.14);
+
+  /* Typography: Barlow Pure Across All Variants */
+  --font-sans: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Spacing Scale (8px rhythm) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+
+  /* Border Radii (Swiss restraint: 6-10px) */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+
+  /* Shadows (Dark tactile depth) */
+  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 20px 40px -8px rgba(0, 0, 0, 0.7), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* Tabular numerals for statistics & metrics */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Editorial / Hero Headings */
+.font-editorial {
+  font-family: var(--font-heading);
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+/* Metadata Label */
+.editorial-meta {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-secondary-text);
+  font-weight: 600;
+}
+
+/* Button System - High-Visibility Obsidian Action */
+.btn-primary {
+  min-height: 48px;
+  background-color: #10B981;
+  color: #09090B;
+  border: 1px solid #10B981;
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.28);
+  cursor: pointer;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #059669;
+  border-color: #059669;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.42);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  background-color: #27272A;
+  color: #71717A;
+  border-color: #27272A;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  min-height: 44px;
+  background-color: var(--color-surface-subtle);
+  color: var(--color-primary-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.625rem 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-subtle);
+  cursor: pointer;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-muted);
+  border-color: var(--color-border-strong);
+  color: #FFFFFF;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Input System: 48px height, dark surface, precision border, emerald focus */
+.input-field {
+  width: 100%;
+  min-height: 46px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--color-primary-text);
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-muted-green);
+}
+
+.input-field::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Swiss / Obsidian Structural Card */
+.card-swiss {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-subtle);
+}
+
+.card-swiss-subtle {
+  background-color: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
