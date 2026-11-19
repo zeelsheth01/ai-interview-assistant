@@ -389,7 +389,7 @@ export default function VoiceInterviewModal({ questionText, onComplete, onClose 
               <span className="editorial-meta text-primary block mb-1">
                 LIVE INTERVIEW PROTOCOL
               </span>
-              <h3 id="voice-interview-title" className="font-serif text-2xl font-bold text-ink-primary tracking-tight">
+              <h3 id="voice-interview-title" className="font-editorial text-2xl font-bold text-ink-primary tracking-tight">
                 Verbal Practice Chamber
               </h3>
             </div>
@@ -406,7 +406,7 @@ export default function VoiceInterviewModal({ questionText, onComplete, onClose 
           {/* Question Box */}
           <div className="my-5 p-5 rounded border border-border bg-surface-subtle space-y-3 text-left">
             <span className="editorial-meta text-ink-muted block">INTERVIEW QUESTION</span>
-            <p className="font-serif text-lg text-ink-primary font-medium leading-snug">
+            <p className="font-sans text-lg text-ink-primary font-medium leading-snug">
               {questionText}
             </p>
             {speechSupported && (

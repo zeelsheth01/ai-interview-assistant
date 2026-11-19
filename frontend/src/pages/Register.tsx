@@ -123,10 +123,10 @@ export default function Register() {
             <div className="space-y-6">
               {/* Brand Header */}
               <Link to="/" className="flex items-center gap-2.5 group">
-                <span className="w-8 h-8 rounded bg-primary text-white font-serif font-bold text-lg flex items-center justify-center">
+                <span className="w-8 h-8 rounded bg-primary text-black font-sans font-bold text-base flex items-center justify-center">
                   A
                 </span>
-                <span className="font-serif text-xl font-bold text-ink-primary tracking-tight">
+                <span className="font-sans text-xl font-bold text-ink-primary tracking-tight">
                   {APP_NAME}
                 </span>
               </Link>
@@ -169,7 +169,7 @@ export default function Register() {
           <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center">
             <div className="max-w-md w-full mx-auto space-y-6">
               <div>
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink-primary tracking-tight">
+                <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-ink-primary tracking-tight">
                   Create Candidate Profile
                 </h2>
                 <p className="text-xs sm:text-sm text-ink-secondary mt-1">

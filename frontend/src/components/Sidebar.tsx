@@ -25,11 +25,11 @@ export default function Sidebar() {
       <div className="space-y-8">
         {/* Logo area */}
         <Link to="/dashboard" className="flex items-center gap-2.5 px-2 group">
-          <div className="w-8 h-8 rounded bg-primary text-white font-serif font-bold text-lg flex items-center justify-center">
+          <div className="w-8 h-8 rounded bg-primary text-black font-sans font-bold text-sm flex items-center justify-center">
             A
           </div>
           <div className="flex flex-col text-left">
-            <span className="font-serif text-lg font-bold tracking-tight text-ink-primary leading-none">
+            <span className="font-sans text-base font-bold tracking-tight text-ink-primary leading-none">
               {APP_NAME}
             </span>
             <span className="font-mono text-[9px] uppercase tracking-widest text-ink-muted mt-0.5">

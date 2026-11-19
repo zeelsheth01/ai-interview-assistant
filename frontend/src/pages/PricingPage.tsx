@@ -219,10 +219,10 @@ export default function PricingPage() {
         <header className="border-b border-border bg-surface py-4 px-6 sm:px-8">
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <Link to="/" className="flex items-center gap-2 group">
-              <span className="w-8 h-8 rounded bg-primary text-white font-serif font-bold text-lg flex items-center justify-center">
+              <span className="w-8 h-8 rounded bg-primary text-black font-sans font-bold text-base flex items-center justify-center">
                 A
               </span>
-              <span className="font-serif text-xl font-bold text-ink-primary">
+              <span className="font-sans text-xl font-bold text-ink-primary">
                 {APP_NAME}
               </span>
             </Link>
@@ -299,7 +299,7 @@ export default function PricingPage() {
           
           {/* Pack Selection (8 Cols) */}
           <div className="lg:col-span-8 space-y-6">
-            <h2 className="font-serif text-xl font-bold text-ink-primary">
+            <h2 className="font-editorial text-xl font-bold text-ink-primary">
               Select Session Duration
             </h2>
 
@@ -353,7 +353,7 @@ export default function PricingPage() {
 
             {/* Feature Matrix Breakdown */}
             <div className="card-swiss bg-surface p-6 sm:p-8 space-y-4 shadow-subtle">
-              <h3 className="font-serif text-lg font-bold text-ink-primary">
+              <h3 className="font-editorial text-lg font-bold text-ink-primary">
                 Every minute includes complete telemetry
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-ink-primary">
@@ -381,7 +381,7 @@ export default function PricingPage() {
           <div className="lg:col-span-4">
             <div className="card-swiss bg-surface p-6 sm:p-7 shadow-elevated space-y-6 sticky top-24">
               <div className="flex items-center justify-between pb-4 border-b border-border">
-                <h3 className="font-serif text-lg font-bold text-ink-primary">
+                <h3 className="font-editorial text-lg font-bold text-ink-primary">
                   Order Summary
                 </h3>
                 <span className="font-mono text-[10px] text-primary uppercase font-bold">

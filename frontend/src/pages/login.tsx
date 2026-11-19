@@ -98,10 +98,10 @@ export default function Login() {
         {/* Brand Header Lockup */}
         <div className="text-center space-y-3">
           <Link to="/" className="inline-flex items-center gap-2.5 group">
-            <span className="w-9 h-9 rounded bg-primary text-white font-serif font-bold text-xl flex items-center justify-center group-hover:bg-primary-hover transition-colors">
+            <span className="w-9 h-9 rounded bg-primary text-black font-sans font-bold text-lg flex items-center justify-center group-hover:bg-primary-hover transition-colors">
               A
             </span>
-            <span className="font-serif text-2xl font-bold text-ink-primary tracking-tight">
+            <span className="font-sans text-xl font-bold text-ink-primary tracking-tight">
               {APP_NAME}
             </span>
           </Link>

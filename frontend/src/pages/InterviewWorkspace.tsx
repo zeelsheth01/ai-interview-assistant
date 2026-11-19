@@ -196,7 +196,7 @@ export default function InterviewWorkspace() {
         /* Empty State */
         <div className="card-swiss bg-surface p-12 text-center space-y-4 max-w-xl mx-auto">
           <HelpCircle className="w-8 h-8 text-ink-muted mx-auto" />
-          <h2 className="font-serif text-2xl font-bold text-ink-primary">
+          <h2 className="font-editorial text-2xl font-bold text-ink-primary">
             No Interview Questions Loaded
           </h2>
           <p className="text-xs text-ink-secondary">
@@ -396,7 +396,7 @@ export default function InterviewWorkspace() {
               <div className="flex items-center justify-between pb-3 border-b border-border">
                 <div className="flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-primary" />
-                  <h3 className="font-serif text-lg font-bold text-ink-primary">
+                  <h3 className="font-editorial text-lg font-bold text-ink-primary">
                     AI Coach Evaluation
                   </h3>
                 </div>

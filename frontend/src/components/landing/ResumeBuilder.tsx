@@ -5,7 +5,7 @@ const ResumeBuilder = () => {
     { num: '01', title: 'Upload PDF Document', desc: 'Secure local & cloud document parsing via PyMuPDF.' },
     { num: '02', title: 'Text & Entity Extraction', desc: 'Hybrid OCR extracts technical stacks, tools, and roles.' },
     { num: '03', title: 'Skills Taxonomy Mapping', desc: 'Matches skills against 15+ high-signal engineering domains.' },
-    { num: '04', title: 'Question Generation', desc: 'Synthesizes targeted technical challenges via Gemini 2.0.' }
+    { num: '04', title: 'Question Generation', desc: 'Synthesizes targeted technical challenges via Gemini 2.5 Flash.' }
   ];
 
   return (

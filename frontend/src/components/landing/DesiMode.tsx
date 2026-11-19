@@ -56,7 +56,7 @@ const DesiMode = () => {
             </div>
             <div>
               <span className="editorial-meta text-primary block mb-1">INTERVIEWER PROMPT</span>
-              <p className="font-serif text-lg sm:text-xl text-ink-primary font-medium leading-snug">
+              <p className="font-sans text-lg sm:text-xl text-ink-primary font-medium leading-snug">
                 {activeTab === 'behavioral'
                   ? '“Tell me about a time you handled an architectural disagreement during a production release.”'
                   : '“How do you decide between SQLite, Neon PostgreSQL, and Redis caching for our data layer?”'}

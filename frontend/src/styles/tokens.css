@@ -1,46 +1,52 @@
 /* ==========================================================================
-   CENTRALIZED DESIGN SYSTEM — EDITORIAL PROFESSIONAL + SWISS MINIMALIST
-   AI Interview Assistant Design System
+   CENTRALIZED DESIGN SYSTEM — MODERN OBSIDIAN DARK (LINEAR / VERCEL AESTHETIC)
+   Typography: Geist & Geist Mono
    ========================================================================== */
 
 :root {
-  /* Core Master Theme Tokens */
-  --color-background: #F5F4EF;
-  --color-surface: #FFFFFF;
-  --color-surface-subtle: #FAF9F5;
-  --color-surface-muted: #EFECE6;
+  /* Core Master Theme Tokens — Modern Obsidian Dark */
+  --color-background: #09090B;
+  --color-canvas: #09090B;
+  --color-surface: #111114;
+  --color-surface-subtle: #18181B;
+  --color-surface-muted: #202025;
+  --color-surface-elevated: #27272E;
 
-  --color-primary-text: #202A30;
-  --color-secondary-text: #69736F;
-  --color-text-muted: #8E9995;
-  --color-text-faint: #CBD2CE;
+  --color-primary-text: #FAFAFA;
+  --color-secondary-text: #A1A1AA;
+  --color-text-muted: #71717A;
+  --color-text-faint: #52525B;
 
-  --color-primary: #496A58;
-  --color-primary-hover: #385644;
-  --color-muted-green: #EAF0EA;
-  --color-primary-border: #C8D6CD;
+  /* Primary Accent: Precision Emerald (Linear / Vercel Status) */
+  --color-primary: #10B981;
+  --color-primary-hover: #059669;
+  --color-muted-green: rgba(16, 185, 129, 0.14);
+  --color-primary-border: rgba(16, 185, 129, 0.3);
 
-  --color-accent: #BD9058;
-  --color-accent-hover: #A57C48;
-  --color-accent-light: #F8F3EC;
-  --color-accent-border: #E6D4BF;
+  /* Secondary Accent: Electric Indigo */
+  --color-accent: #6366F1;
+  --color-accent-hover: #4F46E5;
+  --color-accent-light: rgba(99, 102, 241, 0.14);
+  --color-accent-border: rgba(99, 102, 241, 0.35);
 
-  --color-border: #E4E3DC;
-  --color-border-subtle: #ECEBE5;
-  --color-border-strong: #D5D3CA;
+  /* Crisp 1px Precision Dark Borders */
+  --color-border: #27272A;
+  --color-border-subtle: #1F1F23;
+  --color-border-strong: #3F3F46;
 
-  --color-success: #527A62;
-  --color-success-bg: #EDF4F0;
-  --color-warning: #B78945;
-  --color-warning-bg: #FAF4EB;
-  --color-error: #B75B54;
-  --color-error-bg: #FAF0EF;
+  /* Semantic Feedback Colors */
+  --color-success: #10B981;
+  --color-success-bg: rgba(16, 185, 129, 0.12);
+  --color-warning: #F59E0B;
+  --color-warning-bg: rgba(245, 158, 11, 0.12);
+  --color-error: #EF4444;
+  --color-error-bg: rgba(239, 68, 68, 0.14);
 
-  /* Typography - Typeform-inspired (Figtree / Aperçu / Lausanne) */
-  --font-sans: "Figtree", "Apercu Pro", "Apercu", "TWK Lausanne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Figtree", "Apercu Pro", "Apercu", "TWK Lausanne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: "Figtree", "Apercu Pro", "Apercu", "TWK Lausanne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Typography: Geist & Geist Mono */
+  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
 
   /* Spacing Scale (8px rhythm) */
   --space-1: 0.25rem;  /* 4px */
@@ -60,10 +66,10 @@
   --radius-lg: 8px;
   --radius-xl: 10px;
 
-  /* Shadows (Subtle, tactile, non-glow) */
-  --shadow-subtle: 0 1px 2px rgba(32, 42, 48, 0.04), 0 1px 1px rgba(32, 42, 48, 0.02);
-  --shadow-card: 0 2px 6px -1px rgba(32, 42, 48, 0.05), 0 1px 3px -1px rgba(32, 42, 48, 0.03);
-  --shadow-elevated: 0 12px 28px -6px rgba(32, 42, 48, 0.08), 0 4px 10px -2px rgba(32, 42, 48, 0.04);
+  /* Shadows (Dark tactile depth) */
+  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 20px 40px -8px rgba(0, 0, 0, 0.7), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
 }
 
 /* Tabular numerals for statistics & metrics */
@@ -72,15 +78,15 @@
   font-feature-settings: "tnum" 1;
 }
 
-/* Editorial Headings (Typeform-inspired Figtree) */
+/* Editorial / Hero Headings */
 .font-editorial {
   font-family: var(--font-heading);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   font-weight: 600;
   line-height: 1.15;
 }
 
-/* Swiss Metadata Label */
+/* Metadata Label */
 .editorial-meta {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
@@ -90,14 +96,14 @@
   font-weight: 600;
 }
 
-/* Button System: 44-50px height, restrained corner radii, clean focus */
+/* Button System — High Contrast Precision */
 .btn-primary {
-  min-height: 46px;
-  background-color: var(--color-primary);
-  color: #FFFFFF;
-  border: 1px solid var(--color-primary-hover);
+  min-height: 44px;
+  background-color: #FAFAFA;
+  color: #09090B;
+  border: 1px solid #FFFFFF;
   border-radius: var(--radius-lg);
-  padding: 0.625rem 1.375rem;
+  padding: 0.625rem 1.25rem;
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 600;
@@ -106,31 +112,31 @@
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--shadow-subtle);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
-  border-color: #2D4637;
+  background-color: #E4E4E7;
+  border-color: #E4E4E7;
   transform: translateY(-0.5px);
 }
 
 .btn-primary:disabled {
-  opacity: 0.55;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .btn-secondary {
-  min-height: 46px;
-  background-color: var(--color-surface);
+  min-height: 44px;
+  background-color: var(--color-surface-subtle);
   color: var(--color-primary-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 0.625rem 1.375rem;
+  padding: 0.625rem 1.25rem;
   font-family: var(--font-sans);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -141,20 +147,20 @@
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background-color: var(--color-surface-subtle);
+  background-color: var(--color-surface-muted);
   border-color: var(--color-border-strong);
-  color: var(--color-primary-text);
+  color: #FFFFFF;
 }
 
 .btn-secondary:disabled {
-  opacity: 0.55;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
-/* Input System: 48-52px height, 1px border, subtle focus ring */
+/* Input System: 48px height, dark surface, precision border, emerald focus */
 .input-field {
   width: 100%;
-  min-height: 48px;
+  min-height: 46px;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -168,14 +174,14 @@
 
 .input-field:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-muted-green);
+  box-shadow: 0 0 0 2px var(--color-muted-green);
 }
 
 .input-field::placeholder {
   color: var(--color-text-muted);
 }
 
-/* Swiss Structural Card */
+/* Swiss / Obsidian Structural Card */
 .card-swiss {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);

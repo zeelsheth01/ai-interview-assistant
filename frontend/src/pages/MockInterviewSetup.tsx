@@ -390,10 +390,10 @@ export default function MockInterviewSetup() {
                     >
                       <div
                         className={`w-4 h-4 rounded-full border mt-0.5 flex items-center justify-center shrink-0 ${
-                          active ? "border-primary bg-primary" : "border-border bg-white"
+                          active ? "border-primary bg-primary" : "border-border bg-surface"
                         }`}
                       >
-                        {active && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        {active && <div className="w-1.5 h-1.5 rounded-full bg-black" />}
                       </div>
                       <div className="space-y-0.5">
                         <p className={`text-xs font-semibold ${active ? "text-primary" : "text-ink-primary"}`}>

@@ -81,7 +81,7 @@ export default function AppHeader() {
           </span>
           <span className="hidden sm:inline text-border-strong">/</span>
           <span className="hidden sm:inline font-mono text-[10px] text-ink-muted">
-            SWISS MINIMALIST INTERFACE
+            MODERN OBSIDIAN INTERFACE
           </span>
         </div>
         <div className="flex items-center gap-4">
@@ -101,11 +101,11 @@ export default function AppHeader() {
             to="/dashboard"
             className="flex items-center gap-2.5 group focus:outline-none"
           >
-            <div className="w-8 h-8 rounded bg-ink-primary flex items-center justify-center text-white font-serif text-lg font-bold group-hover:bg-accent transition-colors">
+            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-black font-sans text-sm font-bold group-hover:bg-primary-hover transition-colors">
               A
             </div>
             <div className="flex flex-col">
-              <span className="font-serif text-lg font-bold text-ink-primary tracking-tight leading-none">
+              <span className="font-sans text-base font-bold text-ink-primary tracking-tight leading-none">
                 {APP_NAME}
               </span>
               <span className="font-mono text-[9px] uppercase tracking-widest text-ink-muted mt-0.5">

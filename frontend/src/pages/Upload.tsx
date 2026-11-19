@@ -244,7 +244,7 @@ export default function Upload() {
               <div className="w-12 h-12 rounded bg-primary-light text-primary mx-auto flex items-center justify-center border border-primary-border">
                 <LoaderCircle className="w-6 h-6 animate-spin text-primary" />
               </div>
-              <h2 className="font-serif text-2xl font-bold text-ink-primary">
+              <h2 className="font-editorial text-2xl font-bold text-ink-primary">
                 Analyzing Candidate Profile
               </h2>
               <p className="text-xs text-ink-secondary">

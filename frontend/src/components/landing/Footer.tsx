@@ -9,10 +9,10 @@ const Footer = () => {
           {/* Brand info */}
           <div className="md:col-span-1 space-y-3">
             <Link to="/" className="flex items-center gap-2 group">
-              <span className="w-7 h-7 rounded bg-primary text-white font-serif font-bold text-sm flex items-center justify-center">
-                A
+              <span className="w-7 h-7 rounded-md bg-accent text-canvas font-mono font-bold text-sm flex items-center justify-center">
+                IA
               </span>
-              <span className="font-serif text-lg font-bold text-ink-primary tracking-tight">
+              <span className="font-editorial text-lg font-bold text-ink-primary tracking-tight">
                 {APP_NAME}
               </span>
             </Link>

@@ -12,7 +12,7 @@ import Footer from '../components/landing/Footer';
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-canvas text-ink-primary font-sans antialiased selection:bg-primary selection:text-white">
+    <div className="min-h-screen bg-canvas text-ink-primary font-sans antialiased selection:bg-primary selection:text-canvas">
       <AnnouncementBar />
       <Navbar />
       <main>

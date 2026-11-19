@@ -6,20 +6,20 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   html {
-    background-color: #F5F4EF;
-    color: #202A30;
-    font-family: 'Figtree', 'Apercu Pro', 'Apercu', 'TWK Lausanne', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #09090B;
+    color: #FAFAFA;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    background-color: #F5F4EF;
-    color: #202A30;
+    background-color: #09090B;
+    color: #FAFAFA;
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -33,8 +33,8 @@
   }
 
   ::selection {
-    background-color: #496A58;
-    color: #FFFFFF;
+    background-color: #10B981;
+    color: #09090B;
   }
 
   button,
@@ -47,50 +47,50 @@
 }
 
 @layer utilities {
-  /* Swiss structural borders */
+  /* Precision Obsidian borders */
   .border-swiss {
-    border-color: #E4E3DC;
+    border-color: #27272A;
   }
 
   .border-swiss-subtle {
-    border-color: #ECEBE5;
+    border-color: #1F1F23;
   }
 
-  /* Micro grid background pattern for editorial texture */
+  /* Obsidian micro grid background pattern */
   .bg-editorial-grid {
-    background-image: linear-gradient(to right, rgba(32, 42, 48, 0.035) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(32, 42, 48, 0.035) 1px, transparent 1px);
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 28px 28px;
   }
 
-  /* Refined Swiss Card Surface */
+  /* Refined Dark Surface Card */
   .swiss-card {
-    background-color: #FFFFFF;
-    border: 1px solid #E4E3DC;
+    background-color: #111114;
+    border: 1px solid #27272A;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(32, 42, 48, 0.03), 0 1px 2px rgba(32, 42, 48, 0.02);
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
   }
 
   .swiss-card-subtle {
-    background-color: #FAF9F5;
-    border: 1px solid #E4E3DC;
+    background-color: #18181B;
+    border: 1px solid #27272A;
     border-radius: 8px;
   }
 
-  /* Custom subtle scrollbar */
+  /* Custom subtle dark scrollbar */
   .scrollbar-editorial::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   .scrollbar-editorial::-webkit-scrollbar-track {
-    background: #F5F4EF;
+    background: #09090B;
   }
   .scrollbar-editorial::-webkit-scrollbar-thumb {
-    background: #D5D3CA;
+    background: #27272A;
     border-radius: 3px;
   }
   .scrollbar-editorial::-webkit-scrollbar-thumb:hover {
-    background: #8E9995;
+    background: #3F3F46;
   }
 
   /* Hide scrollbar when needed */

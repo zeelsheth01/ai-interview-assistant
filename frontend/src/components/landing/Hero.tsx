@@ -120,7 +120,7 @@ const Hero = () => {
                   </span>
                   <span className="text-[10px] font-mono text-accent font-semibold">HIGH PRIORITY</span>
                 </div>
-                <p className="font-serif text-sm font-medium text-ink-primary leading-snug">
+                <p className="font-sans text-sm font-medium text-ink-primary leading-snug">
                   "How would you architect a connection-pooled cache invalidation strategy for Neon PostgreSQL when running under serverless FastAPI microservices?"
                 </p>
                 <div className="flex flex-wrap gap-1.5 pt-1">

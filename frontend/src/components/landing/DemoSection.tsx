@@ -61,7 +61,7 @@ const DemoSection = () => {
                     <span>{isPlayingAudio ? 'Speaking...' : 'Listen Question'}</span>
                   </button>
                 </div>
-                <h3 className="font-serif text-xl sm:text-2xl text-ink-primary font-medium leading-snug">
+                <h3 className="font-editorial text-xl sm:text-2xl text-ink-primary font-medium leading-snug">
                   “Explain how the Global Interpreter Lock (GIL) affects multithreaded concurrency in Python, and how you architect CPU-bound tasks around it.”
                 </h3>
               </div>

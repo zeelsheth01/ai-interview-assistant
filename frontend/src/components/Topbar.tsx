@@ -14,9 +14,17 @@ export default function Topbar() {
         return "Resume Intelligence Engine";
       case "/workspace":
         return "Targeted Practice Chamber";
+      case "/mock-interview":
+        return "AI Mock Interview Practice";
       case "/pricing":
         return "Prepaid Voice Minutes";
       default:
+        if (location.pathname.startsWith("/mock-interview/session/")) {
+          return "Live Interview Chamber";
+        }
+        if (location.pathname.startsWith("/mock-interview/report/")) {
+          return "Performance Intelligence Report";
+        }
         return "Dashboard";
     }
   };

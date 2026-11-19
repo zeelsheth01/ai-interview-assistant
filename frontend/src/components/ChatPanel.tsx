@@ -11,7 +11,7 @@ export default function ChatPanel() {
     >
       <div className="flex items-center gap-2 pb-3 border-b border-border">
         <Terminal className="w-4 h-4 text-primary" />
-        <h2 className="font-serif text-lg font-bold text-ink-primary">
+        <h2 className="font-editorial text-lg font-bold text-ink-primary">
           {APP_NAME} AI Coach
         </h2>
       </div>

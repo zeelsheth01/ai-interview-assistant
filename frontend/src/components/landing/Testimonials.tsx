@@ -48,7 +48,7 @@ const Testimonials = () => {
                     <Star key={i} className="w-3.5 h-3.5 fill-accent text-accent" />
                   ))}
                 </div>
-                <p className="font-serif text-base text-ink-primary leading-relaxed italic">
+                <p className="font-sans text-base text-ink-primary leading-relaxed">
                   “{t.quote}”
                 </p>
               </div>

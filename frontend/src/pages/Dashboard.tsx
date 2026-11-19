@@ -303,7 +303,7 @@ export default function Dashboard() {
             </span>
           </div>
 
-          <p className="font-serif text-lg sm:text-xl text-ink-primary font-medium leading-snug">
+          <p className="font-sans text-lg sm:text-xl text-ink-primary font-medium leading-snug">
             “{questions[0]}”
           </p>
 
@@ -435,7 +435,7 @@ export default function Dashboard() {
                         </div>
 
                         <p
-                          className={`font-serif text-sm sm:text-base leading-snug ${
+                          className={`font-sans text-sm sm:text-base leading-snug ${
                             isActive ? "text-ink-primary font-bold" : "text-ink-primary"
                           }`}
                         >
@@ -508,7 +508,7 @@ export default function Dashboard() {
                 <HelpCircle className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h3 className="font-serif text-lg font-bold text-ink-primary">
+                <h3 className="font-editorial text-lg font-bold text-ink-primary">
                   {searchQuery ? "No matching questions" : "No interview syllabus generated yet"}
                 </h3>
                 <p className="text-xs text-ink-secondary max-w-sm mx-auto">
