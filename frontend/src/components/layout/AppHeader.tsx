@@ -10,6 +10,7 @@ import {
   Code2,
   Coins,
   ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 import { APP_NAME } from "../../constants/brand";
 
@@ -49,6 +50,12 @@ export default function AppHeader() {
       badge: "Live",
     },
     {
+      label: "Mock Interview",
+      path: "/mock-interview",
+      icon: Sparkles,
+      badge: "Adaptive",
+    },
+    {
       label: "Interview Minutes",
       path: "/pricing",
       icon: Coins,
@@ -57,6 +64,9 @@ export default function AppHeader() {
   ];
 
   const isCurrent = (path: string) => {
+    if (path === "/mock-interview") {
+      return location.pathname.startsWith("/mock-interview");
+    }
     return location.pathname === path;
   };
 

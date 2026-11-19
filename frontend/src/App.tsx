@@ -8,6 +8,9 @@ import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/Upload";
 import PricingPage from "./pages/PricingPage";
 import InterviewWorkspace from "./pages/InterviewWorkspace";
+import MockInterviewSetup from "./pages/MockInterviewSetup";
+import MockInterviewChat from "./pages/MockInterviewChat";
+import MockInterviewReportPage from "./pages/MockInterviewReportPage";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -58,6 +61,39 @@ export default function App() {
             <ProtectedRoute>
               <DashboardLayout>
                 <InterviewWorkspace />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/mock-interview"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <MockInterviewSetup />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/mock-interview/:sessionId"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <MockInterviewChat />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/mock-interview/:sessionId/report"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <MockInterviewReportPage />
               </DashboardLayout>
             </ProtectedRoute>
           }

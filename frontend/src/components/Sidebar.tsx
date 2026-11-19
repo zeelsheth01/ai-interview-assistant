@@ -1,11 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, FileText, Code2, Coins } from "lucide-react";
+import { LayoutDashboard, FileText, Code2, Coins, Sparkles } from "lucide-react";
 import { APP_NAME } from "../constants/brand";
 
 export default function Sidebar() {
   const location = useLocation();
 
   const isLinkActive = (path: string) => {
+    if (path === "/mock-interview") {
+      return location.pathname.startsWith("/mock-interview");
+    }
     return location.pathname === path;
   };
 
@@ -13,6 +16,7 @@ export default function Sidebar() {
     { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { label: "Resume Intelligence", path: "/upload", icon: FileText },
     { label: "Practice Workspace", path: "/workspace", icon: Code2 },
+    { label: "Mock Interview", path: "/mock-interview", icon: Sparkles },
     { label: "Voice Minutes", path: "/pricing", icon: Coins },
   ];
 

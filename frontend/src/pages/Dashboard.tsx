@@ -10,6 +10,7 @@ import {
   Search,
   FileText,
   Code2,
+  Sparkles,
 } from "lucide-react";
 import AIChat from "../components/AIChat";
 import VoiceInterviewModal, { type SpeechMetrics } from "../components/VoiceInterviewModal";
@@ -218,7 +219,7 @@ export default function Dashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
           <Link
             to="/upload"
             className="btn-secondary text-xs !min-h-[40px] !px-3"
@@ -227,12 +228,19 @@ export default function Dashboard() {
             <span>Re-analyze Resume</span>
           </Link>
           <Link
+            to="/mock-interview"
+            className="btn-primary text-xs !min-h-[40px] !px-3 shadow-subtle flex items-center gap-1.5"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
+            <span>Mock Interview Chamber</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
+          <Link
             to="/workspace"
-            className="btn-primary text-xs !min-h-[40px] !px-3 shadow-subtle"
+            className="btn-secondary text-xs !min-h-[40px] !px-3"
           >
             <Code2 className="w-3.5 h-3.5" />
-            <span>Open Practice Workspace</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>Practice Workspace</span>
           </Link>
         </div>
       </div>

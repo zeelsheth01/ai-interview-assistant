@@ -9,6 +9,7 @@ from app.api.v1.endpoints.resume import router as resume_router
 from app.api.v1.endpoints.auth import router as auth_router
 from app.api.v1.endpoints.ai import router as ai_router
 from app.api.v1.endpoints.payments import router as payments_router
+from app.api.v1.endpoints.mock_interview import router as mock_interview_router
 
 from app.db.base import Base
 from app.db.session import engine
@@ -17,6 +18,7 @@ from app.models.resume import Resume
 from app.models.skill import Skill
 from app.models.interview_question import InterviewQuestion
 from app.models.payment import PaymentOrder, MinuteUsage
+from app.models.mock_interview import MockInterviewSession, MockInterviewTurn, MockInterviewReport
 
 Base.metadata.create_all(bind=engine)
 
@@ -46,3 +48,4 @@ app.include_router(resume_router)
 app.include_router(auth_router)
 app.include_router(ai_router, prefix="/ai")
 app.include_router(payments_router)
+app.include_router(mock_interview_router)
